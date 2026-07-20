@@ -850,7 +850,7 @@ function MacLib:Window(Settings)
 	ghostLogo.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	ghostLogo.BorderSizePixel = 0
 	ghostLogo.ClipsDescendants = true
-	ghostLogo.Position = UDim2.new(0, -18, 0, -14)
+	ghostLogo.Position = UDim2.new(0, 6, 0, 6)
 	ghostLogo.Size = UDim2.new(1, 0, 1, 12)
 	ghostLogo.Visible = true
 	ghostLogo.ZIndex = 3
