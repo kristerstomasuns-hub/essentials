@@ -500,7 +500,7 @@ function MacLib:Window(Settings)
 	headerBackground.Position = UDim2.fromScale(0, 0)
 	headerBackground.Size = UDim2.fromScale(1, 1)
 	headerBackground.ScaleType = Enum.ScaleType.Crop
-	headerBackground.ZIndex = 0
+	headerBackground.ZIndex = 1
 	headerBackground.Parent = information
 
 	local informationHolder = Instance.new("Frame")

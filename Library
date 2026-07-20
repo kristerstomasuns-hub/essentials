@@ -579,7 +579,7 @@ local function tuneMacSidebarLayout(gui)
 		end
 		headerBackground.Position = UDim2.fromScale(0, 0)
 		headerBackground.Size = UDim2.fromScale(1, 1)
-		headerBackground.ZIndex = 0
+		headerBackground.ZIndex = 1
 		for _, child in ipairs(information:GetChildren()) do
 			if child.Name == "Divider" and child:IsA("GuiObject") then
 				child.Visible = false

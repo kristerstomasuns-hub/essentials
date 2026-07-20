@@ -2136,7 +2136,7 @@ ui.box = {
 
     -- Misc tab
     antiaim = ui.tabs.misc:AddLeftTabbox(),
-    misc = ui.tabs.misc:AddRightTabbox(),
+    misc = ui.tabs.misc:AddLeftTabbox(),
 
     -- Settings tab
     config = ui.tabs.settings:AddLeftGroupbox('Config'),
