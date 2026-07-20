@@ -1164,15 +1164,15 @@ function library.new(libraryTitle, cfgLocation)
 			return true
 		end
 
-		if property == "BackgroundColor3" and (isToggleTrack(object) or object.Name == "SliderFrame" or object.Name:match("^ThemeAccentLine")) then
+		if property == "BackgroundColor3" and (object.Name == "SliderFrame" or object.Name:match("^ThemeAccentLine")) then
 			return true
 		end
 
-		if property == "ImageColor3" and (isToggleTrack(object) or object.Name == "SliderBar") then
+		if property == "ImageColor3" and object.Name == "SliderBar" then
 			return true
 		end
 
-		if property == "Color" and object:IsA("UIStroke") and (object.Name == "ToggleUIStroke" or object.Name == "ColorPickerOutline" or object.Name == "TabSwitcherUIStroke") then
+		if property == "Color" and object:IsA("UIStroke") and (object.Name == "ColorPickerOutline" or object.Name == "TabSwitcherUIStroke") then
 			return true
 		end
 
