@@ -34,22 +34,22 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("informationGroup%.Parent = userInfo", "informationGroup.Visible = false\n\tinformationGroup.Parent = userInfo")
 	macSource = macSource:gsub("userInfoUIPadding%.Parent = userInfo", "userInfoUIPadding.Parent = userInfo\n\n\ttitleFrame.Parent = userInfo\n\ttitleFrame.Position = UDim2.new(0, 18, 0, 14)\n\ttitleFrame.Size = UDim2.new(1, -36, 0, 46)\n\ttitle.TextSize = 14\n\tsubtitle.TextSize = 10")
 	macSource = macSource:gsub("ghostLogo%.AnchorPoint = Vector2%.new%(0, 1%)", "ghostLogo.AnchorPoint = Vector2.new(0, 0)")
-	macSource = macSource:gsub("ghostLogo%.Position = UDim2%.new%(0, 4, 1, %-12%)", "ghostLogo.Position = UDim2.new(0, 0, 0, -10)")
-	macSource = macSource:gsub("ghostLogo%.Size = UDim2%.new%(1, %-6, 0, 104%)", "ghostLogo.Size = UDim2.new(1, -8, 1, 14)")
+	macSource = macSource:gsub("ghostLogo%.Position = UDim2%.new%(0, 4, 1, %-12%)", "ghostLogo.Position = UDim2.new(0, -10, 0, -12)")
+	macSource = macSource:gsub("ghostLogo%.Size = UDim2%.new%(1, %-6, 0, 104%)", "ghostLogo.Size = UDim2.new(1, 0, 1, 12)")
 	macSource = macSource:gsub("ghostLogo%.Visible = false", "ghostLogo.Visible = true")
 	macSource = macSource:gsub("ghostLogo%.Parent = userInfo", "ghostLogo.Parent = informationHolder")
 	macSource = macSource:gsub("ghostSkull%.Position = UDim2%.new%(0, 0, 1, %-45%)", "ghostSkull.Position = UDim2.new(0, 0, 0.5, 0)")
-	macSource = macSource:gsub("ghostSkull%.Size = UDim2%.fromOffset%(90, 90%)", "ghostSkull.Size = UDim2.fromOffset(88, 88)")
-	macSource = macSource:gsub("ghostWordmark%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostWordmark.Position = UDim2.fromOffset(68, -50)")
-	macSource = macSource:gsub("ghostWordmark%.Size = UDim2%.fromOffset%(225, 225%)", "ghostWordmark.Size = UDim2.fromOffset(222, 222)")
-	macSource = macSource:gsub("ghostLuaL%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLuaL.Position = UDim2.fromOffset(68, -50)")
-	macSource = macSource:gsub("ghostLuaL%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLuaL.Size = UDim2.fromOffset(222, 222)")
-	macSource = macSource:gsub("ghostLua%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLua.Position = UDim2.fromOffset(68, -50)")
-	macSource = macSource:gsub("ghostLua%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLua.Size = UDim2.fromOffset(222, 222)")
+	macSource = macSource:gsub("ghostSkull%.Size = UDim2%.fromOffset%(90, 90%)", "ghostSkull.Size = UDim2.fromOffset(80, 80)")
+	macSource = macSource:gsub("ghostWordmark%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostWordmark.Position = UDim2.fromOffset(62, -43)")
+	macSource = macSource:gsub("ghostWordmark%.Size = UDim2%.fromOffset%(225, 225%)", "ghostWordmark.Size = UDim2.fromOffset(205, 205)")
+	macSource = macSource:gsub("ghostLuaL%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLuaL.Position = UDim2.fromOffset(62, -43)")
+	macSource = macSource:gsub("ghostLuaL%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLuaL.Size = UDim2.fromOffset(205, 205)")
+	macSource = macSource:gsub("ghostLua%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLua.Position = UDim2.fromOffset(62, -43)")
+	macSource = macSource:gsub("ghostLua%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLua.Size = UDim2.fromOffset(205, 205)")
 	macSource = macSource:gsub("tabSwitchers%.Size = UDim2%.new%(1, 0, 1, %-107%)", "tabSwitchers.Size = UDim2.new(1, 0, 1, -80)")
 	macSource = macSource:gsub("tabSwitcherUIStroke%.Color = Color3%.fromRGB%(255, 255, 255%)", "tabSwitcherUIStroke.Color = Color3.fromRGB(0, 45, 255)")
 	macSource = macSource:gsub("tabSwitcherUIStroke%.Transparency = 1", "tabSwitcherUIStroke.Thickness = 1\n\t\t\ttabSwitcherUIStroke.Transparency = 1")
-	macSource = macSource:gsub("Transparency = %(i == tabSwitcher and 0%.95 or 1%)", "Transparency = (i == tabSwitcher and 0.3 or 1)")
+	macSource = macSource:gsub("Transparency = %(i == tabSwitcher and 0%.95 or 1%)", "Transparency = (i == tabSwitcher and 0.2 or 1)")
 	macSource = macSource:gsub("tabSwitchersScrollingFrame%.BackgroundTransparency = 0", "tabSwitchersScrollingFrame.BackgroundTransparency = 1")
 	macSource = macSource:gsub("tabSwitchersScrollingFrame%.Size = UDim2%.fromScale%(1, 1%)", "tabSwitchersScrollingFrame.Size = UDim2.fromScale(1, 1)\n\ttabSwitchersScrollingFrame.ZIndex = 2", 1)
 	macSource = macSource:gsub("BackgroundTransparency = %(i == tabSwitcher and 0 or 1%)", "BackgroundTransparency = (i == tabSwitcher and 0.5 or 1)")
@@ -70,7 +70,7 @@ local function patchMacLibSource(macSource)
 	local themeAccentLineRight = Instance.new("Frame")
 	themeAccentLineRight.Name = "ThemeAccentLineRight"
 	themeAccentLineRight.BackgroundColor3 = Color3.fromRGB(0, 45, 255)
-	themeAccentLineRight.BackgroundTransparency = 0.3
+	themeAccentLineRight.BackgroundTransparency = 0.2
 	themeAccentLineRight.BorderSizePixel = 0
 	themeAccentLineRight.Position = UDim2.new(1, -1, 0, 74)
 	themeAccentLineRight.Size = UDim2.new(0, 1, 1, -74)
@@ -510,21 +510,21 @@ local function tuneMacSidebarLayout(gui)
 		ghostLogo.Parent = informationHolder
 		ghostLogo.Visible = true
 		ghostLogo.AnchorPoint = Vector2.new(0, 0)
-		ghostLogo.Position = UDim2.new(0, 0, 0, -10)
-		ghostLogo.Size = UDim2.new(1, -8, 1, 14)
+		ghostLogo.Position = UDim2.new(0, -10, 0, -12)
+		ghostLogo.Size = UDim2.new(1, 0, 1, 12)
 		ghostLogo.ClipsDescendants = true
 		local skull = ghostLogo:FindFirstChild("Skull")
 		if skull then
 			skull.AnchorPoint = Vector2.new(0, 0.5)
 			skull.Position = UDim2.new(0, 0, 0.5, 0)
-			skull.Size = UDim2.fromOffset(88, 88)
+			skull.Size = UDim2.fromOffset(80, 80)
 		end
 		for _, name in ipairs({ "Wordmark", "LuaL", "Lua" }) do
 			local logoPart = ghostLogo:FindFirstChild(name)
 			if logoPart then
 				logoPart.AnchorPoint = Vector2.new(0, 0)
-				logoPart.Position = UDim2.fromOffset(68, -50)
-				logoPart.Size = UDim2.fromOffset(222, 222)
+				logoPart.Position = UDim2.fromOffset(62, -43)
+				logoPart.Size = UDim2.fromOffset(205, 205)
 			end
 		end
 	end
@@ -555,7 +555,7 @@ local function tuneMacSidebarLayout(gui)
 	end
 	local rightLine = ensureAccentLine(sidebar, "ThemeAccentLineRight", UDim2.new(1, -1, 0, headerHeight), UDim2.new(0, 1, 1, -headerHeight))
 	if rightLine then
-		rightLine.BackgroundTransparency = 0.3
+		rightLine.BackgroundTransparency = 0.2
 	end
 	local bottomLine = ensureAccentLine(tabSwitchers, "ThemeAccentLineBottom", UDim2.new(0, 0, 1, -1), UDim2.new(1, 0, 0, 1))
 	if bottomLine then
@@ -567,7 +567,7 @@ local function tuneMacSidebarLayout(gui)
 		if object:IsA("UIStroke") and object.Name == "TabSwitcherUIStroke" then
 			object.Thickness = 1
 			local parent = object.Parent
-			object.Transparency = (parent and parent:IsA("GuiObject") and parent.BackgroundTransparency < 1) and 0.3 or 1
+			object.Transparency = (parent and parent:IsA("GuiObject") and parent.BackgroundTransparency < 1) and 0.2 or 1
 		end
 	end
 end
@@ -1062,7 +1062,7 @@ function library.new(libraryTitle, cfgLocation)
 		if object:IsA("GuiObject") and object.Name:match("^ThemeAccentLine") then
 			pcall(function()
 				object.BackgroundColor3 = themeAccentColor
-				object.BackgroundTransparency = object.Name == "ThemeAccentLineRight" and 0.3 or 1
+				object.BackgroundTransparency = object.Name == "ThemeAccentLineRight" and 0.2 or 1
 				if object.Name == "ThemeAccentLineBottom" or object.Name == "ThemeAccentLineTop" then
 					object.Visible = false
 				end
