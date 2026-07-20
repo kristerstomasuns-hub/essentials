@@ -817,6 +817,11 @@ cheat.utility = {} do
                 pcall(function() toggle:SetValue(false) end)
             end
         end
+        pcall(function()
+            if cheat.utility.restore_chams then
+                cheat.utility.restore_chams()
+            end
+        end)
         cheat.utility.restore_player_control()
         pcall(function()
             if cheat.EspLibrary and cheat.EspLibrary.__loaded and cheat.EspLibrary.unload then
@@ -7548,6 +7553,85 @@ do
     cheat._last_vm_item = cheat._last_vm_item or nil
     cheat._last_vm_update = cheat._last_vm_update or 0
     cheat._is_chamming = false
+    cheat._chams_originals = cheat._chams_originals or {
+        viewmodel = {},
+        character = {},
+    }
+    local function remember_cham_part(scope, part)
+        if not (scope and part and (part:IsA("BasePart") or part:IsA("MeshPart"))) then return end
+        local bucket = cheat._chams_originals[scope]
+        if not bucket then
+            bucket = {}
+            cheat._chams_originals[scope] = bucket
+        end
+        if bucket[part] then return end
+        local surface = part:FindFirstChildOfClass("SurfaceAppearance")
+        bucket[part] = {
+            Color = part.Color,
+            Material = part.Material,
+            Transparency = part.Transparency,
+            TextureID = part:IsA("MeshPart") and part.TextureID or nil,
+            SurfaceAppearance = surface and surface:Clone() or nil,
+        }
+    end
+    local function remember_cham_clothing(scope, item)
+        if not scope or not item then return end
+        local bucket = cheat._chams_originals[scope]
+        if not bucket then
+            bucket = {}
+            cheat._chams_originals[scope] = bucket
+        end
+        if bucket[item] then return end
+        if item:IsA("Shirt") then
+            bucket[item] = { ShirtTemplate = item.ShirtTemplate }
+        elseif item:IsA("Pants") then
+            bucket[item] = { PantsTemplate = item.PantsTemplate }
+        elseif item:IsA("ShirtGraphic") then
+            bucket[item] = { Graphic = item.Graphic }
+        end
+    end
+    local function restore_chams_scope(scope)
+        local bucket = cheat._chams_originals and cheat._chams_originals[scope]
+        if not bucket then return end
+        for object, original in pairs(bucket) do
+            pcall(function()
+                if object and object.Parent then
+                    if object:IsA("BasePart") or object:IsA("MeshPart") then
+                        object.Color = original.Color
+                        object.Material = original.Material
+                        object.Transparency = original.Transparency
+                        if object:IsA("MeshPart") and original.TextureID ~= nil then
+                            object.TextureID = original.TextureID
+                        end
+                        if original.SurfaceAppearance and not object:FindFirstChildOfClass("SurfaceAppearance") then
+                            original.SurfaceAppearance:Clone().Parent = object
+                        end
+                    elseif object:IsA("Shirt") and original.ShirtTemplate ~= nil then
+                        object.ShirtTemplate = original.ShirtTemplate
+                    elseif object:IsA("Pants") and original.PantsTemplate ~= nil then
+                        object.PantsTemplate = original.PantsTemplate
+                    elseif object:IsA("ShirtGraphic") and original.Graphic ~= nil then
+                        object.Graphic = original.Graphic
+                    end
+                end
+            end)
+            bucket[object] = nil
+        end
+    end
+    cheat.utility.restore_chams = function()
+        restore_chams_scope("viewmodel")
+        restore_chams_scope("character")
+    end
+    local function apply_cham_part(scope, part, color, materialName, transparency, clear_texture)
+        if not (part and (part:IsA("BasePart") or part:IsA("MeshPart"))) then return end
+        remember_cham_part(scope, part)
+        part.Material = Enum.Material[materialName] or part.Material
+        part.Color = color
+        part.Transparency = transparency
+        if clear_texture and part:IsA("MeshPart") then part.TextureID = "" end
+        local sa = part:FindFirstChildOfClass("SurfaceAppearance")
+        if sa then sa:Destroy() end
+    end
     local function is_arm_cham_part(part)
         local name = tostring(part and part.Name or ""):lower():gsub("[%s_%-]", "")
         return name == "lefthand"
@@ -7581,22 +7665,22 @@ do
             if ItemView and Toggles.gm.Value then
                 for _, v in pairs(ItemView:GetDescendants()) do
                     if (v:IsA("MeshPart") or v:IsA("BasePart")) and v.Transparency < 1 and v.Name ~= "Muzzle" and v.Name ~= "SightMark" and v.Name ~= "AimPart" and v.Name ~= "SmokePart" and v.Name ~= "FirePoint" and v.Name ~= "Flash" and v.Name ~= "Flame" then
-                        v.Material = Enum.Material[gunmaterial]
-                        v.Color = guncolor
-                        v.Transparency = cheat._gun_chams_transparency
-                        local sa = v:FindFirstChildOfClass("SurfaceAppearance")
-                        if sa then sa:Destroy() end
+                        apply_cham_part("viewmodel", v, guncolor, gunmaterial, cheat._gun_chams_transparency, false)
                     end
                 end
+            elseif not (Toggles.ac.Value or Toggles.noarms.Value) then
+                restore_chams_scope("viewmodel")
             end
             if Toggles.noarms.Value then
                 for _, vm_item in pairs(vm:GetChildren()) do
                     if vm_item:IsA("MeshPart") then
                         if vm_item.Name:find("Hand") or vm_item.Name:find("Arm") then
+                            remember_cham_part("viewmodel", vm_item)
                             vm_item.Transparency = 1
                         end
                     elseif vm_item:IsA("Model") and (_FindFirstChild(vm_item, "LL") or _FindFirstChild(vm_item, "LH")) then
                         for _, shirt_item in pairs(vm_item:GetChildren()) do
+                            remember_cham_part("viewmodel", shirt_item)
                             shirt_item.Transparency = 1
                         end
                     end
@@ -7619,17 +7703,11 @@ do
                 for _, vm_item in pairs(vm:GetChildren()) do
                 if vm_item:IsA("MeshPart") then
                     if vm_item.Name:find("Hand") or vm_item.Name:find("Arm") then
-                            vm_item.Material = Enum.Material[armmaterial]
-                            vm_item.Color = armcolor
-                            vm_item.Transparency = cheat._arm_chams_transparency
+                            apply_cham_part("viewmodel", vm_item, armcolor, armmaterial, cheat._arm_chams_transparency, false)
                         end
                     elseif vm_item:IsA("Model") and (_FindFirstChild(vm_item, "LL") or _FindFirstChild(vm_item, "LH")) then
                         for _, shirt_item in pairs(vm_item:GetChildren()) do
-                            local sa = shirt_item:FindFirstChildOfClass("SurfaceAppearance")
-                            if sa then sa:Destroy() end
-                            shirt_item.Material = Enum.Material[armmaterial]
-                            shirt_item.Color = armcolor
-                            shirt_item.Transparency = cheat._arm_chams_transparency
+                            apply_cham_part("viewmodel", shirt_item, armcolor, armmaterial, cheat._arm_chams_transparency, false)
                         end
                     end
                 end
@@ -7658,14 +7736,17 @@ do
     end))
     cheat._last_character_chams_update = cheat._last_character_chams_update or 0
     cheat.utility.new_heartbeat(function()
-        local character_chams_enabled = Toggles.gm.Value or Toggles.ac.Value or Toggles.bc.Value or Toggles.noarms.Value
-        local viewmodel_enabled = (Toggles.viewmodel_changer and Toggles.viewmodel_changer.Value) or character_chams_enabled
-        if not viewmodel_enabled then
+        local viewmodel_chams_enabled = Toggles.gm.Value or Toggles.ac.Value or Toggles.noarms.Value
+        local character_chams_enabled = Toggles.bc.Value
+        local viewmodel_enabled = (Toggles.viewmodel_changer and Toggles.viewmodel_changer.Value) or viewmodel_chams_enabled
+        if not (viewmodel_enabled or character_chams_enabled) then
+            restore_chams_scope("viewmodel")
+            restore_chams_scope("character")
             return
         end
 
         local vm = _FindFirstChildOfClass(Camera, "Model")
-        if vm then vmpos(vm) end
+        if vm and viewmodel_enabled then vmpos(vm) end
         
         local char = LocalPlayer.Character
         if char and character_chams_enabled and tick() - cheat._last_character_chams_update > 0.2 then
@@ -7678,49 +7759,33 @@ do
             local bodymaterial = cheat.Options.bcm.Value
             for _, v in pairs(char:GetChildren()) do
                 if Toggles.bc.Value and v:IsA("Shirt") then
+                    remember_cham_clothing("character", v)
                     v.ShirtTemplate = ""
                 elseif Toggles.bc.Value and v:IsA("Pants") then
+                    remember_cham_clothing("character", v)
                     v.PantsTemplate = ""
                 elseif Toggles.bc.Value and v:IsA("ShirtGraphic") then
+                    remember_cham_clothing("character", v)
                     v.Graphic = ""
                 end
             end
             for _, v in pairs(char:GetDescendants()) do
                 if v:IsA("BasePart") or v:IsA("MeshPart") then
                     local is_weapon = v:FindFirstAncestor("Item") or v:FindFirstAncestor("Weapon") or v.Name:find("Gun") or v.Name:find("Handle")
-                    if Toggles.gm.Value and is_weapon then
-                        if v.Color ~= guncolor or v.Material ~= Enum.Material[gunmaterial] or (v:IsA("MeshPart") and v.TextureID ~= "") then
-                            v.Material = Enum.Material[gunmaterial]
-                            v.Color = guncolor
-                            v.Transparency = cheat._gun_chams_transparency
-                            if v:IsA("MeshPart") then v.TextureID = "" end
-                            local sa = v:FindFirstChildOfClass("SurfaceAppearance")
-                            if sa then sa:Destroy() end
-                        end
-                    elseif Toggles.ac.Value and is_arm_cham_part(v) then
-                        if v.Color ~= armcolor or v.Material ~= Enum.Material[armmaterial] or (v:IsA("MeshPart") and v.TextureID ~= "") then
-                            v.Material = Enum.Material[armmaterial]
-                            v.Color = armcolor
-                            v.Transparency = cheat._arm_chams_transparency
-                            if v:IsA("MeshPart") then v.TextureID = "" end
-                            local sa = v:FindFirstChildOfClass("SurfaceAppearance")
-                            if sa then sa:Destroy() end
-                        end
-                    elseif Toggles.bc.Value and not is_arm_cham_part(v) then
+                    if Toggles.bc.Value and not is_arm_cham_part(v) and not is_weapon then
                         if v.Color ~= bodycolor or v.Material ~= Enum.Material[bodymaterial] or (v:IsA("MeshPart") and v.TextureID ~= "") then
-                            v.Material = Enum.Material[bodymaterial]
-                            v.Color = bodycolor
-                            v.Transparency = cheat._body_chams_transparency
-                            if v:IsA("MeshPart") then v.TextureID = "" end
-                            local sa = v:FindFirstChildOfClass("SurfaceAppearance")
-                            if sa then sa:Destroy() end
+                            apply_cham_part("character", v, bodycolor, bodymaterial, cheat._body_chams_transparency, true)
                         end
                     end
                 end
             end
+        elseif not character_chams_enabled then
+            restore_chams_scope("character")
         end
-        if character_chams_enabled then
+        if viewmodel_chams_enabled then
             vmchams()
+        else
+            restore_chams_scope("viewmodel")
         end
     end)
     cheat._screen_effect_original_visible = cheat._screen_effect_original_visible or {}
