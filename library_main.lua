@@ -561,6 +561,8 @@ local function tuneMacSidebarLayout(gui)
 	local sidebar = base and base:FindFirstChild("Sidebar", true)
 	local information = sidebar and sidebar:FindFirstChild("Information")
 	local informationHolder = information and information:FindFirstChild("InformationHolder")
+	local content = base and base:FindFirstChild("Content", true)
+	local topbar = content and content:FindFirstChild("Topbar")
 	local sidebarGroup = sidebar and sidebar:FindFirstChild("SidebarGroup")
 	local tabSwitchers = sidebarGroup and sidebarGroup:FindFirstChild("TabSwitchers")
 	local userInfo = sidebarGroup and sidebarGroup:FindFirstChild("UserInfo")
@@ -568,25 +570,40 @@ local function tuneMacSidebarLayout(gui)
 
 	if information then
 		information.Size = UDim2.new(1, 0, 0, headerHeight)
-		local headerBackground = information:FindFirstChild("HeaderBackground")
-		if not headerBackground then
-			headerBackground = Instance.new("ImageLabel")
-			headerBackground.Name = "HeaderBackground"
-			headerBackground.Image = "rbxassetid://115075737167851"
-			headerBackground.BackgroundTransparency = 1
-			headerBackground.BorderSizePixel = 0
-			headerBackground.ScaleType = Enum.ScaleType.Crop
-			headerBackground.Parent = information
+		local oldHeaderBackground = information:FindFirstChild("HeaderBackground")
+		if oldHeaderBackground then
+			oldHeaderBackground:Destroy()
 		end
-		headerBackground.Position = UDim2.fromScale(0, 0)
-		headerBackground.Size = UDim2.fromScale(1, 1)
-		headerBackground.ZIndex = 1
 		for _, child in ipairs(information:GetChildren()) do
 			if child.Name == "Divider" and child:IsA("GuiObject") then
 				child.Visible = false
 			end
 		end
-		headerBackground.Visible = true
+	end
+	if topbar then
+		topbar.ClipsDescendants = true
+		local topbarBackground = topbar:FindFirstChild("TopbarBackground")
+		if not topbarBackground then
+			topbarBackground = Instance.new("ImageLabel")
+			topbarBackground.Name = "TopbarBackground"
+			topbarBackground.Image = "rbxassetid://115075737167851"
+			topbarBackground.BackgroundTransparency = 1
+			topbarBackground.BorderSizePixel = 0
+			topbarBackground.ScaleType = Enum.ScaleType.Crop
+			topbarBackground.Parent = topbar
+		end
+		topbarBackground.Position = UDim2.fromScale(0, 0)
+		topbarBackground.Size = UDim2.fromScale(1, 1)
+		topbarBackground.ZIndex = 1
+		topbarBackground.Visible = true
+		for _, child in ipairs(topbar:GetChildren()) do
+			if child.Name == "Divider" and child:IsA("GuiObject") then
+				child.ZIndex = 3
+			elseif child.Name == "Elements" and child:IsA("GuiObject") then
+				child.BackgroundTransparency = 1
+				child.ZIndex = 2
+			end
+		end
 	end
 	if informationHolder then
 		informationHolder.ZIndex = 2

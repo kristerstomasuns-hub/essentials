@@ -492,17 +492,6 @@ function MacLib:Window(Settings)
 	divider2.Visible = false
 	divider2.Parent = information
 
-	local headerBackground = Instance.new("ImageLabel")
-	headerBackground.Name = "HeaderBackground"
-	headerBackground.Image = "rbxassetid://115075737167851"
-	headerBackground.BackgroundTransparency = 1
-	headerBackground.BorderSizePixel = 0
-	headerBackground.Position = UDim2.fromScale(0, 0)
-	headerBackground.Size = UDim2.fromScale(1, 1)
-	headerBackground.ScaleType = Enum.ScaleType.Crop
-	headerBackground.ZIndex = 1
-	headerBackground.Parent = information
-
 	local informationHolder = Instance.new("Frame")
 	informationHolder.Name = "InformationHolder"
 	informationHolder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1072,7 +1061,19 @@ function MacLib:Window(Settings)
 	topbar.BackgroundTransparency = 0
 	topbar.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	topbar.BorderSizePixel = 0
+	topbar.ClipsDescendants = true
 	topbar.Size = UDim2.new(1, 0, 0, 63)
+
+	local topbarBackground = Instance.new("ImageLabel")
+	topbarBackground.Name = "TopbarBackground"
+	topbarBackground.Image = "rbxassetid://115075737167851"
+	topbarBackground.BackgroundTransparency = 1
+	topbarBackground.BorderSizePixel = 0
+	topbarBackground.Position = UDim2.fromScale(0, 0)
+	topbarBackground.Size = UDim2.fromScale(1, 1)
+	topbarBackground.ScaleType = Enum.ScaleType.Crop
+	topbarBackground.ZIndex = 1
+	topbarBackground.Parent = topbar
 
 	local divider4 = Instance.new("Frame")
 	divider4.Name = "Divider"
@@ -1083,15 +1084,17 @@ function MacLib:Window(Settings)
 	divider4.BorderSizePixel = 0
 	divider4.Position = UDim2.fromScale(0, 1)
 	divider4.Size = UDim2.new(1, 0, 0, 1)
+	divider4.ZIndex = 3
 	divider4.Parent = topbar
 
 	local elements = Instance.new("Frame")
 	elements.Name = "Elements"
 	elements.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
-	elements.BackgroundTransparency = 0
+	elements.BackgroundTransparency = 1
 	elements.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	elements.BorderSizePixel = 0
 	elements.Size = UDim2.fromScale(1, 1)
+	elements.ZIndex = 2
 
 	local uIPadding2 = Instance.new("UIPadding")
 	uIPadding2.Name = "UIPadding"
