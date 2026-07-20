@@ -7,7 +7,7 @@ local UserInputService = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 
-local MACLIB_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/essentials/main/mclib?v=configfix-20260719"
+local MACLIB_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/delt/refs/heads/all-totla-script-lol/mclib"
 
 local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("RunService%.RenderStepped:Connect%(UpdateOrientation%)", "if acrylicBlur then RunService.RenderStepped:Connect(UpdateOrientation) end")
@@ -27,7 +27,6 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("local cX = math%.clamp%(alpha or 0, 0, 1%) %* width", "local cX = (1 - ColorpickerFunctions.Alpha) * width")
 	macSource = macSource:gsub("modifierInputs%.Alpha%.Text = isAlpha and %(1 %- ColorpickerFunctions%.Alpha%) or 0", "modifierInputs.Alpha.Text = isAlpha and ColorpickerFunctions.Alpha or 0")
 	macSource = macSource:gsub("information%.Size = UDim2%.new%(1, 0, 0, 63%)", "information.Size = UDim2.new(1, 0, 0, 74)")
-	macSource = macSource:gsub("divider%.Parent = sidebar", "divider.Visible = false\n\tdivider.Parent = sidebar")
 	macSource = macSource:gsub("divider2%.Parent = information", "divider2.Visible = false\n\tdivider2.Parent = information")
 	macSource = macSource:gsub("sidebarGroup%.Position = UDim2%.fromOffset%(0, 63%)", "sidebarGroup.Position = UDim2.fromOffset(0, 74)")
 	macSource = macSource:gsub("sidebarGroup%.Size = UDim2%.new%(1, 0, 1, %-63%)", "sidebarGroup.Size = UDim2.new(1, 0, 1, -74)")
@@ -35,17 +34,17 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("informationGroup%.Parent = userInfo", "informationGroup.Visible = false\n\tinformationGroup.Parent = userInfo")
 	macSource = macSource:gsub("userInfoUIPadding%.Parent = userInfo", "userInfoUIPadding.Parent = userInfo\n\n\ttitleFrame.Parent = userInfo\n\ttitleFrame.Position = UDim2.new(0, 18, 0, 14)\n\ttitleFrame.Size = UDim2.new(1, -36, 0, 46)\n\ttitle.TextSize = 14\n\tsubtitle.TextSize = 10")
 	macSource = macSource:gsub("ghostLogo%.AnchorPoint = Vector2%.new%(0, 1%)", "ghostLogo.AnchorPoint = Vector2.new(0, 0)")
-	macSource = macSource:gsub("ghostLogo%.Position = UDim2%.new%(0, 4, 1, %-12%)", "ghostLogo.Position = UDim2.new(0, 0, 0, -7)")
+	macSource = macSource:gsub("ghostLogo%.Position = UDim2%.new%(0, 4, 1, %-12%)", "ghostLogo.Position = UDim2.new(0, 4, 0, -7)")
 	macSource = macSource:gsub("ghostLogo%.Size = UDim2%.new%(1, %-6, 0, 104%)", "ghostLogo.Size = UDim2.new(1, -12, 1, 8)")
 	macSource = macSource:gsub("ghostLogo%.Visible = false", "ghostLogo.Visible = true")
 	macSource = macSource:gsub("ghostLogo%.Parent = userInfo", "ghostLogo.Parent = informationHolder")
 	macSource = macSource:gsub("ghostSkull%.Position = UDim2%.new%(0, 0, 1, %-45%)", "ghostSkull.Position = UDim2.new(0, 0, 0.5, 0)")
 	macSource = macSource:gsub("ghostSkull%.Size = UDim2%.fromOffset%(90, 90%)", "ghostSkull.Size = UDim2.fromOffset(76, 76)")
-	macSource = macSource:gsub("ghostWordmark%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostWordmark.Position = UDim2.fromOffset(58, -54)")
+	macSource = macSource:gsub("ghostWordmark%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostWordmark.Position = UDim2.fromOffset(58, -68)")
 	macSource = macSource:gsub("ghostWordmark%.Size = UDim2%.fromOffset%(225, 225%)", "ghostWordmark.Size = UDim2.fromOffset(194, 194)")
-	macSource = macSource:gsub("ghostLuaL%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLuaL.Position = UDim2.fromOffset(58, -54)")
+	macSource = macSource:gsub("ghostLuaL%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLuaL.Position = UDim2.fromOffset(58, -68)")
 	macSource = macSource:gsub("ghostLuaL%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLuaL.Size = UDim2.fromOffset(194, 194)")
-	macSource = macSource:gsub("ghostLua%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLua.Position = UDim2.fromOffset(58, -54)")
+	macSource = macSource:gsub("ghostLua%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLua.Position = UDim2.fromOffset(58, -68)")
 	macSource = macSource:gsub("ghostLua%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLua.Size = UDim2.fromOffset(194, 194)")
 	macSource = macSource:gsub("tabSwitchers%.Size = UDim2%.new%(1, 0, 1, %-107%)", "tabSwitchers.Size = UDim2.new(1, 0, 1, -80)")
 	macSource = macSource:gsub("tabSwitcherUIStroke%.Color = Color3%.fromRGB%(255, 255, 255%)", "tabSwitcherUIStroke.Color = Color3.fromRGB(0, 45, 255)")
@@ -186,79 +185,23 @@ function library:console(callback)
 	callback(("\n"):rep(57))
 end
 
-local ENABLE_TRACEBACK = false
-
-local Signal = {}
-Signal.__index = Signal
-Signal.ClassName = "Signal"
-
-function Signal.new()
-	local self = setmetatable({}, Signal)
-	self._bindableEvent = Instance.new("BindableEvent")
-	self._argMap = {}
-	self._source = ENABLE_TRACEBACK and debug.traceback() or ""
-
-	self._bindableEvent.Event:Connect(function(key)
-		self._argMap[key] = nil
-
-		if not self._bindableEvent and not next(self._argMap) then
-			self._argMap = nil
-		end
-	end)
-
-	return self
-end
-
-function Signal:Fire(...)
-	if not self._bindableEvent then
-		warn(("Signal is already destroyed. %s"):format(self._source))
-		return
-	end
-
-	local args = table.pack(...)
-	local key = HttpService:GenerateGUID(false)
-	self._argMap[key] = args
-	self._bindableEvent:Fire(key)
-end
-
-function Signal:Connect(handler)
-	if type(handler) ~= "function" then
-		error(("connect(%s)"):format(typeof(handler)), 2)
-	end
-
-	return self._bindableEvent.Event:Connect(function(key)
-		local args = self._argMap and self._argMap[key]
-		if not args then
-			error("Missing arg data, probably due to reentrance.")
-		end
-		handler(table.unpack(args, 1, args.n))
-	end)
-end
-
-function Signal:Wait()
-	if not self._bindableEvent then
-		warn(("Signal is already destroyed. %s"):format(self._source))
-		return nil
-	end
-
-	local key = self._bindableEvent.Event:Wait()
-	local args = self._argMap and self._argMap[key]
-	if not args then
-		error("Missing arg data, probably due to reentrance.")
-	end
-	return table.unpack(args, 1, args.n)
-end
-
-function Signal:Destroy()
-	if self._bindableEvent then
-		self._bindableEvent:Destroy()
-		self._bindableEvent = nil
-	end
-	setmetatable(self, nil)
-end
-
 local function createSignal()
-	return Signal.new()
+	local bindable = Instance.new("BindableEvent")
+	local signal = {}
+
+	function signal:Connect(callback)
+		return bindable.Event:Connect(callback)
+	end
+
+	function signal:Fire(...)
+		bindable:Fire(...)
+	end
+
+	function signal:Destroy()
+		bindable:Destroy()
+	end
+
+	return signal
 end
 
 local function ensureFolder(path)
@@ -271,20 +214,6 @@ local function ensureFolder(path)
 end
 
 local function configPath(prefix, name)
-	name = tostring(name or "Default")
-	if not name:match("%.txt$") then
-		name = name .. ".txt"
-	end
-
-	prefix = tostring(prefix or "")
-	if prefix ~= "" and not prefix:match("[/\\]$") then
-		prefix = prefix .. "/"
-	end
-
-	return prefix .. name
-end
-
-local function legacyConfigPath(prefix, name)
 	name = tostring(name or "Default")
 	if not name:match("%.txt$") then
 		name = name .. ".txt"
@@ -424,7 +353,7 @@ local function ensureLegacyMain(gui)
 		title.Visible = false
 		title.Parent = main
 	end
-	title.Text = "Project Delta | KT.RK"
+	title.Text = "Brzzz_HOOK | Project Delta | 2025/11/12 | discord.gg/8RrWuEabnc"
 
 	return main
 end
@@ -513,46 +442,19 @@ local function hideMacWindowControls(gui)
 	local base = gui and gui:FindFirstChild("Base", true)
 	local windowControls = base and base:FindFirstChild("WindowControls", true)
 	local controls = windowControls and windowControls:FindFirstChild("Controls")
+	if not controls then
+		return
+	end
 
-	if windowControls then
-		windowControls.Visible = false
-		windowControls.Size = UDim2.new(1, 0, 0, 0)
-		for _, child in ipairs(windowControls:GetDescendants()) do
-			if child:IsA("GuiObject") then
-				child.Visible = false
-				child.Active = false
-				pcall(function()
-					child.Interactable = false
-				end)
-			end
+	controls.Visible = false
+	for _, child in ipairs(controls:GetDescendants()) do
+		if child:IsA("GuiObject") then
+			child.Visible = false
+			child.Active = false
+			pcall(function()
+				child.Interactable = false
+			end)
 		end
-	end
-
-	if controls then
-		controls.Visible = false
-	end
-
-	local information = base and base:FindFirstChild("Information", true)
-	if information then
-		information.Position = UDim2.fromOffset(0, 0)
-		information.Size = UDim2.new(1, 0, 0, 63)
-	end
-
-	local sidebarGroup = base and base:FindFirstChild("SidebarGroup", true)
-	if sidebarGroup then
-		sidebarGroup.Position = UDim2.fromOffset(0, 63)
-		sidebarGroup.Size = UDim2.new(1, 0, 1, -63)
-	end
-
-	local globalSettingsButton = information and information:FindFirstChild("GlobalSettingsButton", true)
-	if globalSettingsButton then
-		globalSettingsButton.Visible = false
-		globalSettingsButton.Active = false
-		globalSettingsButton.ImageTransparency = 1
-		globalSettingsButton.Size = UDim2.fromOffset(0, 0)
-		pcall(function()
-			globalSettingsButton.Interactable = false
-		end)
 	end
 end
 
@@ -573,10 +475,6 @@ local function tuneMacSidebarLayout(gui)
 				child.Visible = false
 			end
 		end
-	end
-	local divider = sidebar and sidebar:FindFirstChild("Divider")
-	if divider and divider:IsA("GuiObject") then
-		divider.Visible = false
 	end
 	if sidebarGroup then
 		sidebarGroup.Position = UDim2.fromOffset(0, headerHeight)
@@ -612,7 +510,7 @@ local function tuneMacSidebarLayout(gui)
 		ghostLogo.Parent = informationHolder
 		ghostLogo.Visible = true
 		ghostLogo.AnchorPoint = Vector2.new(0, 0)
-		ghostLogo.Position = UDim2.new(0, 0, 0, -7)
+		ghostLogo.Position = UDim2.new(0, 4, 0, -7)
 		ghostLogo.Size = UDim2.new(1, -12, 1, 8)
 		ghostLogo.ClipsDescendants = true
 		local skull = ghostLogo:FindFirstChild("Skull")
@@ -625,7 +523,7 @@ local function tuneMacSidebarLayout(gui)
 			local logoPart = ghostLogo:FindFirstChild(name)
 			if logoPart then
 				logoPart.AnchorPoint = Vector2.new(0, 0)
-				logoPart.Position = UDim2.fromOffset(58, -54)
+				logoPart.Position = UDim2.fromOffset(58, -68)
 				logoPart.Size = UDim2.fromOffset(194, 194)
 			end
 		end
@@ -670,72 +568,6 @@ local function tuneMacSidebarLayout(gui)
 			object.Thickness = 1
 			local parent = object.Parent
 			object.Transparency = (parent and parent:IsA("GuiObject") and parent.BackgroundTransparency < 1) and 0.5 or 1
-		end
-	end
-end
-
-local function forceOpaqueMacUi(gui)
-	if not gui then
-		return
-	end
-
-	local windowFill = Color3.fromRGB(7, 7, 7)
-	local panelFill = Color3.fromRGB(10, 10, 10)
-	local controlFill = Color3.fromRGB(13, 13, 13)
-	local overlayFill = Color3.fromRGB(7, 7, 7)
-	local dividerFill = Color3.fromRGB(28, 28, 28)
-
-	local fills = {
-		Base = windowFill,
-		Sidebar = windowFill,
-		SidebarGroup = windowFill,
-		UserInfo = windowFill,
-		Information = windowFill,
-		TabSwitchers = windowFill,
-		TabSwitchersScrollingFrame = windowFill,
-		Content = windowFill,
-		Topbar = windowFill,
-		Elements = windowFill,
-		ElementsScrolling = windowFill,
-		Left = windowFill,
-		Right = windowFill,
-		Section = panelFill,
-		Dropdown = Color3.fromRGB(12, 12, 12),
-		Search = controlFill,
-		SliderValue = controlFill,
-		InputBox = controlFill,
-		BinderBox = controlFill,
-		ColorPicker = overlayFill,
-		Dialog = overlayFill,
-		Divider = dividerFill,
-		Line = dividerFill,
-	}
-
-	for _, object in ipairs(gui:GetDescendants()) do
-		if object:IsA("GuiObject") then
-			local fill = fills[object.Name]
-			if fill then
-				object.BackgroundColor3 = fill
-				object.BackgroundTransparency = 0
-			end
-		end
-	end
-
-	local base = gui:FindFirstChild("Base", true)
-	if base and base:IsA("GuiObject") then
-		base.BackgroundColor3 = windowFill
-		base.BackgroundTransparency = 0
-	end
-end
-
-local function destroyOldMenus()
-	for _, parent in ipairs(getUiParents()) do
-		for _, child in ipairs(parent:GetChildren()) do
-			if child:IsA("ScreenGui") and child.Name == "unknown" and child:FindFirstChild("Base", true) then
-				pcall(function()
-					child:Destroy()
-				end)
-			end
 		end
 	end
 end
@@ -843,17 +675,9 @@ local function keyEnumTypeName(key)
 	return enumPath:match("^Enum%.([^%.]+)%.")
 end
 
-local bindableUserInputTypes = {
-	MouseButton1 = true,
-	MouseButton2 = true,
-	MouseButton3 = true,
-	MouseButton4 = true,
-	MouseButton5 = true,
-}
-
 local function isBindableEnumItem(key)
-	local enumTypeName = keyEnumTypeName(key)
-	return enumTypeName == "KeyCode" or (enumTypeName == "UserInputType" and bindableUserInputTypes[key.Name] == true)
+	local keyType = keyEnumTypeName(key)
+	return keyType == "KeyCode" or keyType == "UserInputType"
 end
 
 local function inputMatchesBind(input, bind)
@@ -861,37 +685,13 @@ local function inputMatchesBind(input, bind)
 		return false
 	end
 
-	local enumTypeName = keyEnumTypeName(bind)
-	if enumTypeName == "KeyCode" then
-		return input.KeyCode == bind
-	elseif enumTypeName == "UserInputType" then
+	local keyType = keyEnumTypeName(bind)
+	if keyType == "KeyCode" then
+		return input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == bind
+	elseif keyType == "UserInputType" then
 		return input.UserInputType == bind
 	end
-
 	return false
-end
-
-local keybindModeNames = {
-	hold = "Hold",
-	toggle = "Toggle",
-	always = "Always",
-}
-
-local keybindModeIndexes = {
-	Hold = 1,
-	Toggle = 2,
-	Always = 3,
-}
-
-local function normalizeKeybindMode(mode)
-	if type(mode) ~= "string" then
-		return "Hold"
-	end
-	return keybindModeNames[string.lower(mode)] or "Hold"
-end
-
-local function isKeybindMode(value)
-	return type(value) == "string" and keybindModeNames[string.lower(value)] ~= nil
 end
 
 local function inferKeyTypeName(name, preferredType)
@@ -913,7 +713,7 @@ local function inferKeyTypeName(name, preferredType)
 	normalized = normalized:gsub("^Enum%.UserInputType%.", "")
 	normalized = normalized:gsub("^Enum%.", "")
 	normalized = normalized:match("^%s*(.-)%s*$")
-	if normalized == "" or normalized == "None" or normalized == "NONE" or isKeybindMode(normalized) then
+	if normalized == "" or normalized == "None" or normalized == "NONE" or normalized == "Hold" or normalized == "Toggle" or normalized == "Always" then
 		return nil
 	end
 
@@ -950,67 +750,11 @@ local function inferKeyTypeName(name, preferredType)
 	return "KeyCode"
 end
 
-local function normalizeConfigKeybinds(value, parentKey)
-	if type(value) ~= "table" then
-		return value
-	end
-
-	local copy = {}
-	for key, child in pairs(value) do
-		copy[key] = normalizeConfigKeybinds(child, key)
-	end
-
-	local keyName = copy.Key or copy.key or copy.Bind or copy.bind or copy[1]
-	local keyType = copy.KeyType or copy.keyType or copy.BindType or copy.bindType or copy.TypeName or copy.typeName
-	local hasKeybindShape = keyName ~= nil or keyType ~= nil
-	local hasModeShape = copy.Type ~= nil or copy.type ~= nil or copy.Active ~= nil or copy.active ~= nil
-	local parentMarksKeybind = type(parentKey) == "string" and parentKey:sub(1, 1) == "$"
-	local isKeybind = hasKeybindShape or hasModeShape or parentMarksKeybind
-	if not isKeybind then
-		return copy
-	end
-
-	local mode = normalizeKeybindMode(copy.Type or copy.type or copy.Mode or copy.mode or "Hold")
-	local active = copy.Active
-	if active == nil then
-		active = copy.active
-	end
-
-	local fixed = {}
-	for key, child in pairs(copy) do
-		if key ~= "Key" and key ~= "key" and key ~= "Bind" and key ~= "bind"
-			and key ~= "KeyType" and key ~= "keyType" and key ~= "BindType" and key ~= "bindType"
-			and key ~= "TypeName" and key ~= "typeName"
-			and key ~= "Type" and key ~= "type"
-			and key ~= "Active" and key ~= "active"
-			and key ~= "Mode" and key ~= "mode"
-			and key ~= 1 then
-			fixed[key] = child
-		end
-	end
-
-	local keyString = keyName or "NONE"
-	local resolved = keyNameToEnum(keyString, keyType)
-	if resolved then
-		fixed.Key = resolved.Name
-		fixed.KeyType = keyEnumTypeName(resolved)
-	elseif type(keyString) == "string" and keyString ~= "" and keyString ~= "None" and keyString ~= "NONE" then
-		fixed.Key = keyString
-		keyType = normalizeKeyType(keyType)
-		if keyType == "KeyCode" or keyType == "UserInputType" then
-			fixed.KeyType = keyType
-		else
-			fixed.KeyType = inferKeyTypeName(keyString, keyType)
-		end
-	else
-		fixed.Key = "NONE"
-		fixed.KeyType = nil
-	end
-
-	fixed.Type = mode
-	fixed.Active = active ~= nil and active == true or mode == "Always"
-	return fixed
-end
+local keybindModeIndexes = {
+	Hold = 1,
+	Toggle = 2,
+	Always = 3,
+}
 
 local function asArrayFromSelection(selection, optionOrder)
 	if type(selection) ~= "table" then
@@ -1049,14 +793,12 @@ function library.new(libraryTitle, cfgLocation)
 		MacLib:SetFolder(menu.cfg_location ~= "" and menu.cfg_location or "Maclib")
 	end)
 
-	destroyOldMenus()
-
 	local parents = getUiParents()
 	local before = snapshotChildren(parents)
 
 	local window = MacLib:Window({
 		Title = libraryTitle or "Window",
-		Subtitle = "Credits KT | RK",
+		Subtitle = "Compatibility wrapper",
 		Size = UDim2.fromOffset(868, 650),
 		DragStyle = 1,
 		DisabledWindowControls = { "Exit", "Minimize", "Maximize" },
@@ -1391,22 +1133,6 @@ function library.new(libraryTitle, cfgLocation)
 		themeAccentWatchConnections = setmetatable({}, { __mode = "k" })
 	end
 
-	local opaquePassQueued = false
-	local function scheduleOpaquePass()
-		if opaquePassQueued then
-			return
-		end
-
-		opaquePassQueued = true
-		task.defer(function()
-			opaquePassQueued = false
-			tuneMacSidebarLayout(menu.gui)
-			forceOpaqueMacUi(menu.gui)
-			applyThemeAccent()
-			syncInlineColorSwatches()
-		end)
-	end
-
 	if menu.gui then
 		pcall(function()
 			menu.gui.Name = "unknown"
@@ -1418,13 +1144,6 @@ function library.new(libraryTitle, cfgLocation)
 		hideMacWindowControls(menu.gui)
 		tuneMacSidebarLayout(menu.gui)
 		makeTopbarDraggable(menu.gui)
-		forceOpaqueMacUi(menu.gui)
-		applyThemeAccent()
-		task.delay(0.1, function()
-			tuneMacSidebarLayout(menu.gui)
-			forceOpaqueMacUi(menu.gui)
-			applyThemeAccent()
-		end)
 		menu._themeAccentConnection = menu.gui.DescendantAdded:Connect(function(object)
 			scheduleThemeAccentObject(object)
 		end)
@@ -1491,17 +1210,11 @@ function library.new(libraryTitle, cfgLocation)
 		return deepCopy(original)
 	end
 
-	function menu.fix_keybinds()
-		menu.values = normalizeConfigKeybinds(menu.values)
-		return menu.values
-	end
-
 	function menu.save_cfg(cfgName)
 		if not writefile then
 			return false, "writefile unavailable"
 		end
 
-		menu.fix_keybinds()
 		local ok, encoded = pcall(function()
 			return HttpService:JSONEncode(serialize(menu.values))
 		end)
@@ -1510,21 +1223,50 @@ function library.new(libraryTitle, cfgLocation)
 			return false, encoded
 		end
 
-		ensureFolder(menu.cfg_location)
-		local path = configPath(menu.cfg_location, cfgName)
-		writefile(path, encoded)
-
-		local legacyPath = legacyConfigPath(menu.cfg_location, cfgName)
-		if legacyPath ~= path then
-			pcall(function()
-				writefile(legacyPath, encoded)
-			end)
-		end
-
+		writefile(configPath(menu.cfg_location, cfgName), encoded)
 		return true
 	end
 
-	local getLoadedValue
+	local applyLoadedConfigValues
+
+	function menu.load_cfg(cfgName)
+		if not (isfile and readfile) then
+			return false, "readfile unavailable"
+		end
+
+		local path = configPath(menu.cfg_location, cfgName)
+		if not isfile(path) then
+			return false, "config not found"
+		end
+
+		local ok, decoded = pcall(function()
+			return deserialize(HttpService:JSONDecode(readfile(path)))
+		end)
+
+		if not ok or type(decoded) ~= "table" then
+			return false, decoded
+		end
+
+		local loadName = tostring(cfgName or ""):gsub("^%s+", ""):gsub("%s+$", ""):lower()
+		menu.values = decoded
+		applyLoadedConfigValues(loadName == "default")
+		menu.on_load_cfg:Fire()
+		return true
+	end
+
+	local function getValuePath(tabNum, sectionName, sectorName, flag)
+		menu.values[tabNum] = menu.values[tabNum] or {}
+		menu.values[tabNum][sectionName] = menu.values[tabNum][sectionName] or {}
+		menu.values[tabNum][sectionName][sectorName] = menu.values[tabNum][sectionName][sectorName] or {}
+		return menu.values[tabNum][sectionName][sectorName], flag
+	end
+
+	local function getLoadedValue(tabNum, sectionName, sectorName, flag)
+		local tabValues = menu.values[tabNum]
+		local sectionValues = tabValues and tabValues[sectionName]
+		local sectorValues = sectionValues and sectionValues[sectorName]
+		return sectorValues and sectorValues[flag]
+	end
 
 	local function forceHoldKeybindValue(loaded, element)
 		local value = type(loaded) == "table" and deepCopy(loaded) or {}
@@ -1540,7 +1282,7 @@ function library.new(libraryTitle, cfgLocation)
 		return value
 	end
 
-	local function applyLoadedConfigValues(forceKeybindsHold)
+	applyLoadedConfigValues = function(forceKeybindsHold)
 		local processed = 0
 		for tabNum, sections in pairs(menu._elements) do
 			for sectionName, sectors in pairs(sections) do
@@ -1566,56 +1308,11 @@ function library.new(libraryTitle, cfgLocation)
 		end
 	end
 
-	function menu.load_cfg(cfgName)
-		if not (isfile and readfile) then
-			return false, "readfile unavailable"
-		end
-
-		local path = configPath(menu.cfg_location, cfgName)
-		local legacyPath = legacyConfigPath(menu.cfg_location, cfgName)
-		if not isfile(path) then
-			if legacyPath ~= path and isfile(legacyPath) then
-				path = legacyPath
-			else
-				return false, "config not found"
-			end
-		end
-
-		local ok, decoded = pcall(function()
-			return deserialize(HttpService:JSONDecode(readfile(path)))
-		end)
-
-		if not ok or type(decoded) ~= "table" then
-			return false, decoded
-		end
-
-		local loadName = tostring(cfgName or ""):gsub("^%s+", ""):gsub("%s+$", ""):lower()
-		menu.values = normalizeConfigKeybinds(decoded)
-		applyLoadedConfigValues(loadName == "default")
-		menu.on_load_cfg:Fire()
-		return true
-	end
-
-	local function getValuePath(tabNum, sectionName, sectorName, flag)
-		menu.values[tabNum] = menu.values[tabNum] or {}
-		menu.values[tabNum][sectionName] = menu.values[tabNum][sectionName] or {}
-		menu.values[tabNum][sectionName][sectorName] = menu.values[tabNum][sectionName][sectorName] or {}
-		return menu.values[tabNum][sectionName][sectorName], flag
-	end
-
-	getLoadedValue = function(tabNum, sectionName, sectorName, flag)
-		local tabValues = menu.values[tabNum]
-		local sectionValues = tabValues and tabValues[sectionName]
-		local sectorValues = sectionValues and sectionValues[sectorName]
-		return sectorValues and sectorValues[flag]
-	end
-
 	local function registerElement(tabNum, sectionName, sectorName, flag, element)
 		menu._elements[tabNum] = menu._elements[tabNum] or {}
 		menu._elements[tabNum][sectionName] = menu._elements[tabNum][sectionName] or {}
 		menu._elements[tabNum][sectionName][sectorName] = menu._elements[tabNum][sectionName][sectorName] or {}
 		menu._elements[tabNum][sectionName][sectorName][flag] = element
-
 	end
 
 	local function makeMacFlag(tabNum, sectionName, sectorName, flag)
@@ -1638,14 +1335,12 @@ function library.new(libraryTitle, cfgLocation)
 			Name = tab.name,
 			Image = tabImage,
 		})
-		scheduleOpaquePass()
 
 		if not selectedFirstTab then
 			selectedFirstTab = true
 			pcall(function()
 				tab.macTab:Select()
 			end)
-			scheduleOpaquePass()
 		end
 
 		function tab.new_section(sectionName)
@@ -1673,13 +1368,11 @@ function library.new(libraryTitle, cfgLocation)
 						Name = sector.name,
 					})
 				end)
-				scheduleOpaquePass()
 
 				function sector.create_line()
 					pcall(function()
 						macSection:Divider()
 					end)
-					scheduleOpaquePass()
 				end
 
 				function sector.element(elementType, text, data, callback, dangerous, cFlag)
@@ -1696,7 +1389,6 @@ function library.new(libraryTitle, cfgLocation)
 					local macFlag = makeMacFlag(tab.tab_num, section.name, sector.name, flag)
 					local value = {}
 					local element = {}
-					element._configKind = "Base"
 					local macObject
 
 					local function store(newValue)
@@ -1810,12 +1502,12 @@ function library.new(libraryTitle, cfgLocation)
 						}, macFlag)
 
 						function element:set_value(newValue, cb)
-							local nextState = type(newValue) == "table" and newValue.Toggle or newValue
+							newValue = type(newValue) == "table" and newValue or value
 							store({
-								Toggle = nextState and true or false,
+								Toggle = newValue.Toggle and true or false,
 							})
 							if macObject and macObject.UpdateState then
-								macObject:UpdateState(value.Toggle, cb and true or false)
+								macObject:UpdateState(value.Toggle)
 							elseif not cb then
 								fire()
 							end
@@ -1854,7 +1546,6 @@ function library.new(libraryTitle, cfgLocation)
 							storeColor(colorValue)
 
 							local colorObject = {}
-							colorObject._configKind = "Extra"
 							local inlineSwatch
 							local function syncInlineSwatchColor()
 								if not inlineSwatch then
@@ -1894,7 +1585,6 @@ function library.new(libraryTitle, cfgLocation)
 								inlineColorSwatchSyncs[inlineSwatch] = syncInlineSwatchColor
 							end
 							syncInlineSwatchColor()
-							scheduleOpaquePass()
 
 							function colorObject:get_value()
 								return colorValue
@@ -1918,10 +1608,10 @@ function library.new(libraryTitle, cfgLocation)
 
 								storeColor(colorValue)
 								if colorPicker and colorPicker.SetColor then
+									colorPicker:SetColor(colorValue.Color)
 									if hasTransparency and colorPicker.SetAlpha then
 										colorPicker:SetAlpha(colorValue.Transparency)
 									end
-									colorPicker:SetColor(colorValue.Color)
 									syncInlineSwatchColor()
 								elseif not cb then
 									colorCallback(colorValue)
@@ -1943,10 +1633,7 @@ function library.new(libraryTitle, cfgLocation)
 							if type(keyDefault) == "table" then
 								defaultKey = keyDefault.Key or keyDefault.key or keyDefault.Bind or keyDefault.bind or keyDefault[1]
 								defaultKeyType = keyDefault.KeyType or keyDefault.keyType or keyDefault.BindType or keyDefault.bindType or keyDefault.TypeName or keyDefault.typeName
-								defaultType = normalizeKeybindMode(keyDefault.Type or keyDefault.type or keyDefault.Mode or keyDefault.mode or "Hold")
-							elseif isKeybindMode(keyDefault) then
-								defaultKey = nil
-								defaultType = normalizeKeybindMode(keyDefault)
+								defaultType = keyDefault.Type or keyDefault.type or keyDefault.Mode or keyDefault.mode or "Hold"
 							end
 							local defaultBind = keyNameToEnum(defaultKey, defaultKeyType)
 							local keyValue = {
@@ -1958,6 +1645,11 @@ function library.new(libraryTitle, cfgLocation)
 
 							local function storeKey(newValue)
 								newValue.Key = newValue.Key or "NONE"
+								if newValue.Key ~= "NONE" and not newValue.KeyType then
+									newValue.KeyType = inferKeyTypeName(newValue.Key)
+								elseif newValue.Key == "NONE" then
+									newValue.KeyType = nil
+								end
 								keyValue = newValue
 								local extraValues, extraValueKey = getValuePath(tab.tab_num, section.name, sector.name, extraFlag)
 								extraValues[extraValueKey] = keyValue
@@ -1971,7 +1663,6 @@ function library.new(libraryTitle, cfgLocation)
 							storeKey(keyValue)
 
 							local keybindObject = {}
-							keybindObject._configKind = "Keybind"
 							local keybind = macSection:Keybind({
 								Name = text .. " Key",
 								Default = defaultBind,
@@ -2003,11 +1694,8 @@ function library.new(libraryTitle, cfgLocation)
 									keyCallback(keyValue)
 								end,
 							}, makeMacFlag(tab.tab_num, section.name, sector.name, extraFlag))
-							local bindKeybind = keybind and keybind.Bind
-							local unbindKeybind = keybind and keybind.Unbind
 							local inlineBinder = macObject and macObject.Class == "Toggle" and attachInlineKeybind(keybind) or nil
 
-							local suppressModeCallback = false
 							local modeDropdown = macSection:Dropdown({
 								Name = text .. " Key Mode",
 								Multi = false,
@@ -2019,16 +1707,12 @@ function library.new(libraryTitle, cfgLocation)
 								},
 								Default = keybindModeIndexes[defaultType] or 1,
 								Callback = function(mode)
-									if suppressModeCallback then
-										return
-									end
-									keyValue.Type = normalizeKeybindMode(mode)
+									keyValue.Type = mode or "Hold"
 									keyValue.Active = keyValue.Type == "Always"
 									storeKey(keyValue)
 									keyCallback(keyValue)
 								end,
 							}, makeMacFlag(tab.tab_num, section.name, sector.name, extraFlag .. "/mode"))
-							scheduleOpaquePass()
 
 							function keybindObject:get_value()
 								return keyValue
@@ -2046,21 +1730,15 @@ function library.new(libraryTitle, cfgLocation)
 							end
 
 							function keybindObject:set_value(newValue, cb)
-								local isConfigLoad = cb == "load"
-								local shouldCallback = isConfigLoad or not cb
-
 								if typeof(newValue) == "EnumItem" or type(newValue) == "string" then
-									local stringIsMode = isKeybindMode(newValue)
-									local restoredType = stringIsMode and normalizeKeybindMode(newValue) or normalizeKeybindMode(keyValue.Type)
-									local restoredKey = typeof(newValue) == "EnumItem" and newValue.Name or newValue or "NONE"
 									keyValue = {
-										Key = stringIsMode and keyValue.Key or restoredKey,
-										KeyType = stringIsMode and keyValue.KeyType or (typeof(newValue) == "EnumItem" and keyEnumTypeName(newValue) or inferKeyTypeName(restoredKey, keyValue.KeyType)),
-										Type = restoredType,
-										Active = restoredType == "Always",
+										Key = typeof(newValue) == "EnumItem" and newValue.Name or newValue or "NONE",
+										KeyType = typeof(newValue) == "EnumItem" and keyEnumTypeName(newValue) or inferKeyTypeName(newValue, keyValue.KeyType),
+										Type = keyValue.Type or "Hold",
+										Active = keyValue.Type == "Always",
 									}
 								elseif type(newValue) == "table" then
-									local restoredType = normalizeKeybindMode(newValue.Type or newValue.type or keyValue.Type)
+									local restoredType = newValue.Type or newValue.type or "Hold"
 									local restoredActive = newValue.Active
 									if restoredActive == nil then
 										restoredActive = newValue.active
@@ -2077,47 +1755,22 @@ function library.new(libraryTitle, cfgLocation)
 								if enumBind then
 									keyValue.Key = enumBind.Name
 									keyValue.KeyType = keyEnumTypeName(enumBind)
-								elseif type(keyValue.Key) == "string" and keyValue.Key ~= "" and keyValue.Key ~= "None" and keyValue.Key ~= "NONE" then
+								elseif keyValue.Key ~= "NONE" then
 									keyValue.KeyType = inferKeyTypeName(keyValue.Key, keyValue.KeyType)
-									keyValue.Active = keyValue.Type == "Always"
-								else
-									keyValue.Key = "NONE"
-									keyValue.KeyType = nil
-									keyValue.Active = keyValue.Type == "Always"
 								end
-
 								storeKey(keyValue)
 
-								local restoredKeyValue = {
-									Key = keyValue.Key,
-									KeyType = keyValue.KeyType,
-									Type = keyValue.Type,
-									Active = keyValue.Active,
-								}
-
-								local function applyBindToWidget()
-									if enumBind and type(bindKeybind) == "function" then
-										bindKeybind(keybind, enumBind, true)
-									elseif type(unbindKeybind) == "function" then
-										unbindKeybind(keybind, true)
+								if keybind then
+									if enumBind and keybind.Bind then
+										keybind:Bind(enumBind, true)
+									elseif keybind.Unbind then
+										keybind:Unbind(true)
 									end
 								end
 
-								if keybind then
-									applyBindToWidget()
-									task.defer(function()
-										storeKey(restoredKeyValue)
-										applyBindToWidget()
-									end)
-								end
-
 								if modeDropdown and modeDropdown.UpdateSelection then
-									suppressModeCallback = true
 									modeDropdown:UpdateSelection(keyValue.Type)
-									suppressModeCallback = false
-								end
-
-								if shouldCallback then
+								elseif not cb then
 									keyCallback(keyValue)
 								end
 							end
@@ -2149,9 +1802,9 @@ function library.new(libraryTitle, cfgLocation)
 						}, macFlag)
 
 						function element:set_value(newValue, cb)
-							local nextValue = type(newValue) == "table" and newValue.Slider or newValue
+							newValue = type(newValue) == "table" and newValue or value
 							store({
-								Slider = math.clamp(math.floor((tonumber(nextValue) or min) + 0.5), min, max),
+								Slider = math.clamp(math.floor((tonumber(newValue.Slider) or min) + 0.5), min, max),
 							})
 							if macObject and macObject.UpdateValue then
 								macObject:UpdateValue(value.Slider)
@@ -2185,9 +1838,9 @@ function library.new(libraryTitle, cfgLocation)
 						}, macFlag)
 
 						function element:set_value(newValue, cb)
-							local nextSelection = type(newValue) == "table" and (newValue.Dropdown or newValue.Value or newValue.value) or newValue
+							newValue = type(newValue) == "table" and newValue or value
 							store({
-								Dropdown = nextSelection or default,
+								Dropdown = newValue.Dropdown or default,
 							})
 							if macObject and macObject.UpdateSelection then
 								macObject:UpdateSelection(value.Dropdown)
@@ -2230,12 +1883,9 @@ function library.new(libraryTitle, cfgLocation)
 						}, macFlag)
 
 						function element:set_value(newValue, cb)
-							local nextSelection = type(newValue) == "table" and (newValue.Combo or newValue.Value or newValue.value or newValue) or {}
-							if type(nextSelection) == "table" and #nextSelection == 0 then
-								nextSelection = asArrayFromSelection(nextSelection, options)
-							end
+							newValue = type(newValue) == "table" and newValue or value
 							store({
-								Combo = type(nextSelection) == "table" and deepCopy(nextSelection) or {},
+								Combo = type(newValue.Combo) == "table" and deepCopy(newValue.Combo) or {},
 							})
 							if macObject and macObject.UpdateSelection then
 								macObject:UpdateSelection(value.Combo)
@@ -2287,9 +1937,9 @@ function library.new(libraryTitle, cfgLocation)
 							return value.Text
 						end
 						function element:set_value(newValue, cb)
-							local nextText = type(newValue) == "table" and newValue.Text or newValue
+							newValue = type(newValue) == "table" and newValue or value
 							store({
-								Text = tostring(nextText or ""),
+								Text = tostring(newValue.Text or ""),
 							})
 							if macObject and macObject.UpdateText then
 								macObject:UpdateText(value.Text)
@@ -2340,7 +1990,6 @@ function library.new(libraryTitle, cfgLocation)
 						local unbindMacObject = macObject and macObject.Unbind
 
 						function element:set_value(newValue, cb)
-							local isConfigLoad = cb == "load"
 							local nextBind
 							local keyName
 							local keyType
@@ -2365,17 +2014,7 @@ function library.new(libraryTitle, cfgLocation)
 								end
 							end
 
-							if isConfigLoad and macObject then
-								task.defer(function()
-									if nextBind and type(bindMacObject) == "function" then
-										bindMacObject(macObject, nextBind, true)
-									elseif type(unbindMacObject) == "function" then
-										unbindMacObject(macObject, true)
-									end
-								end)
-							end
-
-							if isConfigLoad or not cb then
+							if not cb then
 								fireKeybind()
 							end
 						end
@@ -2402,7 +2041,6 @@ function library.new(libraryTitle, cfgLocation)
 					end
 
 					registerElement(tab.tab_num, section.name, sector.name, flag, element)
-					scheduleOpaquePass()
 					return element
 				end
 
@@ -2415,7 +2053,7 @@ function library.new(libraryTitle, cfgLocation)
 		return tab
 	end
 
-	UserInputService.InputEnded:Connect(function(input, gameProcessed)
+	UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		if gameProcessed then
 			return
 		end
