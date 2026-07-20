@@ -471,11 +471,28 @@ local function tuneMacSidebarLayout(gui)
 
 	if information then
 		information.Size = UDim2.new(1, 0, 0, headerHeight)
+		local headerBackground = information:FindFirstChild("HeaderBackground")
+		if not headerBackground then
+			headerBackground = Instance.new("ImageLabel")
+			headerBackground.Name = "HeaderBackground"
+			headerBackground.Image = "rbxassetid://115075737167851"
+			headerBackground.BackgroundTransparency = 1
+			headerBackground.BorderSizePixel = 0
+			headerBackground.ScaleType = Enum.ScaleType.Crop
+			headerBackground.Parent = information
+		end
+		headerBackground.Position = UDim2.fromScale(0, 0)
+		headerBackground.Size = UDim2.fromScale(1, 1)
+		headerBackground.ZIndex = 0
 		for _, child in ipairs(information:GetChildren()) do
 			if child.Name == "Divider" and child:IsA("GuiObject") then
 				child.Visible = false
 			end
 		end
+		headerBackground.Visible = true
+	end
+	if informationHolder then
+		informationHolder.ZIndex = 2
 	end
 	local divider = sidebar and sidebar:FindFirstChild("Divider")
 	if divider and divider:IsA("GuiObject") then
@@ -518,6 +535,7 @@ local function tuneMacSidebarLayout(gui)
 		ghostLogo.Position = UDim2.new(0, -18, 0, -14)
 		ghostLogo.Size = UDim2.new(1, 0, 1, 12)
 		ghostLogo.ClipsDescendants = true
+		ghostLogo.ZIndex = 3
 		local skull = ghostLogo:FindFirstChild("Skull")
 		if skull then
 			skull.AnchorPoint = Vector2.new(0, 0.5)

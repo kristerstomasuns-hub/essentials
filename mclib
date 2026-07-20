@@ -492,6 +492,17 @@ function MacLib:Window(Settings)
 	divider2.Visible = false
 	divider2.Parent = information
 
+	local headerBackground = Instance.new("ImageLabel")
+	headerBackground.Name = "HeaderBackground"
+	headerBackground.Image = "rbxassetid://115075737167851"
+	headerBackground.BackgroundTransparency = 1
+	headerBackground.BorderSizePixel = 0
+	headerBackground.Position = UDim2.fromScale(0, 0)
+	headerBackground.Size = UDim2.fromScale(1, 1)
+	headerBackground.ScaleType = Enum.ScaleType.Crop
+	headerBackground.ZIndex = 0
+	headerBackground.Parent = information
+
 	local informationHolder = Instance.new("Frame")
 	informationHolder.Name = "InformationHolder"
 	informationHolder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -499,6 +510,7 @@ function MacLib:Window(Settings)
 	informationHolder.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	informationHolder.BorderSizePixel = 0
 	informationHolder.Size = UDim2.fromScale(1, 1)
+	informationHolder.ZIndex = 2
 
 	local informationHolderUIPadding = Instance.new("UIPadding")
 	informationHolderUIPadding.Name = "InformationHolderUIPadding"
@@ -841,6 +853,7 @@ function MacLib:Window(Settings)
 	ghostLogo.Position = UDim2.new(0, -18, 0, -14)
 	ghostLogo.Size = UDim2.new(1, 0, 1, 12)
 	ghostLogo.Visible = true
+	ghostLogo.ZIndex = 3
 	ghostLogo.Parent = informationHolder
 
 	local ghostSkull = Instance.new("ImageLabel")
