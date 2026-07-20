@@ -2142,6 +2142,7 @@ ui.box = {
     -- Misc tab
     antiaim = ui.tabs.misc:AddLeftTabbox(),
     misc = ui.tabs.misc:AddLeftTabbox(),
+    misc_sounds = ui.tabs.misc:AddRightTabbox(),
 
     -- Settings tab
     config = ui.tabs.settings:AddLeftGroupbox('Config'),
@@ -2162,7 +2163,7 @@ local world_thirdperson_tab = ui.box.world_effects:AddTab("Third Person")
 local world_performance_tab = ui.box.world_effects:AddTab("Performance")
 local world_inventory_tab = ui.box.world_effects:AddTab("Inventory / Finder")
 local world_freecam_tab = ui.box.world:AddTab("Freecam")
-local custom_sound_tab = ui.box.misc:AddTab("Custom Hit/Shoot Sounds")
+local custom_sound_tab = ui.box.misc_sounds:AddTab("Custom Hit/Shoot Sounds")
 local settings_skinchanger_box = ui.tabs.settings:AddRightGroupbox('Skin Changer')
 local function keybind_allows(key_flag)
     local option = cheat.Options and cheat.Options[key_flag]
