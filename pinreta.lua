@@ -2780,9 +2780,14 @@ cheat.EspLibrary = {} LPH_NO_VIRTUALIZE(function()
         plr.connection = cheat.utility.new_renderstepped(function(delta)
             local plr = loaded_plrs[player]
             if not settings.enabled then
-                esp_table.update_player_chams(player, false)
-                return plr:togglevis(false)
+                if not plr._esp_disabled then
+                    esp_table.update_player_chams(player, false)
+                    plr:togglevis(false)
+                    plr._esp_disabled = true
+                end
+                return
             end
+            plr._esp_disabled = false
             character = isnpc and player or not isnpc and player.Character
             humanoid = character and _FindFirstChildOfClass(character, "Humanoid")
             head = character and _FindFirstChild(character, "Head")
@@ -4233,7 +4238,7 @@ do
                         end
                     end
                 end
-                task.wait(0.001)
+                task.wait(0.02)
             end
         end)
     end))
@@ -4286,34 +4291,46 @@ do
     target_chams_highlight.Enabled = false
     target_chams_highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     target_chams_highlight.Parent = game:GetService("CoreGui")
+    local fov_glow_was_visible = false
     cheat.utility.new_renderstepped(LPH_NO_VIRTUALIZE(function()
         local pos = (_Vector2new(Mouse.X, Mouse.Y + GuiInset.Y))
-        CircleInline.Position = pos
-        CircleInline.Radius = silent_aim.fov_size
-        CircleInline.Color = silent_aim.fov_color
-        CircleInline.Visible = silent_aim.fov and silent_aim.fov_show
-        
+        local fov_visible = silent_aim.fov and silent_aim.fov_show
         local glow_visible = silent_aim.fov and silent_aim.fov_show and silent_aim.fov_outline
-        local intensity = silent_aim.fov_glow_intensity
-        local thickness = 1 + (intensity * 0.5)
-        for i = 1, 10 do
-            -- Outer layers
-            local out_circle = fov_glow[i]
-            out_circle.Position = pos
-            out_circle.Radius = silent_aim.fov_size + (i * (intensity * 0.5))
-            out_circle.Color = silent_aim.fov_color
-            out_circle.Transparency = (0.2 - (i * 0.02))
-            out_circle.Thickness = thickness
-            out_circle.Visible = glow_visible
-            
-            -- Inner layers
-            local in_circle = fov_glow[i+10]
-            in_circle.Position = pos
-            in_circle.Radius = math.max(0, silent_aim.fov_size - (i * (intensity * 0.5)))
-            in_circle.Color = silent_aim.fov_color
-            in_circle.Transparency = (0.2 - (i * 0.02))
-            in_circle.Thickness = thickness
-            in_circle.Visible = glow_visible
+        if fov_visible then
+            CircleInline.Position = pos
+            CircleInline.Radius = silent_aim.fov_size
+            CircleInline.Color = silent_aim.fov_color
+            CircleInline.Visible = true
+        elseif CircleInline.Visible then
+            CircleInline.Visible = false
+        end
+
+        if glow_visible then
+            local intensity = silent_aim.fov_glow_intensity
+            local thickness = 1 + (intensity * 0.5)
+            for i = 1, 10 do
+                local out_circle = fov_glow[i]
+                out_circle.Position = pos
+                out_circle.Radius = silent_aim.fov_size + (i * (intensity * 0.5))
+                out_circle.Color = silent_aim.fov_color
+                out_circle.Transparency = (0.2 - (i * 0.02))
+                out_circle.Thickness = thickness
+                out_circle.Visible = true
+
+                local in_circle = fov_glow[i+10]
+                in_circle.Position = pos
+                in_circle.Radius = math.max(0, silent_aim.fov_size - (i * (intensity * 0.5)))
+                in_circle.Color = silent_aim.fov_color
+                in_circle.Transparency = (0.2 - (i * 0.02))
+                in_circle.Thickness = thickness
+                in_circle.Visible = true
+            end
+            fov_glow_was_visible = true
+        elseif fov_glow_was_visible then
+            for i = 1, 20 do
+                fov_glow[i].Visible = false
+            end
+            fov_glow_was_visible = false
         end
         
         if silent_aim.crosshair_status and silent_aim.target_part then
@@ -5308,8 +5325,12 @@ do
         end))
     end
 
+    local last_exit_distance_update = 0
     cheat.utility.new_renderstepped(function()
         if not (esp_master_enabled and object_esp.exit) then return end
+        local now = os.clock()
+        if now - last_exit_distance_update < 0.25 then return end
+        last_exit_distance_update = now
         local exits_folder = get_exit_folder()
         local char = LocalPlayer.Character
         local root = char and char:FindFirstChild("HumanoidRootPart")
@@ -7924,11 +7945,14 @@ do
         jesus_enabled = first
     end})
     cheat.utility.new_renderstepped(LPH_NO_VIRTUALIZE(function(delta)
+        local speed_active = feature_active(speed_enabled, 'speedhack_bind')
+        local thirdperson_is_active = thirdperson_active()
+        if not (speed_active or thirdperson_is_active or omni_sprint) then return end
         local character = LocalPlayer.Character
         local humanoid = character and _FindFirstChildOfClass(character, "Humanoid")
         local hrp = character and _FindFirstChild(character, "HumanoidRootPart")
         if humanoid then
-            if feature_active(speed_enabled, 'speedhack_bind') then
+            if speed_active then
                 humanoid.WalkSpeed = speed
             elseif omni_sprint and humanoid.MoveDirection.Magnitude > 0 then
                 local playergui = LocalPlayer.PlayerGui
@@ -7937,7 +7961,6 @@ do
                 end
             end
         end
-        local thirdperson_is_active = thirdperson_active()
         if thirdperson_is_active then
             LocalPlayer.CameraMode = Enum.CameraMode.Classic
             LocalPlayer.CameraMaxZoomDistance = tp_dist
@@ -8439,9 +8462,10 @@ do
         fly_yspeed = State
     end)
     cheat.utility.new_heartbeat(LPH_JIT_MAX(function(delta)
+        if not feature_active(fly_enabled, 'flyhack_bind') then return end
         local character = LocalPlayer.Character
         local hrp = character and _FindFirstChild(character, "HumanoidRootPart")
-        if feature_active(fly_enabled, 'flyhack_bind') and hrp then
+        if hrp then
             local cameralook = Camera.CFrame.LookVector
             cameralook = _Vector3new(cameralook.X, 0, cameralook.Z)
             local direction = Vector3.zero
@@ -8467,9 +8491,10 @@ do
 end
 do
     cheat.utility.new_heartbeat(LPH_JIT_MAX(function(delta)
+        if not enabled then return end
         local character = LocalPlayer.Character
         local hrp = character and _FindFirstChild(character, "HumanoidRootPart")
-        if enabled and hrp then
+        if hrp then
             local cameralook = Camera.CFrame.LookVector
             cameralook = _Vector3new(cameralook.X, 0, cameralook.Z)
             local direction = Vector3.zero
@@ -9598,7 +9623,7 @@ do
     freecam_tab:AddToggle('freecam_enabled', {Text = 'Freecam', Default = false, Callback = function(v)
         freecam_master_enabled = v
         setFreecamActive(feature_active(freecam_master_enabled, 'freecam_bind'))
-    end}):AddKeyPicker('freecam_bind', {Default = 'None', SyncToggleState = true, Mode = 'Toggle', Text = 'Freecam', NoUI = false, Callback = function()
+    end}):AddKeyPicker('freecam_bind', {Default = 'None', SyncToggleState = false, Mode = 'Toggle', Text = 'Freecam', NoUI = false, Callback = function()
         setFreecamActive(feature_active(freecam_master_enabled, 'freecam_bind'))
     end})
     
@@ -9685,6 +9710,9 @@ end
 
 cheat.utility.new_renderstepped(function()
     if not cheat.hitlogs_enabled then
+        if #cheat.hitlogs.active == 0 and #cheat.hitlogs.pending == 0 then
+            return
+        end
         for _, log in ipairs(cheat.hitlogs.active) do
             if log.drawing then log.drawing:Remove() end
             if log.bg then log.bg:Remove() end

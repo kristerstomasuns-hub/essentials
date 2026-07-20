@@ -492,11 +492,11 @@ local function tuneMacSidebarLayout(gui)
 			topbarBackground.Image = "rbxassetid://115075737167851"
 			topbarBackground.BackgroundTransparency = 1
 			topbarBackground.BorderSizePixel = 0
-			topbarBackground.ScaleType = Enum.ScaleType.Fit
+			topbarBackground.ScaleType = Enum.ScaleType.Stretch
 			topbarBackground.Parent = topbar
 		end
-		topbarBackground.Position = UDim2.new(0, 8, 0, 6)
-		topbarBackground.Size = UDim2.new(0, 390, 0, 50)
+		topbarBackground.Position = UDim2.new(0, 0, 0, 6)
+		topbarBackground.Size = UDim2.new(1, -232, 0, 50)
 		topbarBackground.ZIndex = 1
 		topbarBackground.Visible = true
 		for _, child in ipairs(topbar:GetChildren()) do
