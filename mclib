@@ -838,8 +838,8 @@ function MacLib:Window(Settings)
 	ghostLogo.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	ghostLogo.BorderSizePixel = 0
 	ghostLogo.ClipsDescendants = true
-	ghostLogo.Position = UDim2.new(0, 4, 0, -7)
-	ghostLogo.Size = UDim2.new(1, -12, 1, 8)
+	ghostLogo.Position = UDim2.new(0, 0, 0, -10)
+	ghostLogo.Size = UDim2.new(1, -8, 1, 14)
 	ghostLogo.Visible = true
 	ghostLogo.Parent = informationHolder
 
@@ -851,7 +851,7 @@ function MacLib:Window(Settings)
 	ghostSkull.Image = assets.ghostSkull
 	ghostSkull.ImageTransparency = 0
 	ghostSkull.Position = UDim2.new(0, 0, 0.5, 0)
-	ghostSkull.Size = UDim2.fromOffset(76, 76)
+	ghostSkull.Size = UDim2.fromOffset(88, 88)
 	ghostSkull.ScaleType = Enum.ScaleType.Fit
 	ghostSkull.Parent = ghostLogo
 
@@ -862,8 +862,8 @@ function MacLib:Window(Settings)
 	ghostWordmark.BorderSizePixel = 0
 	ghostWordmark.Image = assets.ghostWordmark
 	ghostWordmark.ImageTransparency = 0
-	ghostWordmark.Position = UDim2.fromOffset(58, -68)
-	ghostWordmark.Size = UDim2.fromOffset(194, 194)
+	ghostWordmark.Position = UDim2.fromOffset(68, -50)
+	ghostWordmark.Size = UDim2.fromOffset(222, 222)
 	ghostWordmark.ScaleType = Enum.ScaleType.Fit
 	ghostWordmark.Parent = ghostLogo
 
@@ -874,8 +874,8 @@ function MacLib:Window(Settings)
 	ghostLuaL.BorderSizePixel = 0
 	ghostLuaL.Image = assets.ghostLuaL
 	ghostLuaL.ImageTransparency = 0
-	ghostLuaL.Position = UDim2.fromOffset(58, -68)
-	ghostLuaL.Size = UDim2.fromOffset(194, 194)
+	ghostLuaL.Position = UDim2.fromOffset(68, -50)
+	ghostLuaL.Size = UDim2.fromOffset(222, 222)
 	ghostLuaL.ScaleType = Enum.ScaleType.Fit
 	ghostLuaL.Parent = ghostLogo
 
@@ -886,8 +886,8 @@ function MacLib:Window(Settings)
 	ghostLua.BorderSizePixel = 0
 	ghostLua.Image = assets.ghostLua
 	ghostLua.ImageTransparency = 0
-	ghostLua.Position = UDim2.fromOffset(58, -68)
-	ghostLua.Size = UDim2.fromOffset(194, 194)
+	ghostLua.Position = UDim2.fromOffset(68, -50)
+	ghostLua.Size = UDim2.fromOffset(222, 222)
 	ghostLua.ScaleType = Enum.ScaleType.Fit
 	ghostLua.Parent = ghostLogo
 
@@ -922,7 +922,7 @@ function MacLib:Window(Settings)
 	local themeAccentLineRight = Instance.new("Frame")
 	themeAccentLineRight.Name = "ThemeAccentLineRight"
 	themeAccentLineRight.BackgroundColor3 = Color3.fromRGB(0, 45, 255)
-	themeAccentLineRight.BackgroundTransparency = 0.5
+	themeAccentLineRight.BackgroundTransparency = 0.3
 	themeAccentLineRight.BorderSizePixel = 0
 	themeAccentLineRight.Position = UDim2.new(1, -1, 0, 74)
 	themeAccentLineRight.Size = UDim2.new(0, 1, 1, -74)
@@ -5692,7 +5692,7 @@ function MacLib:Window(Settings)
 
 					if tabInfo.tabStroke then
 						Tween(tabInfo.tabStroke, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
-							Transparency = (i == tabSwitcher and 0.5 or 1)
+							Transparency = (i == tabSwitcher and 0.3 or 1)
 						}):Play()
 					end
 					if tabInfo.switcherImage then
