@@ -586,9 +586,9 @@ function MacLib:Window(Settings)
 	subtitle.RichText = true
 	subtitle.Text = Settings.Subtitle
 	subtitle.RichText = true
-	subtitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+	subtitle.TextColor3 = Color3.fromRGB(190, 70, 255)
 	subtitle.TextSize = 12
-	subtitle.TextTransparency = 0.7
+	subtitle.TextTransparency = 0
 	subtitle.TextTruncate = Enum.TextTruncate.SplitWord
 	subtitle.TextXAlignment = Enum.TextXAlignment.Left
 	subtitle.TextYAlignment = Enum.TextYAlignment.Top

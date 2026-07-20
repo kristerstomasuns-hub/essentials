@@ -33,7 +33,7 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("sidebarGroup%.Size = UDim2%.new%(1, 0, 1, %-63%)", "sidebarGroup.Size = UDim2.new(1, 0, 1, -74)")
 	macSource = macSource:gsub("userInfo%.Size = UDim2%.new%(1, 0, 0, 107%)", "userInfo.Size = UDim2.new(1, 0, 0, 76)")
 	macSource = macSource:gsub("informationGroup%.Parent = userInfo", "informationGroup.Visible = false\n\tinformationGroup.Parent = userInfo")
-	macSource = macSource:gsub("userInfoUIPadding%.Parent = userInfo", "userInfoUIPadding.Parent = userInfo\n\n\ttitleFrame.Parent = userInfo\n\ttitleFrame.Position = UDim2.new(0, 18, 0, 14)\n\ttitleFrame.Size = UDim2.new(1, -36, 0, 46)\n\ttitle.TextSize = 14\n\tsubtitle.TextSize = 10")
+	macSource = macSource:gsub("userInfoUIPadding%.Parent = userInfo", "userInfoUIPadding.Parent = userInfo\n\n\ttitleFrame.Parent = userInfo\n\ttitleFrame.Position = UDim2.new(0, 18, 0, 14)\n\ttitleFrame.Size = UDim2.new(1, -36, 0, 46)\n\ttitle.TextSize = 14\n\tsubtitle.TextSize = 10\n\tsubtitle.TextColor3 = Color3.fromRGB(190, 70, 255)\n\tsubtitle.TextTransparency = 0")
 	macSource = macSource:gsub("ghostLogo%.AnchorPoint = Vector2%.new%(0, 1%)", "ghostLogo.AnchorPoint = Vector2.new(0, 0)")
 	macSource = macSource:gsub("ghostLogo%.Position = UDim2%.new%(0, 4, 1, %-12%)", "ghostLogo.Position = UDim2.new(0, 3, 0, 3)")
 	macSource = macSource:gsub("ghostLogo%.Size = UDim2%.new%(1, %-6, 0, 104%)", "ghostLogo.Size = UDim2.new(1, 0, 1, 12)")
@@ -637,6 +637,11 @@ local function tuneMacSidebarLayout(gui)
 		for _, textObject in ipairs(titleFrame:GetDescendants()) do
 			if textObject:IsA("TextLabel") then
 				textObject.TextSize = textObject.Name == "Title" and 14 or 10
+				if textObject.Name == "Subtitle" then
+					textObject.Text = "Credits - KT.RK.JD"
+					textObject.TextColor3 = Color3.fromRGB(190, 70, 255)
+					textObject.TextTransparency = 0
+				end
 			end
 		end
 	end
@@ -1091,7 +1096,7 @@ function library.new(libraryTitle, cfgLocation)
 
 	local window = MacLib:Window({
 		Title = libraryTitle or "Window",
-		Subtitle = "Credits KT | RK",
+		Subtitle = "Credits - KT.RK.JD",
 		Size = UDim2.fromOffset(868, 650),
 		DragStyle = 1,
 		DisabledWindowControls = { "Exit", "Minimize", "Maximize" },
