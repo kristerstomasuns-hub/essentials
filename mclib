@@ -926,8 +926,8 @@ function MacLib:Window(Settings)
 	themeAccentLineRight.BackgroundColor3 = Color3.fromRGB(0, 45, 255)
 	themeAccentLineRight.BackgroundTransparency = 0.2
 	themeAccentLineRight.BorderSizePixel = 0
-	themeAccentLineRight.Position = UDim2.new(1, -1, 0, 74)
-	themeAccentLineRight.Size = UDim2.new(0, 1, 1, -74)
+	themeAccentLineRight.Position = UDim2.new(1, -1, 0, 0)
+	themeAccentLineRight.Size = UDim2.new(0, 1, 1, 0)
 	themeAccentLineRight.ZIndex = 20
 	themeAccentLineRight.Parent = sidebar
 
