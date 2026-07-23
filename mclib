@@ -1072,7 +1072,7 @@ function MacLib:Window(Settings)
 	topbarBackground.BackgroundTransparency = 1
 	topbarBackground.BorderSizePixel = 0
 	topbarBackground.Position = UDim2.new(0, 0, 0, 6)
-	topbarBackground.Size = UDim2.new(1, -232, 0, 50)
+	topbarBackground.Size = UDim2.new(1, 0, 0, 50)
 	topbarBackground.ScaleType = Enum.ScaleType.Stretch
 	topbarBackground.ZIndex = 1
 	topbarBackground.Parent = topbar
