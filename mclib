@@ -840,7 +840,7 @@ function MacLib:Window(Settings)
 	ghostLogo.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	ghostLogo.BorderSizePixel = 0
 	ghostLogo.ClipsDescendants = true
-	ghostLogo.Position = UDim2.new(0, 3, 0, 3)
+	ghostLogo.Position = UDim2.new(0, 0, 0, 0)
 	ghostLogo.Size = UDim2.new(1, 0, 1, 12)
 	ghostLogo.Visible = true
 	ghostLogo.ZIndex = 3
@@ -853,8 +853,8 @@ function MacLib:Window(Settings)
 	ghostSkull.BorderSizePixel = 0
 	ghostSkull.Image = assets.ghostSkull
 	ghostSkull.ImageTransparency = 0
-	ghostSkull.Position = UDim2.new(0, 0, 0.5, 0)
-	ghostSkull.Size = UDim2.fromOffset(72, 72)
+	ghostSkull.Position = UDim2.new(0, -2, 0.5, 0)
+	ghostSkull.Size = UDim2.fromOffset(84, 84)
 	ghostSkull.ScaleType = Enum.ScaleType.Fit
 	ghostSkull.Parent = ghostLogo
 
