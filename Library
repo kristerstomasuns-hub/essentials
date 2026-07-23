@@ -80,16 +80,17 @@ local function patchMacLibSource(macSource)
 	local tabSwitchersBackground = Instance.new("ImageLabel")
 	tabSwitchersBackground.Name = "TabSwitchersBackground"
 	tabSwitchersBackground.Image = "rbxassetid://83675218406550"
-	tabSwitchersBackground.ImageTransparency = 0.58
-	tabSwitchersBackground.ScaleType = Enum.ScaleType.Fit
+	tabSwitchersBackground.ImageTransparency = 0.22
+	tabSwitchersBackground.ImageColor3 = Color3.fromRGB(220, 220, 220)
+	tabSwitchersBackground.ScaleType = Enum.ScaleType.Crop
 	tabSwitchersBackground.BackgroundTransparency = 1
 	tabSwitchersBackground.BorderSizePixel = 0
 	tabSwitchersBackground.AnchorPoint = Vector2.new(0.5, 0.5)
-	tabSwitchersBackground.Position = UDim2.fromScale(0.63, 0.42)
-	tabSwitchersBackground.Size = UDim2.new(0.78, 0, 0.88, 0)
+	tabSwitchersBackground.Position = UDim2.fromScale(0.5, 0.5)
+	tabSwitchersBackground.Size = UDim2.fromScale(1, 1)
 	tabSwitchersBackground.ZIndex = 0
 	tabSwitchersBackground.Active = false
-	tabSwitchersBackground.Parent = tabSwitchers
+	tabSwitchersBackground.Parent = sidebar
 
 	local themeAccentLineBottom = Instance.new("Frame")
 	themeAccentLineBottom.Name = "ThemeAccentLineBottom"
@@ -569,6 +570,7 @@ local function tuneMacSidebarLayout(gui)
 
 	if information then
 		information.Size = UDim2.new(1, 0, 0, headerHeight)
+		information.BackgroundTransparency = 1
 		local oldHeaderBackground = information:FindFirstChild("HeaderBackground")
 		if oldHeaderBackground then
 			oldHeaderBackground:Destroy()
@@ -610,9 +612,11 @@ local function tuneMacSidebarLayout(gui)
 	if sidebarGroup then
 		sidebarGroup.Position = UDim2.fromOffset(0, headerHeight)
 		sidebarGroup.Size = UDim2.new(1, 0, 1, -headerHeight)
+		sidebarGroup.BackgroundTransparency = 1
 	end
 	if tabSwitchers then
 		tabSwitchers.Size = UDim2.new(1, 0, 1, -80)
+		tabSwitchers.BackgroundTransparency = 1
 	end
 
 	local titleFrame = informationHolder and informationHolder:FindFirstChild("TitleFrame")

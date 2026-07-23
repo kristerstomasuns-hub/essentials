@@ -474,7 +474,7 @@ function MacLib:Window(Settings)
 	local information = Instance.new("Frame")
 	information.Name = "Information"
 	information.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
-	information.BackgroundTransparency = 0
+	information.BackgroundTransparency = 1
 	information.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	information.BorderSizePixel = 0
 	information.Position = UDim2.fromOffset(0, 0)
@@ -683,7 +683,7 @@ function MacLib:Window(Settings)
 	local sidebarGroup = Instance.new("Frame")
 	sidebarGroup.Name = "SidebarGroup"
 	sidebarGroup.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
-	sidebarGroup.BackgroundTransparency = 0
+	sidebarGroup.BackgroundTransparency = 1
 	sidebarGroup.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	sidebarGroup.BorderSizePixel = 0
 	sidebarGroup.Position = UDim2.fromOffset(0, 74)
@@ -905,7 +905,7 @@ function MacLib:Window(Settings)
 	local tabSwitchers = Instance.new("Frame")
 	tabSwitchers.Name = "TabSwitchers"
 	tabSwitchers.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
-	tabSwitchers.BackgroundTransparency = 0
+	tabSwitchers.BackgroundTransparency = 1
 	tabSwitchers.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	tabSwitchers.BorderSizePixel = 0
 	tabSwitchers.Size = UDim2.new(1, 0, 1, -80)
@@ -934,16 +934,17 @@ function MacLib:Window(Settings)
 	local tabSwitchersBackground = Instance.new("ImageLabel")
 	tabSwitchersBackground.Name = "TabSwitchersBackground"
 	tabSwitchersBackground.Image = "rbxassetid://83675218406550"
-	tabSwitchersBackground.ImageTransparency = 0.58
-	tabSwitchersBackground.ScaleType = Enum.ScaleType.Fit
+	tabSwitchersBackground.ImageTransparency = 0.22
+	tabSwitchersBackground.ImageColor3 = Color3.fromRGB(220, 220, 220)
+	tabSwitchersBackground.ScaleType = Enum.ScaleType.Crop
 	tabSwitchersBackground.BackgroundTransparency = 1
 	tabSwitchersBackground.BorderSizePixel = 0
 	tabSwitchersBackground.AnchorPoint = Vector2.new(0.5, 0.5)
-	tabSwitchersBackground.Position = UDim2.fromScale(0.63, 0.42)
-	tabSwitchersBackground.Size = UDim2.new(0.78, 0, 0.88, 0)
+	tabSwitchersBackground.Position = UDim2.fromScale(0.5, 0.5)
+	tabSwitchersBackground.Size = UDim2.fromScale(1, 1)
 	tabSwitchersBackground.ZIndex = 0
 	tabSwitchersBackground.Active = false
-	tabSwitchersBackground.Parent = tabSwitchers
+	tabSwitchersBackground.Parent = sidebar
 
 	local themeAccentLineBottom = Instance.new("Frame")
 	themeAccentLineBottom.Name = "ThemeAccentLineBottom"
