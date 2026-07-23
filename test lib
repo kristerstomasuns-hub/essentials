@@ -2029,7 +2029,7 @@ function library.new(libraryTitle, cfgLocation)
 						})
 						local function fireKeybind()
 							if isMenuToggleKeybind then
-								menu.SetMenuKeybind(value)
+								menu.SetMenuKeybind(value.Key or value.Bind or value)
 							end
 							fire()
 						end
