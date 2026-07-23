@@ -612,14 +612,13 @@ function MacLib:Window(Settings)
 
 	local statusFrame = Instance.new("Frame")
 	statusFrame.Name = "StatusFrame"
-	statusFrame.AnchorPoint = Vector2.new(1, 0.5)
+	statusFrame.AnchorPoint = Vector2.new(0, 0)
 	statusFrame.BackgroundTransparency = 1
 	statusFrame.BorderSizePixel = 0
-	statusFrame.Position = UDim2.new(1, -32, 0, 52)
-	statusFrame.Size = UDim2.fromOffset(190, 24)
+	statusFrame.Position = UDim2.new(0, 18, 0, 9)
+	statusFrame.Size = UDim2.new(1, -36, 0, 20)
 	statusFrame.Visible = false
 	statusFrame.ZIndex = 50
-	statusFrame.Parent = base
 
 	local statusDot = Instance.new("Frame")
 	statusDot.Name = "Dot"
@@ -627,7 +626,7 @@ function MacLib:Window(Settings)
 	statusDot.BackgroundColor3 = Color3.fromRGB(32, 255, 65)
 	statusDot.BorderSizePixel = 0
 	statusDot.Position = UDim2.new(0, 0, 0.5, 0)
-	statusDot.Size = UDim2.fromOffset(12, 12)
+	statusDot.Size = UDim2.fromOffset(9, 9)
 	statusDot.Parent = statusFrame
 
 	local statusDotCorner = Instance.new("UICorner")
@@ -644,14 +643,14 @@ function MacLib:Window(Settings)
 	)
 	statusActive.Text = "Active"
 	statusActive.TextColor3 = Color3.fromRGB(255, 255, 255)
-	statusActive.TextSize = 16
+	statusActive.TextSize = 13
 	statusActive.TextTransparency = 0.08
 	statusActive.TextXAlignment = Enum.TextXAlignment.Left
 	statusActive.TextYAlignment = Enum.TextYAlignment.Center
 	statusActive.BackgroundTransparency = 1
 	statusActive.BorderSizePixel = 0
-	statusActive.Position = UDim2.new(0, 21, 0, 0)
-	statusActive.Size = UDim2.fromOffset(52, 24)
+	statusActive.Position = UDim2.new(0, 16, 0, 0)
+	statusActive.Size = UDim2.fromOffset(44, 20)
 	statusActive.ZIndex = 51
 	statusActive.Parent = statusFrame
 
@@ -664,15 +663,15 @@ function MacLib:Window(Settings)
 	)
 	statusText.Text = ""
 	statusText.TextColor3 = Color3.fromRGB(255, 255, 255)
-	statusText.TextSize = 16
+	statusText.TextSize = 13
 	statusText.TextTransparency = 0.08
 	statusText.TextTruncate = Enum.TextTruncate.AtEnd
 	statusText.TextXAlignment = Enum.TextXAlignment.Left
 	statusText.TextYAlignment = Enum.TextYAlignment.Center
 	statusText.BackgroundTransparency = 1
 	statusText.BorderSizePixel = 0
-	statusText.Position = UDim2.new(0, 78, 0, 0)
-	statusText.Size = UDim2.new(1, -78, 1, 0)
+	statusText.Position = UDim2.new(0, 64, 0, 0)
+	statusText.Size = UDim2.new(1, -64, 1, 0)
 	statusText.ZIndex = 51
 	statusText.Parent = statusFrame
 
@@ -697,7 +696,7 @@ function MacLib:Window(Settings)
 	userInfo.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	userInfo.BorderSizePixel = 0
 	userInfo.Position = UDim2.fromScale(0, 1)
-	userInfo.Size = UDim2.new(1, 0, 0, 76)
+	userInfo.Size = UDim2.new(1, 0, 0, 100)
 
 	local informationGroup = Instance.new("Frame")
 	informationGroup.Name = "InformationGroup"
@@ -825,8 +824,10 @@ function MacLib:Window(Settings)
 	userInfoUIPadding.PaddingRight = UDim.new(0, 10)
 	userInfoUIPadding.Parent = userInfo
 
+	statusFrame.Parent = userInfo
+
 	titleFrame.Parent = userInfo
-	titleFrame.Position = UDim2.new(0, 18, 0, 14)
+	titleFrame.Position = UDim2.new(0, 18, 0, 36)
 	titleFrame.Size = UDim2.new(1, -36, 0, 46)
 	title.TextSize = 14
 	subtitle.TextSize = 10
@@ -908,7 +909,7 @@ function MacLib:Window(Settings)
 	tabSwitchers.BackgroundTransparency = 1
 	tabSwitchers.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	tabSwitchers.BorderSizePixel = 0
-	tabSwitchers.Size = UDim2.new(1, 0, 1, -80)
+	tabSwitchers.Size = UDim2.new(1, 0, 1, -104)
 
 	local themeAccentLineTop = Instance.new("Frame")
 	themeAccentLineTop.Name = "ThemeAccentLineTop"

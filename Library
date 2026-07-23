@@ -30,9 +30,9 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("divider2%.Parent = information", "divider2.Visible = false\n\tdivider2.Parent = information")
 	macSource = macSource:gsub("sidebarGroup%.Position = UDim2%.fromOffset%(0, 63%)", "sidebarGroup.Position = UDim2.fromOffset(0, 74)")
 	macSource = macSource:gsub("sidebarGroup%.Size = UDim2%.new%(1, 0, 1, %-63%)", "sidebarGroup.Size = UDim2.new(1, 0, 1, -74)")
-	macSource = macSource:gsub("userInfo%.Size = UDim2%.new%(1, 0, 0, 107%)", "userInfo.Size = UDim2.new(1, 0, 0, 76)")
+	macSource = macSource:gsub("userInfo%.Size = UDim2%.new%(1, 0, 0, 107%)", "userInfo.Size = UDim2.new(1, 0, 0, 100)")
 	macSource = macSource:gsub("informationGroup%.Parent = userInfo", "informationGroup.Visible = false\n\tinformationGroup.Parent = userInfo")
-	macSource = macSource:gsub("userInfoUIPadding%.Parent = userInfo", "userInfoUIPadding.Parent = userInfo\n\n\ttitleFrame.Parent = userInfo\n\ttitleFrame.Position = UDim2.new(0, 18, 0, 14)\n\ttitleFrame.Size = UDim2.new(1, -36, 0, 46)\n\ttitle.TextSize = 14\n\tsubtitle.TextSize = 10\n\tsubtitle.TextColor3 = Color3.fromRGB(190, 70, 255)\n\tsubtitle.TextTransparency = 0")
+	macSource = macSource:gsub("userInfoUIPadding%.Parent = userInfo", "userInfoUIPadding.Parent = userInfo\n\n\ttitleFrame.Parent = userInfo\n\ttitleFrame.Position = UDim2.new(0, 18, 0, 36)\n\ttitleFrame.Size = UDim2.new(1, -36, 0, 46)\n\ttitle.TextSize = 14\n\tsubtitle.TextSize = 10\n\tsubtitle.TextColor3 = Color3.fromRGB(190, 70, 255)\n\tsubtitle.TextTransparency = 0")
 	macSource = macSource:gsub("ghostLogo%.AnchorPoint = Vector2%.new%(0, 1%)", "ghostLogo.AnchorPoint = Vector2.new(0, 0)")
 	macSource = macSource:gsub("ghostLogo%.Position = UDim2%.new%(0, 4, 1, %-12%)", "ghostLogo.Position = UDim2.new(0, 3, 0, 3)")
 	macSource = macSource:gsub("ghostLogo%.Size = UDim2%.new%(1, %-6, 0, 104%)", "ghostLogo.Size = UDim2.new(1, 0, 1, 12)")
@@ -615,23 +615,48 @@ local function tuneMacSidebarLayout(gui)
 		sidebarGroup.BackgroundTransparency = 1
 	end
 	if tabSwitchers then
-		tabSwitchers.Size = UDim2.new(1, 0, 1, -80)
+		tabSwitchers.Size = UDim2.new(1, 0, 1, -104)
 		tabSwitchers.BackgroundTransparency = 1
 	end
 
 	local titleFrame = informationHolder and informationHolder:FindFirstChild("TitleFrame")
+	local statusFrame = base and base:FindFirstChild("StatusFrame", true)
 	if userInfo then
 		userInfo.Visible = true
-		userInfo.Size = UDim2.new(1, 0, 0, 76)
+		userInfo.Size = UDim2.new(1, 0, 0, 100)
 		userInfo.Position = UDim2.fromScale(0, 1)
 		local informationGroup = userInfo:FindFirstChild("InformationGroup")
 		if informationGroup then
 			informationGroup.Visible = false
 		end
 	end
+	if statusFrame and userInfo then
+		statusFrame.Parent = userInfo
+		statusFrame.AnchorPoint = Vector2.new(0, 0)
+		statusFrame.Position = UDim2.new(0, 18, 0, 9)
+		statusFrame.Size = UDim2.new(1, -36, 0, 20)
+		statusFrame.ZIndex = 50
+		local dot = statusFrame:FindFirstChild("Dot")
+		if dot and dot:IsA("GuiObject") then
+			dot.Size = UDim2.fromOffset(9, 9)
+			dot.Position = UDim2.new(0, 0, 0.5, 0)
+		end
+		local activeText = statusFrame:FindFirstChild("ActiveText")
+		if activeText and activeText:IsA("TextLabel") then
+			activeText.TextSize = 13
+			activeText.Position = UDim2.new(0, 16, 0, 0)
+			activeText.Size = UDim2.fromOffset(44, 20)
+		end
+		local timerText = statusFrame:FindFirstChild("TimerText")
+		if timerText and timerText:IsA("TextLabel") then
+			timerText.TextSize = 13
+			timerText.Position = UDim2.new(0, 64, 0, 0)
+			timerText.Size = UDim2.new(1, -64, 1, 0)
+		end
+	end
 	if titleFrame and userInfo then
 		titleFrame.Parent = userInfo
-		titleFrame.Position = UDim2.new(0, 18, 0, 14)
+		titleFrame.Position = UDim2.new(0, 18, 0, 36)
 		titleFrame.Size = UDim2.new(1, -36, 0, 46)
 		for _, textObject in ipairs(titleFrame:GetDescendants()) do
 			if textObject:IsA("TextLabel") then
