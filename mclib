@@ -853,7 +853,7 @@ function MacLib:Window(Settings)
 	ghostSkull.BorderSizePixel = 0
 	ghostSkull.Image = assets.ghostSkull
 	ghostSkull.ImageTransparency = 0
-	ghostSkull.Position = UDim2.new(0, -2, 0.5, 0)
+	ghostSkull.Position = UDim2.new(0, 8, 0.5, 0)
 	ghostSkull.Size = UDim2.fromOffset(84, 84)
 	ghostSkull.ScaleType = Enum.ScaleType.Fit
 	ghostSkull.Parent = ghostLogo
@@ -865,7 +865,7 @@ function MacLib:Window(Settings)
 	ghostWordmark.BorderSizePixel = 0
 	ghostWordmark.Image = assets.ghostWordmark
 	ghostWordmark.ImageTransparency = 0
-	ghostWordmark.Position = UDim2.fromOffset(46, -49)
+	ghostWordmark.Position = UDim2.fromOffset(82, -49)
 	ghostWordmark.Size = UDim2.fromOffset(205, 205)
 	ghostWordmark.ScaleType = Enum.ScaleType.Fit
 	ghostWordmark.Parent = ghostLogo
@@ -877,7 +877,7 @@ function MacLib:Window(Settings)
 	ghostLuaL.BorderSizePixel = 0
 	ghostLuaL.Image = assets.ghostLuaL
 	ghostLuaL.ImageTransparency = 0
-	ghostLuaL.Position = UDim2.fromOffset(46, -49)
+	ghostLuaL.Position = UDim2.fromOffset(82, -49)
 	ghostLuaL.Size = UDim2.fromOffset(205, 205)
 	ghostLuaL.ScaleType = Enum.ScaleType.Fit
 	ghostLuaL.Parent = ghostLogo
@@ -889,7 +889,7 @@ function MacLib:Window(Settings)
 	ghostLua.BorderSizePixel = 0
 	ghostLua.Image = assets.ghostLua
 	ghostLua.ImageTransparency = 0
-	ghostLua.Position = UDim2.fromOffset(46, -49)
+	ghostLua.Position = UDim2.fromOffset(82, -49)
 	ghostLua.Size = UDim2.fromOffset(205, 205)
 	ghostLua.ScaleType = Enum.ScaleType.Fit
 	ghostLua.Parent = ghostLogo
