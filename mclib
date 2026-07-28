@@ -303,13 +303,30 @@ local function attachFeatureInfoIcon(label, row, name, description, kind)
 		if not icon.Parent or not label.Parent or row.AbsoluteSize.X <= 0 then return end
 		local labelX = label.AbsolutePosition.X - row.AbsolutePosition.X
 		local labelY = label.AbsolutePosition.Y - row.AbsolutePosition.Y
-		local textSize = TextService:GetTextSize(featureInfoPlainText(label.Text), label.TextSize, label.Font, Vector2.new(1000, label.AbsoluteSize.Y))
+		local textBounds = label.TextBounds
+		local textWidth = textBounds.X
+		local textHeight = math.max(textBounds.Y, label.TextSize or 12)
+		if textWidth <= 0 then
+			textWidth = math.min(label.AbsoluteSize.X, #featureInfoPlainText(label.Text) * (label.TextSize or 12) * 0.55)
+		end
+		local textX = 0
+		if label.TextXAlignment == Enum.TextXAlignment.Center then
+			textX = math.max(0, (label.AbsoluteSize.X - textWidth) * 0.5)
+		elseif label.TextXAlignment == Enum.TextXAlignment.Right then
+			textX = math.max(0, label.AbsoluteSize.X - textWidth)
+		end
+		local textY = label.AbsoluteSize.Y * 0.5
+		if label.TextYAlignment == Enum.TextYAlignment.Top then
+			textY = textHeight * 0.5
+		elseif label.TextYAlignment == Enum.TextYAlignment.Bottom then
+			textY = label.AbsoluteSize.Y - textHeight * 0.5
+		end
 		local maxX = math.max(0, row.AbsoluteSize.X - iconSize - 2)
-		local y = labelY + math.max(label.AbsoluteSize.Y, textSize.Y) * 0.5
-		icon.Position = UDim2.new(0, math.min(maxX, labelX + textSize.X + iconGap), 0, y)
+		icon.Position = UDim2.new(0, math.min(maxX, labelX + textX + textWidth + iconGap), 0, labelY + textY)
 	end
 
 	label:GetPropertyChangedSignal("Text"):Connect(updatePosition)
+	label:GetPropertyChangedSignal("TextBounds"):Connect(updatePosition)
 	label:GetPropertyChangedSignal("AbsoluteSize"):Connect(updatePosition)
 	row:GetPropertyChangedSignal("AbsoluteSize"):Connect(updatePosition)
 	task.defer(updatePosition)
