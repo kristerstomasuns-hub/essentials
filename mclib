@@ -1158,7 +1158,7 @@ function MacLib:Window(Settings)
 	ghostLogo.BorderSizePixel = 0
 	ghostLogo.ClipsDescendants = true
 	ghostLogo.Position = UDim2.new(0, 0, 0, 0)
-	ghostLogo.Size = UDim2.new(1, 0, 0, 96)
+	ghostLogo.Size = UDim2.new(1, 0, 0, 104)
 	ghostLogo.Visible = true
 	ghostLogo.ZIndex = 3
 	ghostLogo.Parent = informationHolder
@@ -1170,8 +1170,8 @@ function MacLib:Window(Settings)
 	ghostSkull.BorderSizePixel = 0
 	ghostSkull.Image = assets.ghostSkull
 	ghostSkull.ImageTransparency = 0
-	ghostSkull.Position = UDim2.new(0, -18, 0.5, 0)
-	ghostSkull.Size = UDim2.fromOffset(84, 84)
+	ghostSkull.Position = UDim2.new(0, 14, 0.5, -2)
+	ghostSkull.Size = UDim2.fromOffset(76, 76)
 	ghostSkull.ScaleType = Enum.ScaleType.Fit
 	ghostSkull.Parent = ghostLogo
 
@@ -1182,8 +1182,8 @@ function MacLib:Window(Settings)
 	ghostWordmark.BorderSizePixel = 0
 	ghostWordmark.Image = assets.ghostWordmark
 	ghostWordmark.ImageTransparency = 0
-	ghostWordmark.Position = UDim2.fromOffset(50, -43)
-	ghostWordmark.Size = UDim2.fromOffset(188, 188)
+	ghostWordmark.Position = UDim2.fromOffset(62, -47)
+	ghostWordmark.Size = UDim2.fromOffset(206, 206)
 	ghostWordmark.ScaleType = Enum.ScaleType.Fit
 	ghostWordmark.Parent = ghostLogo
 
@@ -1194,8 +1194,8 @@ function MacLib:Window(Settings)
 	ghostLuaL.BorderSizePixel = 0
 	ghostLuaL.Image = assets.ghostLuaL
 	ghostLuaL.ImageTransparency = 0
-	ghostLuaL.Position = UDim2.fromOffset(50, -43)
-	ghostLuaL.Size = UDim2.fromOffset(188, 188)
+	ghostLuaL.Position = UDim2.fromOffset(62, -47)
+	ghostLuaL.Size = UDim2.fromOffset(206, 206)
 	ghostLuaL.ScaleType = Enum.ScaleType.Fit
 	ghostLuaL.Parent = ghostLogo
 
@@ -1206,8 +1206,8 @@ function MacLib:Window(Settings)
 	ghostLua.BorderSizePixel = 0
 	ghostLua.Image = assets.ghostLua
 	ghostLua.ImageTransparency = 0
-	ghostLua.Position = UDim2.fromOffset(50, -43)
-	ghostLua.Size = UDim2.fromOffset(188, 188)
+	ghostLua.Position = UDim2.fromOffset(62, -47)
+	ghostLua.Size = UDim2.fromOffset(206, 206)
 	ghostLua.ScaleType = Enum.ScaleType.Fit
 	ghostLua.Parent = ghostLogo
 
@@ -1252,14 +1252,14 @@ function MacLib:Window(Settings)
 	local tabSwitchersBackground = Instance.new("ImageLabel")
 	tabSwitchersBackground.Name = "TabSwitchersBackground"
 	tabSwitchersBackground.Image = "rbxassetid://139913314515436"
-	tabSwitchersBackground.ImageTransparency = 0.35
+	tabSwitchersBackground.ImageTransparency = 0.28
 	tabSwitchersBackground.ImageColor3 = Color3.fromRGB(220, 220, 220)
-	tabSwitchersBackground.ScaleType = Enum.ScaleType.Crop
+	tabSwitchersBackground.ScaleType = Enum.ScaleType.Fit
 	tabSwitchersBackground.BackgroundTransparency = 1
 	tabSwitchersBackground.BorderSizePixel = 0
 	tabSwitchersBackground.AnchorPoint = Vector2.new(0.5, 0.5)
-	tabSwitchersBackground.Position = UDim2.fromScale(0.5, 0.58)
-	tabSwitchersBackground.Size = UDim2.fromScale(0.66, 0.78)
+	tabSwitchersBackground.Position = UDim2.fromScale(0.62, 0.56)
+	tabSwitchersBackground.Size = UDim2.fromScale(0.82, 0.82)
 	tabSwitchersBackground.ZIndex = 0
 	tabSwitchersBackground.Active = false
 	tabSwitchersBackground.Parent = sidebar
