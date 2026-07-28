@@ -12,6 +12,7 @@ local RunService = MacLib.GetService("RunService")
 local HttpService = MacLib.GetService("HttpService")
 local ContentProvider = MacLib.GetService("ContentProvider")
 local UserInputService = MacLib.GetService("UserInputService")
+local TextService = MacLib.GetService("TextService")
 local Lighting = MacLib.GetService("Lighting")
 local Players = MacLib.GetService("Players")
 
@@ -43,11 +44,119 @@ local assets = {
 	dropdown = "rbxassetid://100121816630722",
 	sliderbar = "rbxassetid://18772615246",
 	sliderhead = "rbxassetid://109693045858853",
-	ghostSkull = "rbxassetid://104286599361828",
+	ghostSkull = "rbxassetid://79150590038090",
 	ghostWordmark = "rbxassetid://91125138387121",
 	ghostLuaL = "rbxassetid://79446531787618",
 	ghostLua = "rbxassetid://103905886855383",
+	featureInfo = "rbxassetid://78698935065567",
 }
+
+local featureInfoTooltip
+
+local function featureInfoPlainText(value)
+	return tostring(value or ""):gsub("<.->", "")
+end
+
+local function featureInfoDescription(name, kind)
+	name = featureInfoPlainText(name)
+	kind = tostring(kind or "feature")
+	if kind == "Toggle" then
+		return "Turns " .. name .. " on or off."
+	elseif kind == "Slider" then
+		return "Adjusts the " .. name .. " value."
+	elseif kind == "Dropdown" then
+		return "Selects the " .. name .. " option."
+	elseif kind == "Input" then
+		return "Sets the " .. name .. " text value."
+	elseif kind == "Keybind" then
+		return "Sets the key used for " .. name .. "."
+	elseif kind == "Button" then
+		return "Runs the " .. name .. " action."
+	elseif kind == "Colorpicker" then
+		return "Changes the " .. name .. " color."
+	end
+	return "Controls " .. name .. "."
+end
+
+local function attachFeatureInfoIcon(label, row, name, description, kind)
+	if not label or not row then return end
+	name = featureInfoPlainText(name or label.Text)
+	if name == "" then return end
+
+	local icon = Instance.new("ImageButton")
+	icon.Name = "FeatureInfo"
+	icon.Image = assets.featureInfo
+	icon.BackgroundTransparency = 1
+	icon.BorderSizePixel = 0
+	icon.AutoButtonColor = false
+	icon.AnchorPoint = Vector2.new(0, 0.5)
+	icon.Size = UDim2.fromOffset(13, 13)
+	icon.ZIndex = (label.ZIndex or 1) + 5
+	icon.Parent = row
+
+	local function updatePosition()
+		if not icon.Parent or not label.Parent or row.AbsoluteSize.X <= 0 then return end
+		local baseX = label.AbsolutePosition.X - row.AbsolutePosition.X
+		local textWidth = TextService:GetTextSize(name, label.TextSize, label.Font, Vector2.new(1000, 1000)).X
+		local maxX = math.max(0, baseX + label.AbsoluteSize.X - 14)
+		icon.Position = UDim2.new(0, math.clamp(baseX + textWidth + 6, baseX, maxX), 0.5, 0)
+	end
+
+	label:GetPropertyChangedSignal("AbsoluteSize"):Connect(updatePosition)
+	row:GetPropertyChangedSignal("AbsoluteSize"):Connect(updatePosition)
+	task.defer(updatePosition)
+
+	local function showTooltip()
+		local root = row:FindFirstAncestorOfClass("ScreenGui") or GetGui()
+		if featureInfoTooltip then
+			featureInfoTooltip:Destroy()
+		end
+
+		featureInfoTooltip = Instance.new("Frame")
+		featureInfoTooltip.Name = "FeatureInfoTooltip"
+		featureInfoTooltip.BackgroundColor3 = Color3.fromRGB(14, 14, 16)
+		featureInfoTooltip.BackgroundTransparency = 0.02
+		featureInfoTooltip.BorderSizePixel = 0
+		featureInfoTooltip.Size = UDim2.fromOffset(190, 44)
+		featureInfoTooltip.ZIndex = 10000
+		featureInfoTooltip.Parent = root
+
+		local corner = Instance.new("UICorner")
+		corner.CornerRadius = UDim.new(0, 6)
+		corner.Parent = featureInfoTooltip
+
+		local stroke = Instance.new("UIStroke")
+		stroke.Color = Color3.fromRGB(255, 255, 255)
+		stroke.Transparency = 0.86
+		stroke.Parent = featureInfoTooltip
+
+		local text = Instance.new("TextLabel")
+		text.Name = "TooltipText"
+		text.BackgroundTransparency = 1
+		text.Font = Enum.Font.Gotham
+		text.Text = tostring(description or featureInfoDescription(name, kind))
+		text.TextColor3 = Color3.fromRGB(235, 235, 235)
+		text.TextSize = 12
+		text.TextWrapped = true
+		text.TextXAlignment = Enum.TextXAlignment.Left
+		text.TextYAlignment = Enum.TextYAlignment.Center
+		text.Position = UDim2.fromOffset(10, 6)
+		text.Size = UDim2.new(1, -20, 1, -12)
+		text.ZIndex = 10001
+		text.Parent = featureInfoTooltip
+
+		local mouse = UserInputService:GetMouseLocation()
+		featureInfoTooltip.Position = UDim2.fromOffset(mouse.X + 12, mouse.Y + 8)
+	end
+
+	icon.MouseEnter:Connect(showTooltip)
+	icon.MouseLeave:Connect(function()
+		if featureInfoTooltip then
+			featureInfoTooltip:Destroy()
+			featureInfoTooltip = nil
+		end
+	end)
+end
 
 --// Functions
 local function GetGui()
@@ -2017,6 +2126,7 @@ function MacLib:Window(Settings)
 					buttonInteract.BorderSizePixel = 0
 					buttonInteract.Size = UDim2.fromScale(1, 1)
 					buttonInteract.Parent = button
+					attachFeatureInfoIcon(buttonInteract, button, ButtonFunctions.Settings.Name, ButtonFunctions.Settings.Info or ButtonFunctions.Settings.Description, "Button")
 					buttonInteract.Text = ButtonFunctions.Settings.Name
 
 					local buttonImage = Instance.new("ImageLabel")
@@ -2117,6 +2227,7 @@ function MacLib:Window(Settings)
 					toggleName.Position = UDim2.fromScale(0, 0.5)
 					toggleName.Size = UDim2.new(1, -40, 0, 0)
 					toggleName.Parent = toggle
+					attachFeatureInfoIcon(toggleName, toggle, ToggleFunctions.Settings.Name, ToggleFunctions.Settings.Info or ToggleFunctions.Settings.Description, "Toggle")
 
 					local toggle1 = Instance.new("ImageButton")
 					toggle1.Name = "Toggle"
@@ -2338,6 +2449,7 @@ function MacLib:Window(Settings)
 						sliderName.TextXAlignment = Enum.TextXAlignment.Left
 						sliderName.TextYAlignment = Enum.TextYAlignment.Center
 						sliderName.Parent = slider
+						attachFeatureInfoIcon(sliderName, slider, SliderFunctions.Settings.Name, SliderFunctions.Settings.Info or SliderFunctions.Settings.Description, "Slider")
 
 						local sliderValue = Instance.new("TextLabel")
 						sliderValue.Name = "SliderValue"
@@ -2853,6 +2965,7 @@ function MacLib:Window(Settings)
 					inputName.BorderSizePixel = 0
 					inputName.Position = UDim2.fromScale(0, 0.5)
 					inputName.Parent = input
+					attachFeatureInfoIcon(inputName, input, InputFunctions.Settings.Name, InputFunctions.Settings.Info or InputFunctions.Settings.Description, "Input")
 
 					local inputBox = Instance.new("TextBox")
 					inputBox.Name = "InputBox"
@@ -3040,6 +3153,7 @@ function MacLib:Window(Settings)
 					keybindName.Position = UDim2.fromScale(0, 0.5)
 					keybindName.Size = UDim2.new(1, -118, 1, 0)
 					keybindName.Parent = keybind
+					attachFeatureInfoIcon(keybindName, keybind, KeybindFunctions.Settings.Name, KeybindFunctions.Settings.Info or KeybindFunctions.Settings.Description, "Keybind")
 
 					local binderBox = Instance.new("TextBox")
 					binderBox.Name = "BinderBox"
@@ -3310,6 +3424,7 @@ function MacLib:Window(Settings)
 					dropdownName.BorderSizePixel = 0
 					dropdownName.Size = UDim2.new(1, -16, 0, dropdownClosedHeight)
 					dropdownName.Parent = dropdown
+					attachFeatureInfoIcon(dropdownName, dropdown, DropdownFunctions.Settings.Name, DropdownFunctions.Settings.Info or DropdownFunctions.Settings.Description, "Dropdown")
 
 					local dropdownUIStroke = Instance.new("UIStroke")
 					dropdownUIStroke.Name = "DropdownUIStroke"
@@ -3899,6 +4014,7 @@ function MacLib:Window(Settings)
 					colorpickerName.BorderSizePixel = 0
 					colorpickerName.Position = UDim2.fromScale(0, 0.5)
 					colorpickerName.Parent = colorpicker
+					attachFeatureInfoIcon(colorpickerName, colorpicker, ColorpickerFunctions.Settings.Name, ColorpickerFunctions.Settings.Info or ColorpickerFunctions.Settings.Description, "Colorpicker")
 
 					local colorCbg = Instance.new("ImageLabel")
 					colorCbg.Name = "NewColor"
