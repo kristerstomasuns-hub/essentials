@@ -48,7 +48,7 @@ local assets = {
 	ghostWordmark = "rbxassetid://91125138387121",
 	ghostLuaL = "rbxassetid://79446531787618",
 	ghostLua = "rbxassetid://103905886855383",
-	featureInfo = "rbxassetid://78698935065567",
+	featureInfo = "rbxassetid://99722277118298",
 }
 
 local featureInfoTooltip
@@ -298,20 +298,18 @@ local function attachFeatureInfoIcon(label, row, name, description, kind)
 
 	local iconSize = 12
 	local iconGap = 5
-	local originalPosition = label.Position
-	local originalSize = label.Size
-	label.Position = UDim2.new(originalPosition.X.Scale, originalPosition.X.Offset + iconSize + iconGap, originalPosition.Y.Scale, originalPosition.Y.Offset)
-	if originalSize.X.Scale ~= 0 or originalSize.X.Offset ~= 0 then
-		label.Size = UDim2.new(originalSize.X.Scale, originalSize.X.Offset - iconSize - iconGap, originalSize.Y.Scale, originalSize.Y.Offset)
-	end
 
 	local function updatePosition()
 		if not icon.Parent or not label.Parent or row.AbsoluteSize.X <= 0 then return end
 		local labelX = label.AbsolutePosition.X - row.AbsolutePosition.X
 		local labelY = label.AbsolutePosition.Y - row.AbsolutePosition.Y
-		icon.Position = UDim2.new(0, math.max(0, labelX - iconSize - iconGap), 0, labelY + label.AbsoluteSize.Y * 0.5)
+		local textSize = TextService:GetTextSize(featureInfoPlainText(label.Text), label.TextSize, label.Font, Vector2.new(1000, label.AbsoluteSize.Y))
+		local textWidth = math.min(textSize.X, math.max(0, label.AbsoluteSize.X - iconSize - iconGap))
+		local maxX = math.max(0, row.AbsoluteSize.X - iconSize - 2)
+		icon.Position = UDim2.new(0, math.min(maxX, labelX + textWidth + iconGap), 0, labelY + label.AbsoluteSize.Y * 0.5)
 	end
 
+	label:GetPropertyChangedSignal("Text"):Connect(updatePosition)
 	label:GetPropertyChangedSignal("AbsoluteSize"):Connect(updatePosition)
 	row:GetPropertyChangedSignal("AbsoluteSize"):Connect(updatePosition)
 	task.defer(updatePosition)
@@ -1160,7 +1158,7 @@ function MacLib:Window(Settings)
 	ghostLogo.BorderSizePixel = 0
 	ghostLogo.ClipsDescendants = true
 	ghostLogo.Position = UDim2.new(0, 0, 0, 0)
-	ghostLogo.Size = UDim2.new(1, 0, 0, 76)
+	ghostLogo.Size = UDim2.new(1, 0, 0, 96)
 	ghostLogo.Visible = true
 	ghostLogo.ZIndex = 3
 	ghostLogo.Parent = informationHolder
@@ -1172,8 +1170,8 @@ function MacLib:Window(Settings)
 	ghostSkull.BorderSizePixel = 0
 	ghostSkull.Image = assets.ghostSkull
 	ghostSkull.ImageTransparency = 0
-	ghostSkull.Position = UDim2.new(0, -8, 0.5, 0)
-	ghostSkull.Size = UDim2.fromOffset(60, 60)
+	ghostSkull.Position = UDim2.new(0, -18, 0.5, 0)
+	ghostSkull.Size = UDim2.fromOffset(84, 84)
 	ghostSkull.ScaleType = Enum.ScaleType.Fit
 	ghostSkull.Parent = ghostLogo
 
@@ -1184,8 +1182,8 @@ function MacLib:Window(Settings)
 	ghostWordmark.BorderSizePixel = 0
 	ghostWordmark.Image = assets.ghostWordmark
 	ghostWordmark.ImageTransparency = 0
-	ghostWordmark.Position = UDim2.fromOffset(44, -38)
-	ghostWordmark.Size = UDim2.fromOffset(160, 160)
+	ghostWordmark.Position = UDim2.fromOffset(50, -43)
+	ghostWordmark.Size = UDim2.fromOffset(188, 188)
 	ghostWordmark.ScaleType = Enum.ScaleType.Fit
 	ghostWordmark.Parent = ghostLogo
 
@@ -1196,8 +1194,8 @@ function MacLib:Window(Settings)
 	ghostLuaL.BorderSizePixel = 0
 	ghostLuaL.Image = assets.ghostLuaL
 	ghostLuaL.ImageTransparency = 0
-	ghostLuaL.Position = UDim2.fromOffset(44, -38)
-	ghostLuaL.Size = UDim2.fromOffset(160, 160)
+	ghostLuaL.Position = UDim2.fromOffset(50, -43)
+	ghostLuaL.Size = UDim2.fromOffset(188, 188)
 	ghostLuaL.ScaleType = Enum.ScaleType.Fit
 	ghostLuaL.Parent = ghostLogo
 
@@ -1208,8 +1206,8 @@ function MacLib:Window(Settings)
 	ghostLua.BorderSizePixel = 0
 	ghostLua.Image = assets.ghostLua
 	ghostLua.ImageTransparency = 0
-	ghostLua.Position = UDim2.fromOffset(44, -38)
-	ghostLua.Size = UDim2.fromOffset(160, 160)
+	ghostLua.Position = UDim2.fromOffset(50, -43)
+	ghostLua.Size = UDim2.fromOffset(188, 188)
 	ghostLua.ScaleType = Enum.ScaleType.Fit
 	ghostLua.Parent = ghostLogo
 
@@ -1390,8 +1388,9 @@ function MacLib:Window(Settings)
 	topbarBackground.Image = "rbxassetid://109786881980249"
 	topbarBackground.BackgroundTransparency = 1
 	topbarBackground.BorderSizePixel = 0
-	topbarBackground.Position = UDim2.new(0, -30, 0, -3)
-	topbarBackground.Size = UDim2.new(1, 60, 0, 72)
+	topbarBackground.AnchorPoint = Vector2.new(0.5, 0.5)
+	topbarBackground.Position = UDim2.new(0.5, 0, 0.5, 0)
+	topbarBackground.Size = UDim2.new(1, 0, 1, 0)
 	topbarBackground.ScaleType = Enum.ScaleType.Crop
 	topbarBackground.ZIndex = 1
 	topbarBackground.Parent = topbar
