@@ -490,7 +490,7 @@ local function tuneMacSidebarLayout(gui)
 		if not topbarBackground then
 			topbarBackground = Instance.new("ImageLabel")
 			topbarBackground.Name = "TopbarBackground"
-			topbarBackground.Image = "rbxassetid://115075737167851"
+			topbarBackground.Image = "rbxassetid://109786881980249"
 			topbarBackground.BackgroundTransparency = 1
 			topbarBackground.BorderSizePixel = 0
 			topbarBackground.ScaleType = Enum.ScaleType.Stretch

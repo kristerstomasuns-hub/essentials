@@ -1177,7 +1177,7 @@ function MacLib:Window(Settings)
 
 	local topbarBackground = Instance.new("ImageLabel")
 	topbarBackground.Name = "TopbarBackground"
-	topbarBackground.Image = "rbxassetid://115075737167851"
+	topbarBackground.Image = "rbxassetid://109786881980249"
 	topbarBackground.BackgroundTransparency = 1
 	topbarBackground.BorderSizePixel = 0
 	topbarBackground.Position = UDim2.new(0, 0, 0, 6)
