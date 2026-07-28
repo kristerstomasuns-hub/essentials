@@ -292,12 +292,12 @@ local function attachFeatureInfoIcon(label, row, name, description, kind)
 	icon.BorderSizePixel = 0
 	icon.AutoButtonColor = false
 	icon.AnchorPoint = Vector2.new(0, 0.5)
-	icon.Size = UDim2.fromOffset(12, 12)
+	icon.Size = UDim2.fromOffset(9, 9)
 	icon.ZIndex = math.max((label.ZIndex or 1) + 20, 50)
 	icon.Parent = row
 
-	local iconSize = 12
-	local iconGap = 5
+	local iconSize = 9
+	local iconGap = 3
 
 	local function updatePosition()
 		if not icon.Parent or not label.Parent or row.AbsoluteSize.X <= 0 then return end
