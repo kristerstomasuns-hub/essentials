@@ -288,6 +288,7 @@ local function attachFeatureInfoIcon(label, row, name, description, kind)
 	local icon = Instance.new("ImageButton")
 	icon.Name = "FeatureInfo"
 	icon.Image = assets.featureInfo
+	icon.ImageTransparency = 0.25
 	icon.BackgroundTransparency = 1
 	icon.BorderSizePixel = 0
 	icon.AutoButtonColor = false
@@ -297,7 +298,7 @@ local function attachFeatureInfoIcon(label, row, name, description, kind)
 	icon.Parent = row
 
 	local iconSize = 9
-	local iconGap = 3
+	local iconGap = 1
 
 	local function updatePosition()
 		if not icon.Parent or not label.Parent or row.AbsoluteSize.X <= 0 then return end
