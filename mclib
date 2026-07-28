@@ -1043,7 +1043,7 @@ function MacLib:Window(Settings)
 
 	local tabSwitchersBackground = Instance.new("ImageLabel")
 	tabSwitchersBackground.Name = "TabSwitchersBackground"
-	tabSwitchersBackground.Image = "rbxassetid://83675218406550"
+	tabSwitchersBackground.Image = "rbxassetid://139913314515436"
 	tabSwitchersBackground.ImageTransparency = 0.22
 	tabSwitchersBackground.ImageColor3 = Color3.fromRGB(220, 220, 220)
 	tabSwitchersBackground.ScaleType = Enum.ScaleType.Crop

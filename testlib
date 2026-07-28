@@ -80,7 +80,7 @@ local function patchMacLibSource(macSource)
 
 	local tabSwitchersBackground = Instance.new("ImageLabel")
 	tabSwitchersBackground.Name = "TabSwitchersBackground"
-	tabSwitchersBackground.Image = "rbxassetid://87437911629397"
+	tabSwitchersBackground.Image = "rbxassetid://139913314515436"
 	tabSwitchersBackground.ImageTransparency = 0.58
 	tabSwitchersBackground.ScaleType = Enum.ScaleType.Fit
 	tabSwitchersBackground.BackgroundTransparency = 1
