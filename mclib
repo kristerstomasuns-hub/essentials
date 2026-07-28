@@ -293,18 +293,20 @@ local function attachFeatureInfoIcon(label, row, name, description, kind)
 	icon.AutoButtonColor = false
 	icon.AnchorPoint = Vector2.new(0, 0.5)
 	icon.Size = UDim2.fromOffset(12, 12)
-	icon.ZIndex = (label.ZIndex or 1) + 5
-	icon.Parent = label
+	icon.ZIndex = math.max((label.ZIndex or 1) + 20, 50)
+	icon.Parent = row
 
 	local iconSize = 12
 	local iconGap = 5
 
 	local function updatePosition()
-		if not icon.Parent or not label.Parent or label.AbsoluteSize.X <= 0 then return end
+		if not icon.Parent or not label.Parent or row.AbsoluteSize.X <= 0 then return end
+		local labelX = label.AbsolutePosition.X - row.AbsolutePosition.X
+		local labelY = label.AbsolutePosition.Y - row.AbsolutePosition.Y
 		local textSize = TextService:GetTextSize(featureInfoPlainText(label.Text), label.TextSize, label.Font, Vector2.new(1000, label.AbsoluteSize.Y))
-		local textWidth = math.min(textSize.X, math.max(0, label.AbsoluteSize.X - iconSize - iconGap))
-		local maxX = math.max(0, label.AbsoluteSize.X - iconSize - 2)
-		icon.Position = UDim2.new(0, math.min(maxX, textWidth + iconGap), 0.5, 0)
+		local maxX = math.max(0, row.AbsoluteSize.X - iconSize - 2)
+		local y = labelY + math.max(label.AbsoluteSize.Y, textSize.Y) * 0.5
+		icon.Position = UDim2.new(0, math.min(maxX, labelX + textSize.X + iconGap), 0, y)
 	end
 
 	label:GetPropertyChangedSignal("Text"):Connect(updatePosition)
@@ -1156,7 +1158,7 @@ function MacLib:Window(Settings)
 	ghostLogo.BorderSizePixel = 0
 	ghostLogo.ClipsDescendants = true
 	ghostLogo.Position = UDim2.new(0, 0, 0, 0)
-	ghostLogo.Size = UDim2.new(1, 0, 0, 104)
+	ghostLogo.Size = UDim2.new(1, 0, 0, 112)
 	ghostLogo.Visible = true
 	ghostLogo.ZIndex = 3
 	ghostLogo.Parent = informationHolder
@@ -1168,8 +1170,8 @@ function MacLib:Window(Settings)
 	ghostSkull.BorderSizePixel = 0
 	ghostSkull.Image = assets.ghostSkull
 	ghostSkull.ImageTransparency = 0
-	ghostSkull.Position = UDim2.new(0, 14, 0.5, -2)
-	ghostSkull.Size = UDim2.fromOffset(76, 76)
+	ghostSkull.Position = UDim2.new(0, 4, 0.5, -2)
+	ghostSkull.Size = UDim2.fromOffset(88, 88)
 	ghostSkull.ScaleType = Enum.ScaleType.Fit
 	ghostSkull.Parent = ghostLogo
 
@@ -1180,8 +1182,8 @@ function MacLib:Window(Settings)
 	ghostWordmark.BorderSizePixel = 0
 	ghostWordmark.Image = assets.ghostWordmark
 	ghostWordmark.ImageTransparency = 0
-	ghostWordmark.Position = UDim2.fromOffset(62, -47)
-	ghostWordmark.Size = UDim2.fromOffset(206, 206)
+	ghostWordmark.Position = UDim2.fromOffset(64, -34)
+	ghostWordmark.Size = UDim2.fromOffset(222, 222)
 	ghostWordmark.ScaleType = Enum.ScaleType.Fit
 	ghostWordmark.Parent = ghostLogo
 
@@ -1192,8 +1194,8 @@ function MacLib:Window(Settings)
 	ghostLuaL.BorderSizePixel = 0
 	ghostLuaL.Image = assets.ghostLuaL
 	ghostLuaL.ImageTransparency = 0
-	ghostLuaL.Position = UDim2.fromOffset(62, -47)
-	ghostLuaL.Size = UDim2.fromOffset(206, 206)
+	ghostLuaL.Position = UDim2.fromOffset(64, -34)
+	ghostLuaL.Size = UDim2.fromOffset(222, 222)
 	ghostLuaL.ScaleType = Enum.ScaleType.Fit
 	ghostLuaL.Parent = ghostLogo
 
@@ -1204,8 +1206,8 @@ function MacLib:Window(Settings)
 	ghostLua.BorderSizePixel = 0
 	ghostLua.Image = assets.ghostLua
 	ghostLua.ImageTransparency = 0
-	ghostLua.Position = UDim2.fromOffset(62, -47)
-	ghostLua.Size = UDim2.fromOffset(206, 206)
+	ghostLua.Position = UDim2.fromOffset(64, -34)
+	ghostLua.Size = UDim2.fromOffset(222, 222)
 	ghostLua.ScaleType = Enum.ScaleType.Fit
 	ghostLua.Parent = ghostLogo
 
@@ -1386,9 +1388,9 @@ function MacLib:Window(Settings)
 	topbarBackground.Image = "rbxassetid://109786881980249"
 	topbarBackground.BackgroundTransparency = 1
 	topbarBackground.BorderSizePixel = 0
-	topbarBackground.AnchorPoint = Vector2.new(0.5, 0.5)
-	topbarBackground.Position = UDim2.new(0.5, 0, 0.5, -4)
-	topbarBackground.Size = UDim2.new(1, 0, 1, 0)
+	topbarBackground.AnchorPoint = Vector2.new(0, 0)
+	topbarBackground.Position = UDim2.new(0, -30, 0, -7)
+	topbarBackground.Size = UDim2.new(1, 60, 0, 72)
 	topbarBackground.ScaleType = Enum.ScaleType.Crop
 	topbarBackground.ZIndex = 1
 	topbarBackground.Parent = topbar

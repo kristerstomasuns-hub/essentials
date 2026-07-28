@@ -36,17 +36,17 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("userInfoUIPadding%.Parent = userInfo", "userInfoUIPadding.Parent = userInfo\n\n\ttitleFrame.Parent = userInfo\n\ttitleFrame.Position = UDim2.new(0, 18, 0, 14)\n\ttitleFrame.Size = UDim2.new(1, -36, 0, 46)\n\ttitle.TextSize = 14\n\tsubtitle.TextSize = 10\n\tsubtitle.TextColor3 = Color3.fromRGB(190, 70, 255)\n\tsubtitle.TextTransparency = 0")
 	macSource = macSource:gsub("ghostLogo%.AnchorPoint = Vector2%.new%(0, 1%)", "ghostLogo.AnchorPoint = Vector2.new(0, 0)")
 	macSource = macSource:gsub("ghostLogo%.Position = UDim2%.new%(0, 4, 1, %-12%)", "ghostLogo.Position = UDim2.new(0, 0, 0, 0)")
-	macSource = macSource:gsub("ghostLogo%.Size = UDim2%.new%(1, %-6, 0, 104%)", "ghostLogo.Size = UDim2.new(1, 0, 0, 76)")
+	macSource = macSource:gsub("ghostLogo%.Size = UDim2%.new%(1, %-6, 0, 104%)", "ghostLogo.Size = UDim2.new(1, 0, 0, 112)")
 	macSource = macSource:gsub("ghostLogo%.Visible = false", "ghostLogo.Visible = true")
 	macSource = macSource:gsub("ghostLogo%.Parent = userInfo", "ghostLogo.Parent = informationHolder")
-	macSource = macSource:gsub("ghostSkull%.Position = UDim2%.new%(0, 0, 1, %-45%)", "ghostSkull.Position = UDim2.new(0, -8, 0.5, 0)")
-	macSource = macSource:gsub("ghostSkull%.Size = UDim2%.fromOffset%(90, 90%)", "ghostSkull.Size = UDim2.fromOffset(60, 60)")
-	macSource = macSource:gsub("ghostWordmark%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostWordmark.Position = UDim2.fromOffset(44, -38)")
-	macSource = macSource:gsub("ghostWordmark%.Size = UDim2%.fromOffset%(225, 225%)", "ghostWordmark.Size = UDim2.fromOffset(160, 160)")
-	macSource = macSource:gsub("ghostLuaL%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLuaL.Position = UDim2.fromOffset(44, -38)")
-	macSource = macSource:gsub("ghostLuaL%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLuaL.Size = UDim2.fromOffset(160, 160)")
-	macSource = macSource:gsub("ghostLua%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLua.Position = UDim2.fromOffset(44, -38)")
-	macSource = macSource:gsub("ghostLua%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLua.Size = UDim2.fromOffset(160, 160)")
+	macSource = macSource:gsub("ghostSkull%.Position = UDim2%.new%(0, 0, 1, %-45%)", "ghostSkull.Position = UDim2.new(0, 4, 0.5, -2)")
+	macSource = macSource:gsub("ghostSkull%.Size = UDim2%.fromOffset%(90, 90%)", "ghostSkull.Size = UDim2.fromOffset(88, 88)")
+	macSource = macSource:gsub("ghostWordmark%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostWordmark.Position = UDim2.fromOffset(64, -34)")
+	macSource = macSource:gsub("ghostWordmark%.Size = UDim2%.fromOffset%(225, 225%)", "ghostWordmark.Size = UDim2.fromOffset(222, 222)")
+	macSource = macSource:gsub("ghostLuaL%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLuaL.Position = UDim2.fromOffset(64, -34)")
+	macSource = macSource:gsub("ghostLuaL%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLuaL.Size = UDim2.fromOffset(222, 222)")
+	macSource = macSource:gsub("ghostLua%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLua.Position = UDim2.fromOffset(64, -34)")
+	macSource = macSource:gsub("ghostLua%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLua.Size = UDim2.fromOffset(222, 222)")
 	macSource = macSource:gsub("tabSwitchers%.Size = UDim2%.new%(1, 0, 1, %-107%)", "tabSwitchers.Size = UDim2.new(1, 0, 1, -80)")
 	macSource = macSource:gsub("tabSwitcherUIStroke%.Color = Color3%.fromRGB%(255, 255, 255%)", "tabSwitcherUIStroke.Color = Color3.fromRGB(0, 45, 255)")
 	macSource = macSource:gsub("tabSwitcherUIStroke%.Transparency = 1", "tabSwitcherUIStroke.Thickness = 1\n\t\t\ttabSwitcherUIStroke.Transparency = 1")
@@ -592,9 +592,9 @@ local function tuneMacSidebarLayout(gui)
 			topbarBackground.ScaleType = Enum.ScaleType.Crop
 			topbarBackground.Parent = topbar
 		end
-		topbarBackground.AnchorPoint = Vector2.new(0.5, 0.5)
-		topbarBackground.Position = UDim2.new(0.5, 0, 0.5, -4)
-		topbarBackground.Size = UDim2.new(1, 0, 1, 0)
+		topbarBackground.AnchorPoint = Vector2.new(0, 0)
+		topbarBackground.Position = UDim2.new(0, -30, 0, -7)
+		topbarBackground.Size = UDim2.new(1, 60, 0, 72)
 		topbarBackground.ZIndex = 1
 		topbarBackground.Visible = true
 		for _, child in ipairs(topbar:GetChildren()) do
@@ -653,21 +653,21 @@ local function tuneMacSidebarLayout(gui)
 		ghostLogo.Visible = true
 		ghostLogo.AnchorPoint = Vector2.new(0, 0)
 		ghostLogo.Position = UDim2.new(0, 0, 0, 0)
-		ghostLogo.Size = UDim2.new(1, 0, 0, 76)
+		ghostLogo.Size = UDim2.new(1, 0, 0, 112)
 		ghostLogo.ClipsDescendants = true
 		ghostLogo.ZIndex = 3
 		local skull = ghostLogo:FindFirstChild("Skull")
 		if skull then
 			skull.AnchorPoint = Vector2.new(0, 0.5)
-			skull.Position = UDim2.new(0, -8, 0.5, 0)
-			skull.Size = UDim2.fromOffset(60, 60)
+			skull.Position = UDim2.new(0, 4, 0.5, -2)
+			skull.Size = UDim2.fromOffset(88, 88)
 		end
 		for _, name in ipairs({ "Wordmark", "LuaL", "Lua" }) do
 			local logoPart = ghostLogo:FindFirstChild(name)
 			if logoPart then
 				logoPart.AnchorPoint = Vector2.new(0, 0)
-				logoPart.Position = UDim2.fromOffset(44, -38)
-				logoPart.Size = UDim2.fromOffset(160, 160)
+				logoPart.Position = UDim2.fromOffset(64, -34)
+				logoPart.Size = UDim2.fromOffset(222, 222)
 			end
 		end
 	end
