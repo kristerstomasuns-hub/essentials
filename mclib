@@ -57,25 +57,227 @@ local function featureInfoPlainText(value)
 	return tostring(value or ""):gsub("<.->", "")
 end
 
+local featureInfoDescriptions = {
+	["silent aim"] = "Redirects shots toward the selected target without moving your camera.",
+	["silent aim key mode"] = "Chooses whether Silent Aim is held, toggled, or always active.",
+	["aim part"] = "Chooses the body part Silent Aim should prefer.",
+	["aimbot"] = "Moves your aim toward the selected target.",
+	["aimbot fov"] = "Shows or limits the area where the aimbot can select targets.",
+	["aimbot tracer"] = "Draws a line from your view to the current aimbot target.",
+	["aimbot smoothnes"] = "Sets how quickly aim moves toward the target.",
+	["aimbot smoothness"] = "Sets how quickly aim moves toward the target.",
+	["aimbot aim part"] = "Chooses the body part the aimbot should aim at.",
+	["aimbot aim method"] = "Chooses how targets are picked for aiming.",
+	["aimbot mode"] = "Chooses the aimbot behavior style.",
+	["rage bot"] = "Uses aggressive target selection for faster combat.",
+	["rage bot key mode"] = "Chooses how the Rage Bot hotkey behaves.",
+	["rage max distance"] = "Limits how far away Rage Bot can select targets.",
+	["target players"] = "Allows player characters to be selected as targets.",
+	["target ai"] = "Allows NPCs and AI enemies to be selected as targets.",
+	["target helicopters"] = "Allows helicopters to be selected as targets.",
+	["team check"] = "Prevents friendly players from being selected.",
+	["wall check"] = "Requires a clear line of sight before selecting a target.",
+	["wallbang"] = "Allows shots to target enemies through cover.",
+	["corner shoot"] = "Offsets shots around nearby cover and corners.",
+	["corner shoot distance"] = "Sets how far Corner Shoot can offset the shot.",
+	["random hit part"] = "Randomizes the chosen hit part to look less repetitive.",
+	["triggerbot"] = "Fires when your crosshair is over a valid target.",
+	["fire rate"] = "Changes how quickly weapons can fire.",
+	["no recoil"] = "Removes weapon camera kick when shooting.",
+	["no spread"] = "Removes bullet spread for tighter shots.",
+	["no gun bob"] = "Removes weapon sway while moving.",
+	["instant aim"] = "Speeds up weapon aiming and ready time.",
+	["unlock firemodes"] = "Unlocks blocked weapon fire modes.",
+	["instant hit"] = "Makes supported shots register with almost no travel time.",
+	["instant equip"] = "Speeds up weapon equip time.",
+	["custom muzzle flash"] = "Replaces the weapon muzzle flash effect.",
+	["remove muzzle flash"] = "Hides weapon muzzle flash effects.",
+	["use fov"] = "Uses a field-of-view circle to limit target selection.",
+	["show fov"] = "Displays the targeting field-of-view circle.",
+	["fov outline"] = "Adds an outline to the field-of-view circle.",
+	["fov radius"] = "Sets the size of the targeting field-of-view circle.",
+	["bullet tracers"] = "Draws a visible trail showing where bullets travel.",
+	["bullet tracer texture"] = "Chooses the visual texture used for bullet trails.",
+	["bullet tracer despawn delay"] = "Sets how long bullet trails stay visible.",
+	["tracer lifetime"] = "Sets how long tracer visuals remain on screen.",
+	["show aimbot target"] = "Highlights the current aimbot target.",
+	["show aimbot target visibility status"] = "Shows whether the current target is visible.",
+	["show aimbot target chams"] = "Highlights the aimbot target through surfaces.",
+	["chams"] = "Renders players through walls with a colored overlay.",
+	["chams mode"] = "Chooses when player chams are visible.",
+	["chams transparency"] = "Sets how see-through chams appear.",
+	["box esp"] = "Draws boxes around players.",
+	["nametag esp"] = "Shows player names above characters.",
+	["distance esp"] = "Shows how far away players are.",
+	["skeleton esp"] = "Draws player bone outlines.",
+	["health bar esp"] = "Shows player health beside ESP boxes.",
+	["active weapon esp"] = "Shows the weapon a player is holding.",
+	["max esp distance"] = "Limits how far ESP can render.",
+	["container esp"] = "Highlights loot containers.",
+	["dropped items esp"] = "Highlights dropped items.",
+	["corpse esp"] = "Highlights corpses.",
+	["vehicle esp"] = "Highlights vehicles.",
+	["quest item esp"] = "Highlights quest items.",
+	["exit esp"] = "Highlights extraction exits.",
+	["ai nametag esp"] = "Shows names for AI enemies.",
+	["ai chams esp"] = "Highlights AI enemies through surfaces.",
+	["inventory checker"] = "Opens a target inventory preview.",
+	["inventory viewer"] = "Shows a full item view for the selected target.",
+	["item finder"] = "Searches nearby inventories for whitelisted items.",
+	["item whitelist"] = "Chooses which items Item Finder should watch for.",
+	["show inventory check target"] = "Highlights the player being inventory checked.",
+	["force render all players"] = "Forces distant player models to stay rendered.",
+	["extreme potato mode"] = "Disables expensive visuals for better performance.",
+	["speed hack"] = "Increases player movement speed.",
+	["speed"] = "Sets movement speed.",
+	["omni sprint"] = "Allows sprinting in more movement directions.",
+	["third person"] = "Moves the camera behind your character.",
+	["third person distance"] = "Sets how far the third-person camera sits back.",
+	["walk on water"] = "Lets your character move across water surfaces.",
+	["flyhack"] = "Allows free movement through the air.",
+	["fly speed"] = "Sets horizontal flying speed.",
+	["vertical speed"] = "Sets upward and downward flying speed.",
+	["bunny hop"] = "Automatically jumps to preserve movement momentum.",
+	["jump power"] = "Changes jump strength.",
+	["no fall damage"] = "Prevents fall damage from being applied.",
+	["freecam"] = "Detaches the camera so you can look around freely.",
+	["freecam speed"] = "Sets how fast Freecam moves.",
+	["show distance esp"] = "Shows distance labels while using Freecam.",
+	["vis check from real character"] = "Checks visibility from your real character instead of the free camera.",
+	["anti aim"] = "Changes your visible orientation to make you harder to hit.",
+	["anti aim mode"] = "Chooses the anti-aim movement pattern.",
+	["yaw offset"] = "Rotates your visible yaw by the selected amount.",
+	["pitch override"] = "Overrides your visible pitch angle.",
+	["fake lag desync"] = "Delays position updates to create desync.",
+	["fake lag interval"] = "Sets how often desync position updates are sent.",
+	["visualize server position"] = "Shows the position other players may see.",
+	["visualizer transparency"] = "Sets how transparent the server-position visual is.",
+	["custom position offset"] = "Uses a custom offset for desync positioning.",
+	["offset radius"] = "Sets the size of the custom desync offset.",
+	["ug resolver"] = "Attempts to resolve underground or offset targets.",
+	["ug resolver depth"] = "Sets how deep the resolver checks.",
+	["tp kill"] = "Teleports above the selected target for close-range kills.",
+	["height offset"] = "Sets how high TP Kill places you above the target.",
+	["auto look at target"] = "Faces your character toward the TP Kill target.",
+	["auto triggerbot"] = "Fires automatically after TP Kill finds a target.",
+	["target info panel"] = "Shows details about the current target.",
+	["target line"] = "Draws a line to the current target.",
+	["panel transparency"] = "Sets how transparent the target info panel is.",
+	["panel x"] = "Moves the target info panel horizontally.",
+	["panel y"] = "Moves the target info panel vertically.",
+	["custom hit sound"] = "Plays a selected sound when you hit a target.",
+	["hit sound"] = "Chooses the sound played on hit.",
+	["hit sound volume"] = "Sets hit sound loudness.",
+	["custom gun sound"] = "Replaces weapon firing sounds.",
+	["gun sound"] = "Chooses the replacement weapon sound.",
+	["gun sound volume"] = "Sets replacement gun sound loudness.",
+	["gun sounds volume"] = "Sets default weapon sound volume.",
+	["hitmarker sounds volume"] = "Sets hitmarker sound volume.",
+	["disable breathing sound"] = "Mutes gas mask breathing audio.",
+	["no reapir blur"] = "Removes repair blur effects.",
+	["no repair blur"] = "Removes repair blur effects.",
+	["skin changer"] = "Applies selected weapon or item skins locally.",
+	["unlock all skins"] = "Makes locked skins available locally.",
+	["viewmodel changer"] = "Moves first-person arms and weapons.",
+	["arm chams"] = "Colors first-person arms.",
+	["body chams"] = "Colors visible body parts.",
+	["gun chams"] = "Colors first-person weapons.",
+	["remove arms"] = "Hides first-person arms.",
+	["arm chams material"] = "Chooses the material used on arm chams.",
+	["body chams material"] = "Chooses the material used on body chams.",
+	["gun chams material"] = "Chooses the material used on gun chams.",
+	["arm chams transparency"] = "Sets arm chams transparency.",
+	["body chams transparency"] = "Sets body chams transparency.",
+	["gun chams transparency"] = "Sets gun chams transparency.",
+	["time changer"] = "Overrides the world time locally.",
+	["time"] = "Sets the local world time.",
+	["ambient changer"] = "Changes the world ambient lighting.",
+	["rgb ambient"] = "Cycles ambient lighting colors.",
+	["ambient rgb speed"] = "Sets how fast ambient colors cycle.",
+	["cloud changer"] = "Changes cloud color and visibility.",
+	["cloud transparency"] = "Sets cloud visibility.",
+	["no grass"] = "Hides grass for cleaner visibility.",
+	["no leafs"] = "Hides leaf clutter for cleaner visibility.",
+	["no landmines"] = "Highlights or removes landmine visibility issues.",
+	["no fog"] = "Removes fog for clearer long-range vision.",
+	["full brightness"] = "Brightens dark areas locally.",
+	["xray"] = "Makes selected world geometry easier to see through.",
+	["no clouds"] = "Hides clouds from the sky.",
+	["sky"] = "Changes the local skybox.",
+	["mod detector"] = "Warns when likely moderators join or appear.",
+	["cheater detector"] = "Flags players with suspicious stats or behavior.",
+	["trade key"] = "Chooses the key used for trade actions.",
+	["trade count"] = "Sets how many trade actions to perform.",
+	["trade delay"] = "Sets the delay between trade actions.",
+	["trade item"] = "Chooses which item to trade.",
+	["refresh trade items"] = "Reloads the list of tradable items.",
+	["select config"] = "Chooses which saved config to use.",
+	["enter config name"] = "Names the config to save.",
+	["refresh config list"] = "Reloads saved config names.",
+	["save config"] = "Saves the current settings.",
+	["load config"] = "Loads the selected saved settings.",
+	["delete config"] = "Deletes the selected saved config.",
+	["unload"] = "Removes the script and restores changed client state.",
+	["npc"] = "Chooses a lobby NPC.",
+	["teleport npc to you"] = "Moves the selected lobby NPC to your position.",
+	["custom theme"] = "Applies your chosen menu accent color.",
+	["hide server information"] = "Hides server info text from the screen.",
+	["hide name in chat"] = "Replaces your name in chat locally.",
+	["rejoin server"] = "Reconnects to the current server.",
+	["keybind indicator"] = "Shows active keybind states on screen.",
+	["toggle menu key"] = "Chooses the key that opens or closes the menu.",
+}
+
+local function featureInfoKey(value)
+	return featureInfoPlainText(value)
+		:lower()
+		:gsub("%b()", "")
+		:gsub("[^%w]+", " ")
+		:gsub("^%s+", "")
+		:gsub("%s+$", "")
+end
+
 local function featureInfoDescription(name, kind)
 	name = featureInfoPlainText(name)
-	kind = tostring(kind or "feature")
-	if kind == "Toggle" then
-		return "Turns " .. name .. " on or off."
-	elseif kind == "Slider" then
-		return "Adjusts the " .. name .. " value."
-	elseif kind == "Dropdown" then
-		return "Selects the " .. name .. " option."
-	elseif kind == "Input" then
-		return "Sets the " .. name .. " text value."
-	elseif kind == "Keybind" then
-		return "Sets the key used for " .. name .. "."
-	elseif kind == "Button" then
-		return "Runs the " .. name .. " action."
-	elseif kind == "Colorpicker" then
-		return "Changes the " .. name .. " color."
+	local key = featureInfoKey(name)
+	local direct = featureInfoDescriptions[key]
+	if direct then
+		return direct
 	end
-	return "Controls " .. name .. "."
+
+	if key:find("distance", 1, true) then
+		return "Sets how far " .. name .. " can reach or render."
+	elseif key:find("transparency", 1, true) then
+		return "Sets how see-through " .. name:gsub("%s*[Tt]ransparency", "") .. " appears."
+	elseif key:find("color", 1, true) then
+		return "Chooses the color used by " .. name:gsub("%s*[Cc]olor", "") .. "."
+	elseif key:find("volume", 1, true) then
+		return "Sets how loud " .. name:gsub("%s*[Vv]olume", "") .. " plays."
+	elseif key:find("speed", 1, true) then
+		return "Sets how fast " .. name:gsub("%s*[Ss]peed", "") .. " runs."
+	elseif key:find("fov", 1, true) then
+		return "Limits target selection to the field-of-view area."
+	elseif key:find("esp", 1, true) then
+		return "Adds an on-screen visual marker for " .. name:gsub("%s*ESP", "") .. "."
+	elseif key:find("chams", 1, true) then
+		return "Applies a visible colored overlay for " .. name:gsub("%s*[Cc]hams", "") .. "."
+	end
+
+	kind = tostring(kind or "feature")
+	if kind == "Slider" then
+		return "Fine-tunes the strength or amount for " .. name .. "."
+	elseif kind == "Dropdown" then
+		return "Chooses how " .. name .. " behaves."
+	elseif kind == "Input" then
+		return "Sets the value used by " .. name .. "."
+	elseif kind == "Keybind" then
+		return "Chooses the key used to activate " .. name .. "."
+	elseif kind == "Button" then
+		return "Performs " .. name .. " immediately."
+	elseif kind == "Colorpicker" then
+		return "Chooses the color used by " .. name .. "."
+	end
+	return "Enables the " .. name .. " behavior in-game."
 end
 
 local function attachFeatureInfoIcon(label, row, name, description, kind)
