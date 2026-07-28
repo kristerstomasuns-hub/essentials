@@ -593,8 +593,9 @@ local function tuneMacSidebarLayout(gui)
 			topbarBackground.ScaleType = Enum.ScaleType.Crop
 			topbarBackground.Parent = topbar
 		end
-		topbarBackground.Position = UDim2.new(0, -30, 0, -3)
-		topbarBackground.Size = UDim2.new(1, 60, 0, 72)
+		topbarBackground.AnchorPoint = Vector2.new(0.5, 0.5)
+		topbarBackground.Position = UDim2.new(0.5, 0, 0.5, -4)
+		topbarBackground.Size = UDim2.new(1, 0, 1, 0)
 		topbarBackground.ZIndex = 1
 		topbarBackground.Visible = true
 		for _, child in ipairs(topbar:GetChildren()) do

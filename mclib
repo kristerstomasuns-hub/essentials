@@ -294,19 +294,17 @@ local function attachFeatureInfoIcon(label, row, name, description, kind)
 	icon.AnchorPoint = Vector2.new(0, 0.5)
 	icon.Size = UDim2.fromOffset(12, 12)
 	icon.ZIndex = (label.ZIndex or 1) + 5
-	icon.Parent = row
+	icon.Parent = label
 
 	local iconSize = 12
 	local iconGap = 5
 
 	local function updatePosition()
-		if not icon.Parent or not label.Parent or row.AbsoluteSize.X <= 0 then return end
-		local labelX = label.AbsolutePosition.X - row.AbsolutePosition.X
-		local labelY = label.AbsolutePosition.Y - row.AbsolutePosition.Y
+		if not icon.Parent or not label.Parent or label.AbsoluteSize.X <= 0 then return end
 		local textSize = TextService:GetTextSize(featureInfoPlainText(label.Text), label.TextSize, label.Font, Vector2.new(1000, label.AbsoluteSize.Y))
 		local textWidth = math.min(textSize.X, math.max(0, label.AbsoluteSize.X - iconSize - iconGap))
-		local maxX = math.max(0, row.AbsoluteSize.X - iconSize - 2)
-		icon.Position = UDim2.new(0, math.min(maxX, labelX + textWidth + iconGap), 0, labelY + label.AbsoluteSize.Y * 0.5)
+		local maxX = math.max(0, label.AbsoluteSize.X - iconSize - 2)
+		icon.Position = UDim2.new(0, math.min(maxX, textWidth + iconGap), 0.5, 0)
 	end
 
 	label:GetPropertyChangedSignal("Text"):Connect(updatePosition)
@@ -1389,7 +1387,7 @@ function MacLib:Window(Settings)
 	topbarBackground.BackgroundTransparency = 1
 	topbarBackground.BorderSizePixel = 0
 	topbarBackground.AnchorPoint = Vector2.new(0.5, 0.5)
-	topbarBackground.Position = UDim2.new(0.5, 0, 0.5, 0)
+	topbarBackground.Position = UDim2.new(0.5, 0, 0.5, -4)
 	topbarBackground.Size = UDim2.new(1, 0, 1, 0)
 	topbarBackground.ScaleType = Enum.ScaleType.Crop
 	topbarBackground.ZIndex = 1
