@@ -622,7 +622,7 @@ function MacLib:Window(Settings)
 	baseUIStroke.Name = "BaseUIStroke"
 	baseUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 	baseUIStroke.Color = Color3.fromRGB(255, 255, 255)
-	baseUIStroke.Transparency = 0.9
+	baseUIStroke.Transparency = 0.78
 	baseUIStroke.Parent = base
 
 	local sidebar = Instance.new("Frame")
@@ -637,7 +637,7 @@ function MacLib:Window(Settings)
 	local divider = Instance.new("Frame")
 	divider.Name = "Divider"
 	divider.AnchorPoint = Vector2.new(1, 0)
-	divider.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
+	divider.BackgroundColor3 = Color3.fromRGB(34, 40, 42)
 	divider.BackgroundTransparency = 0
 	divider.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	divider.BorderSizePixel = 0
@@ -796,7 +796,7 @@ function MacLib:Window(Settings)
 	local divider1 = Instance.new("Frame")
 	divider1.Name = "Divider"
 	divider1.AnchorPoint = Vector2.new(0, 1)
-	divider1.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
+	divider1.BackgroundColor3 = Color3.fromRGB(34, 40, 42)
 	divider1.BackgroundTransparency = 0
 	divider1.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	divider1.BorderSizePixel = 0
@@ -818,7 +818,7 @@ function MacLib:Window(Settings)
 	local divider2 = Instance.new("Frame")
 	divider2.Name = "Divider"
 	divider2.AnchorPoint = Vector2.new(0, 1)
-	divider2.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
+	divider2.BackgroundColor3 = Color3.fromRGB(34, 40, 42)
 	divider2.BackgroundTransparency = 0
 	divider2.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	divider2.BorderSizePixel = 0
@@ -921,7 +921,7 @@ function MacLib:Window(Settings)
 	subtitle.RichText = true
 	subtitle.Text = Settings.Subtitle
 	subtitle.RichText = true
-	subtitle.TextColor3 = Color3.fromRGB(190, 70, 255)
+	subtitle.TextColor3 = Color3.fromRGB(0, 210, 190)
 	subtitle.TextSize = 12
 	subtitle.TextTransparency = 0
 	subtitle.TextTruncate = Enum.TextTruncate.SplitWord
@@ -1248,7 +1248,7 @@ function MacLib:Window(Settings)
 
 	local themeAccentLineTop = Instance.new("Frame")
 	themeAccentLineTop.Name = "ThemeAccentLineTop"
-	themeAccentLineTop.BackgroundColor3 = Color3.fromRGB(0, 45, 255)
+	themeAccentLineTop.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
 	themeAccentLineTop.BackgroundTransparency = 0.1
 	themeAccentLineTop.BorderSizePixel = 0
 	themeAccentLineTop.Position = UDim2.new(0, 0, 0, 74)
@@ -1259,7 +1259,7 @@ function MacLib:Window(Settings)
 
 	local themeAccentLineRight = Instance.new("Frame")
 	themeAccentLineRight.Name = "ThemeAccentLineRight"
-	themeAccentLineRight.BackgroundColor3 = Color3.fromRGB(0, 45, 255)
+	themeAccentLineRight.BackgroundColor3 = Color3.fromRGB(34, 40, 42)
 	themeAccentLineRight.BackgroundTransparency = 0.2
 	themeAccentLineRight.BorderSizePixel = 0
 	themeAccentLineRight.Position = UDim2.new(1, -1, 0, 0)
@@ -1284,7 +1284,7 @@ function MacLib:Window(Settings)
 
 	local themeAccentLineBottom = Instance.new("Frame")
 	themeAccentLineBottom.Name = "ThemeAccentLineBottom"
-	themeAccentLineBottom.BackgroundColor3 = Color3.fromRGB(0, 45, 255)
+	themeAccentLineBottom.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
 	themeAccentLineBottom.BackgroundTransparency = 1
 	themeAccentLineBottom.BorderSizePixel = 0
 	themeAccentLineBottom.Position = UDim2.new(0, 0, 1, -1)
@@ -1416,8 +1416,8 @@ function MacLib:Window(Settings)
 	local divider4 = Instance.new("Frame")
 	divider4.Name = "Divider"
 	divider4.AnchorPoint = Vector2.new(0, 1)
-	divider4.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
-	divider4.BackgroundTransparency = 0
+	divider4.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
+	divider4.BackgroundTransparency = 0.1
 	divider4.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	divider4.BorderSizePixel = 0
 	divider4.Position = UDim2.fromScale(0, 1)
@@ -1575,13 +1575,13 @@ function MacLib:Window(Settings)
 
 	local currentTab = Instance.new("TextLabel")
 	currentTab.Name = "CurrentTab"
-	currentTab.FontFace = Font.new(assets.interFont)
+	currentTab.FontFace = Font.new(assets.interFont, Enum.FontWeight.SemiBold, Enum.FontStyle.Normal)
 	currentTab.RichText = true
 	currentTab.Text = ""
 	currentTab.RichText = true
 	currentTab.TextColor3 = Color3.fromRGB(255, 255, 255)
-	currentTab.TextSize = 15
-	currentTab.TextTransparency = 0.5
+	currentTab.TextSize = 20
+	currentTab.TextTransparency = 0.05
 	currentTab.TextTruncate = Enum.TextTruncate.SplitWord
 	currentTab.TextXAlignment = Enum.TextXAlignment.Left
 	currentTab.TextYAlignment = Enum.TextYAlignment.Top
@@ -1593,7 +1593,7 @@ function MacLib:Window(Settings)
 	currentTab.BorderSizePixel = 0
 	currentTab.Position = UDim2.fromScale(0, 0.5)
 	currentTab.Size = UDim2.fromScale(0.9, 0)
-	currentTab.Visible = false
+	currentTab.Visible = true
 	currentTab.Parent = elements
 
 	elements.Parent = topbar
@@ -2082,7 +2082,7 @@ function MacLib:Window(Settings)
 		local divider3 = Instance.new("Frame")
 		divider3.Name = "Divider"
 		divider3.AnchorPoint = Vector2.new(0.5, 1)
-		divider3.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
+		divider3.BackgroundColor3 = Color3.fromRGB(34, 40, 42)
 		divider3.BackgroundTransparency = 0
 		divider3.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		divider3.BorderSizePixel = 0
@@ -2140,7 +2140,7 @@ function MacLib:Window(Settings)
 			local tabSwitcherUIStroke = Instance.new("UIStroke")
 			tabSwitcherUIStroke.Name = "TabSwitcherUIStroke"
 			tabSwitcherUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-			tabSwitcherUIStroke.Color = Color3.fromRGB(0, 45, 255)
+			tabSwitcherUIStroke.Color = Color3.fromRGB(0, 221, 191)
 			tabSwitcherUIStroke.Thickness = 1
 			tabSwitcherUIStroke.Transparency = 1
 			tabSwitcherUIStroke.Parent = tabSwitcher
@@ -2177,7 +2177,7 @@ function MacLib:Window(Settings)
 			)
 			tabSwitcherName.Text = Settings.Name
 			tabSwitcherName.RichText = true
-			tabSwitcherName.TextColor3 = Color3.fromRGB(0, 170, 255)
+			tabSwitcherName.TextColor3 = Color3.fromRGB(0, 221, 191)
 			tabSwitcherName.TextSize = 16
 			tabSwitcherName.TextTransparency = 0.5
 			tabSwitcherName.TextTruncate = Enum.TextTruncate.SplitWord
@@ -2292,7 +2292,7 @@ function MacLib:Window(Settings)
 				local section = Instance.new("Frame")
 				section.Name = "Section"
 				section.AutomaticSize = Enum.AutomaticSize.Y
-				section.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+				section.BackgroundColor3 = Color3.fromRGB(9, 12, 13)
 				section.BackgroundTransparency = 0
 				section.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				section.BorderSizePixel = 0
@@ -2303,13 +2303,14 @@ function MacLib:Window(Settings)
 
 				local sectionUICorner = Instance.new("UICorner")
 				sectionUICorner.Name = "SectionUICorner"
+				sectionUICorner.CornerRadius = UDim.new(0, 6)
 				sectionUICorner.Parent = section
 
 				local sectionUIStroke = Instance.new("UIStroke")
 				sectionUIStroke.Name = "SectionUIStroke"
 				sectionUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 				sectionUIStroke.Color = Color3.fromRGB(255, 255, 255)
-				sectionUIStroke.Transparency = 0.97
+				sectionUIStroke.Transparency = 0.88
 				sectionUIStroke.Parent = section
 
 				local sectionUIListLayout = Instance.new("UIListLayout")
@@ -2570,11 +2571,11 @@ function MacLib:Window(Settings)
 					toggle1.Parent = toggle
 
 					local toggle1Colors = {
-						Enabled = Color3.fromRGB(20, 58, 122),
+						Enabled = Color3.fromRGB(0, 221, 191),
 						Disabled = Color3.fromRGB(82, 82, 88)
 					}
 					local toggle1StrokeColors = {
-						Enabled = Color3.fromRGB(34, 92, 190),
+						Enabled = Color3.fromRGB(0, 174, 151),
 						Disabled = Color3.fromRGB(58, 58, 64)
 					}
 
@@ -5778,7 +5779,7 @@ function MacLib:Window(Settings)
 					)
 					headerText.RichText = true
 					headerText.Text = HeaderFunctions.Settings.Text or HeaderFunctions.Settings.Name
-					headerText.TextColor3 = Color3.fromRGB(0, 170, 255)
+					headerText.TextColor3 = Color3.fromRGB(0, 221, 191)
 					headerText.TextSize = 16
 					headerText.TextTransparency = 0
 					headerText.TextWrapped = true
@@ -5996,7 +5997,7 @@ function MacLib:Window(Settings)
 
 					local line = Instance.new("Frame")
 					line.Name = "Line"
-					line.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
+					line.BackgroundColor3 = Color3.fromRGB(34, 40, 42)
 					line.BackgroundTransparency = 0
 					line.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					line.BorderSizePixel = 0
@@ -6048,12 +6049,12 @@ function MacLib:Window(Settings)
 
 				for i, tabInfo in pairs(tabs) do
 					Tween(i, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
-						BackgroundTransparency = (i == tabSwitcher and 0.5 or 1)
+						BackgroundTransparency = (i == tabSwitcher and 0.35 or 1)
 					}):Play()
 
 					if tabInfo.tabStroke then
 						Tween(tabInfo.tabStroke, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
-							Transparency = (i == tabSwitcher and 0.2 or 1)
+							Transparency = (i == tabSwitcher and 0.05 or 1)
 						}):Play()
 					end
 					if tabInfo.switcherImage then
@@ -6063,14 +6064,14 @@ function MacLib:Window(Settings)
 					end
 					if tabInfo.switcherName then
 						Tween(tabInfo.switcherName, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
-							TextTransparency = (i == tabSwitcher and 0.1 or 0.5)
+							TextTransparency = (i == tabSwitcher and 0 or 0.5)
 						}):Play()
 					end
 				end
 
 				tabs[tabSwitcher].tabContent.Parent = content
 				currentTabInstance = tabs[tabSwitcher].tabContent
-				currentTab.Text = ""
+				currentTab.Text = tabSwitcherName.Text or ""
 			end
 
 			tabSwitcher.MouseButton1Click:Connect(function()

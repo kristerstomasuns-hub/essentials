@@ -33,7 +33,7 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("sidebarGroup%.Size = UDim2%.new%(1, 0, 1, %-63%)", "sidebarGroup.Size = UDim2.new(1, 0, 1, -74)")
 	macSource = macSource:gsub("userInfo%.Size = UDim2%.new%(1, 0, 0, 107%)", "userInfo.Size = UDim2.new(1, 0, 0, 76)")
 	macSource = macSource:gsub("informationGroup%.Parent = userInfo", "informationGroup.Visible = false\n\tinformationGroup.Parent = userInfo")
-	macSource = macSource:gsub("userInfoUIPadding%.Parent = userInfo", "userInfoUIPadding.Parent = userInfo\n\n\ttitleFrame.Parent = userInfo\n\ttitleFrame.Position = UDim2.new(0, 18, 0, 14)\n\ttitleFrame.Size = UDim2.new(1, -36, 0, 46)\n\ttitle.TextSize = 14\n\tsubtitle.TextSize = 10\n\tsubtitle.TextColor3 = Color3.fromRGB(190, 70, 255)\n\tsubtitle.TextTransparency = 0")
+	macSource = macSource:gsub("userInfoUIPadding%.Parent = userInfo", "userInfoUIPadding.Parent = userInfo\n\n\ttitleFrame.Parent = userInfo\n\ttitleFrame.Position = UDim2.new(0, 18, 0, 14)\n\ttitleFrame.Size = UDim2.new(1, -36, 0, 46)\n\ttitle.TextSize = 14\n\tsubtitle.TextSize = 10\n\tsubtitle.TextColor3 = Color3.fromRGB(0, 210, 190)\n\tsubtitle.TextTransparency = 0")
 	macSource = macSource:gsub("ghostLogo%.AnchorPoint = Vector2%.new%(0, 1%)", "ghostLogo.AnchorPoint = Vector2.new(0, 0)")
 	macSource = macSource:gsub("ghostLogo%.Position = UDim2%.new%(0, 4, 1, %-12%)", "ghostLogo.Position = UDim2.new(0, -18, 0, -12)")
 	macSource = macSource:gsub("ghostLogo%.Size = UDim2%.new%(1, %-6, 0, 104%)", "ghostLogo.Size = UDim2.new(1, 0, 0, 112)")
@@ -48,7 +48,7 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("ghostLua%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLua.Position = UDim2.fromOffset(58, -22)")
 	macSource = macSource:gsub("ghostLua%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLua.Size = UDim2.fromOffset(232, 232)")
 	macSource = macSource:gsub("tabSwitchers%.Size = UDim2%.new%(1, 0, 1, %-107%)", "tabSwitchers.Size = UDim2.new(1, 0, 1, -80)")
-	macSource = macSource:gsub("tabSwitcherUIStroke%.Color = Color3%.fromRGB%(255, 255, 255%)", "tabSwitcherUIStroke.Color = Color3.fromRGB(0, 45, 255)")
+	macSource = macSource:gsub("tabSwitcherUIStroke%.Color = Color3%.fromRGB%(255, 255, 255%)", "tabSwitcherUIStroke.Color = Color3.fromRGB(0, 221, 191)")
 	macSource = macSource:gsub("tabSwitcherUIStroke%.Transparency = 1", "tabSwitcherUIStroke.Thickness = 1\n\t\t\ttabSwitcherUIStroke.Transparency = 1")
 	macSource = macSource:gsub("Transparency = %(i == tabSwitcher and 0%.95 or 1%)", "Transparency = (i == tabSwitcher and 0.2 or 1)")
 	macSource = macSource:gsub("tabSwitchersScrollingFrame%.BackgroundTransparency = 0", "tabSwitchersScrollingFrame.BackgroundTransparency = 1")
@@ -59,7 +59,7 @@ local function patchMacLibSource(macSource)
 		local tabBackgroundSource = [[
 	local themeAccentLineTop = Instance.new("Frame")
 	themeAccentLineTop.Name = "ThemeAccentLineTop"
-	themeAccentLineTop.BackgroundColor3 = Color3.fromRGB(0, 45, 255)
+	themeAccentLineTop.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
 	themeAccentLineTop.BackgroundTransparency = 0.1
 	themeAccentLineTop.BorderSizePixel = 0
 	themeAccentLineTop.Position = UDim2.new(0, 0, 0, 74)
@@ -70,7 +70,7 @@ local function patchMacLibSource(macSource)
 
 	local themeAccentLineRight = Instance.new("Frame")
 	themeAccentLineRight.Name = "ThemeAccentLineRight"
-	themeAccentLineRight.BackgroundColor3 = Color3.fromRGB(0, 45, 255)
+	themeAccentLineRight.BackgroundColor3 = Color3.fromRGB(34, 40, 42)
 	themeAccentLineRight.BackgroundTransparency = 0.2
 	themeAccentLineRight.BorderSizePixel = 0
 	themeAccentLineRight.Position = UDim2.new(1, -1, 0, 74)
@@ -94,7 +94,7 @@ local function patchMacLibSource(macSource)
 
 	local themeAccentLineBottom = Instance.new("Frame")
 	themeAccentLineBottom.Name = "ThemeAccentLineBottom"
-	themeAccentLineBottom.BackgroundColor3 = Color3.fromRGB(0, 45, 255)
+	themeAccentLineBottom.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
 	themeAccentLineBottom.BackgroundTransparency = 1
 	themeAccentLineBottom.BorderSizePixel = 0
 	themeAccentLineBottom.Position = UDim2.new(0, 0, 1, -1)
@@ -599,6 +599,8 @@ local function tuneMacSidebarLayout(gui)
 		topbarBackground.Visible = true
 		for _, child in ipairs(topbar:GetChildren()) do
 			if child.Name == "Divider" and child:IsA("GuiObject") then
+				child.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
+				child.BackgroundTransparency = 0.1
 				child.ZIndex = 3
 			elseif child.Name == "Elements" and child:IsA("GuiObject") then
 				child.BackgroundTransparency = 1
@@ -640,7 +642,7 @@ local function tuneMacSidebarLayout(gui)
 				textObject.TextSize = textObject.Name == "Title" and 14 or 10
 				if textObject.Name == "Subtitle" then
 					textObject.Text = "Credits - KT.RK.JD"
-					textObject.TextColor3 = Color3.fromRGB(190, 70, 255)
+					textObject.TextColor3 = Color3.fromRGB(0, 210, 190)
 					textObject.TextTransparency = 0
 				end
 			end
@@ -681,7 +683,7 @@ local function tuneMacSidebarLayout(gui)
 			line = Instance.new("Frame")
 			line.Name = name
 			line.BorderSizePixel = 0
-			line.BackgroundColor3 = Color3.fromRGB(0, 45, 255)
+			line.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
 			line.BackgroundTransparency = 0.1
 			line.ZIndex = 20
 			line.Parent = parent
@@ -698,6 +700,7 @@ local function tuneMacSidebarLayout(gui)
 	end
 	local rightLine = ensureAccentLine(sidebar, "ThemeAccentLineRight", UDim2.new(1, -1, 0, headerHeight), UDim2.new(0, 1, 1, -headerHeight))
 	if rightLine then
+		rightLine.BackgroundColor3 = Color3.fromRGB(34, 40, 42)
 		rightLine.BackgroundTransparency = 0.2
 	end
 	local bottomLine = ensureAccentLine(tabSwitchers, "ThemeAccentLineBottom", UDim2.new(0, 0, 1, -1), UDim2.new(1, 0, 0, 1))
@@ -720,11 +723,11 @@ local function forceOpaqueMacUi(gui)
 		return
 	end
 
-	local windowFill = Color3.fromRGB(7, 7, 7)
-	local panelFill = Color3.fromRGB(10, 10, 10)
+	local windowFill = Color3.fromRGB(5, 7, 8)
+	local panelFill = Color3.fromRGB(9, 12, 13)
 	local controlFill = Color3.fromRGB(13, 13, 13)
-	local overlayFill = Color3.fromRGB(7, 7, 7)
-	local dividerFill = Color3.fromRGB(28, 28, 28)
+	local overlayFill = Color3.fromRGB(5, 7, 8)
+	local dividerFill = Color3.fromRGB(34, 40, 42)
 
 	local fills = {
 		Base = windowFill,
