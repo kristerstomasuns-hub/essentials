@@ -2162,7 +2162,7 @@ function MacLib:Window(Settings)
 				tabImage = Instance.new("ImageLabel")
 				tabImage.Name = "TabImage"
 				tabImage.Image = Settings.Image
-				tabImage.ImageColor3 = Color3.fromRGB(103, 182, 254)
+				tabImage.ImageColor3 = Color3.fromRGB(255, 255, 255)
 				tabImage.ImageTransparency = 0.5
 				tabImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				tabImage.BackgroundTransparency = 1
@@ -2296,7 +2296,7 @@ function MacLib:Window(Settings)
 				local section = Instance.new("Frame")
 				section.Name = "Section"
 				section.AutomaticSize = Enum.AutomaticSize.Y
-				section.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+				section.BackgroundColor3 = Color3.fromRGB(17, 19, 20)
 				section.BackgroundTransparency = 0
 				section.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				section.BorderSizePixel = 0
@@ -2550,11 +2550,13 @@ function MacLib:Window(Settings)
 					togglerDot.Name = "TogglerDot"
 					togglerDot.AnchorPoint = Vector2.new(0.5, 0.5)
 					togglerDot.BackgroundColor3 = Color3.fromRGB(212, 214, 219)
+					togglerDot.BackgroundTransparency = 1
 					togglerDot.BorderSizePixel = 0
 					togglerDot.Position = UDim2.fromScale(0.5, 0.5)
-					togglerDot.Size = UDim2.fromOffset(3, 3)
+					togglerDot.Size = UDim2.fromOffset(0, 0)
 					togglerDot.ZIndex = 3
 					togglerDot.Parent = togglerHead
+					togglerDot.Visible = false
 					togglerDot:SetAttribute("ThemeIgnore", true)
 
 					local togglerDotUICorner = Instance.new("UICorner")
@@ -2566,7 +2568,7 @@ function MacLib:Window(Settings)
 					togglerDotUIStroke.Name = "TogglerDotUIStroke"
 					togglerDotUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 					togglerDotUIStroke.Color = Color3.fromRGB(170, 170, 170)
-					togglerDotUIStroke.Transparency = 0
+					togglerDotUIStroke.Transparency = 1
 					togglerDotUIStroke.Parent = togglerDot
 
 					toggle1.Parent = toggle
@@ -6060,6 +6062,7 @@ function MacLib:Window(Settings)
 					end
 					if tabInfo.switcherImage then
 						Tween(tabInfo.switcherImage, TweenInfo.new(easetime, Enum.EasingStyle.Sine), {
+							ImageColor3 = (i == tabSwitcher and Color3.fromRGB(103, 182, 254) or Color3.fromRGB(255, 255, 255)),
 							ImageTransparency = (i == tabSwitcher and 0.1 or 0.5)
 						}):Play()
 					end

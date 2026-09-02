@@ -29,9 +29,13 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("Color3%.fromRGB%(82, 82, 88%)", "Color3.fromRGB(11, 13, 15)")
 	macSource = macSource:gsub("Color3%.fromRGB%(58, 58, 64%)", "Color3.fromRGB(42, 46, 52)")
 	macSource = macSource:gsub("Color3%.fromRGB%(13, 13, 13%)", "Color3.fromRGB(11, 13, 15)")
+	macSource = macSource:gsub("Color3%.fromRGB%(9, 12, 13%)", "Color3.fromRGB(17, 19, 20)")
 	macSource = macSource:gsub("Color3%.fromRGB%(132, 40, 148%)", "Color3.fromRGB(103, 182, 254)")
 	macSource = macSource:gsub("Color3%.fromRGB%(79, 95, 239%)", "Color3.fromRGB(103, 182, 254)")
 	macSource = macSource:gsub("Color3%.fromRGB%(56, 67, 163%)", "Color3.fromRGB(103, 182, 254)")
+	macSource = macSource:gsub("togglerDot%.Size = UDim2%.fromOffset%(3, 3%)", "togglerDot.Size = UDim2.fromOffset(0, 0)")
+	macSource = macSource:gsub("togglerDot%.Parent = togglerHead", "togglerDot.Visible = false\n\t\t\t\t\ttogglerDot.Parent = togglerHead")
+	macSource = macSource:gsub("togglerDotUIStroke%.Transparency = 0", "togglerDotUIStroke.Transparency = 1")
 	macSource = macSource:gsub("ColorpickerFunctions%.Alpha = %(cX / width%)", "ColorpickerFunctions.Alpha = 1 - (cX / width)")
 	macSource = macSource:gsub("local cX = ColorpickerFunctions%.Alpha %* width", "local cX = (1 - ColorpickerFunctions.Alpha) * width")
 	macSource = macSource:gsub("local cX = math%.clamp%(alpha or 0, 0, 1%) %* width", "local cX = (1 - ColorpickerFunctions.Alpha) * width")
@@ -59,6 +63,10 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("ghostLua%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLua.Size = UDim2.fromOffset(208, 208)")
 	macSource = macSource:gsub("tabSwitchers%.Size = UDim2%.new%(1, 0, 1, %-107%)", "tabSwitchers.Size = UDim2.new(1, 0, 1, -80)")
 	macSource = macSource:gsub("tabSwitcherUIStroke%.Color = Color3%.fromRGB%(255, 255, 255%)", "tabSwitcherUIStroke.Color = Color3.fromRGB(103, 182, 254)")
+	macSource = macSource:gsub("tabImage%.ImageColor3 = Color3%.fromRGB%(103, 182, 254%)", "tabImage.ImageColor3 = Color3.fromRGB(255, 255, 255)")
+	if not macSource:find("ImageColor3 = (i == tabSwitcher and Color3.fromRGB(103, 182, 254)", 1, true) then
+		macSource = macSource:gsub("ImageTransparency = %(i == tabSwitcher and 0%.1 or 0%.5%)", "ImageColor3 = (i == tabSwitcher and Color3.fromRGB(103, 182, 254) or Color3.fromRGB(255, 255, 255)),\n\t\t\t\t\t\t\tImageTransparency = (i == tabSwitcher and 0.1 or 0.5)")
+	end
 	macSource = macSource:gsub("tabSwitcherUIStroke%.Transparency = 1", "tabSwitcherUIStroke.Thickness = 1.25\n\t\t\ttabSwitcherUIStroke.Transparency = 1")
 	macSource = macSource:gsub("Transparency = %(i == tabSwitcher and 0%.95 or 1%)", "Transparency = (i == tabSwitcher and 0 or 1)")
 	macSource = macSource:gsub("tabSwitchersScrollingFrame%.BackgroundTransparency = 0", "tabSwitchersScrollingFrame.BackgroundTransparency = 1")
@@ -735,7 +743,7 @@ local function forceOpaqueMacUi(gui)
 	end
 
 	local windowFill = Color3.fromRGB(0, 0, 0)
-	local panelFill = Color3.fromRGB(0, 0, 0)
+	local panelFill = Color3.fromRGB(17, 19, 20)
 	local controlFill = Color3.fromRGB(11, 13, 15)
 	local overlayFill = Color3.fromRGB(0, 0, 0)
 	local dividerFill = Color3.fromRGB(34, 40, 42)
@@ -1189,6 +1197,11 @@ function library.new(libraryTitle, cfgLocation)
 		return object and object:IsA("ImageButton") and object.Name == "Toggle" and object.Parent and object.Parent.Name == "Toggle"
 	end
 
+	local function isActiveTabObject(object)
+		local tabSwitcher = object and (object.Name == "TabSwitcher" and object or object.Parent)
+		return tabSwitcher and tabSwitcher:IsA("GuiObject") and tabSwitcher.Name == "TabSwitcher" and tabSwitcher.BackgroundTransparency < 1
+	end
+
 	local function isThemeProtectedObject(object)
 		local current = object
 		while current and current ~= menu.gui do
@@ -1407,6 +1420,13 @@ function library.new(libraryTitle, cfgLocation)
 			pcall(function()
 				object.Color = themeAccentColor
 				object.Thickness = 1
+			end)
+			return
+		end
+		if object:IsA("ImageLabel") and object.Name == "TabImage" then
+			saveThemeDefault(object, "ImageColor3", object.ImageColor3)
+			pcall(function()
+				object.ImageColor3 = isActiveTabObject(object) and themeAccentColor or Color3.fromRGB(255, 255, 255)
 			end)
 			return
 		end
