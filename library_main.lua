@@ -22,6 +22,7 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("colour%.BackgroundTransparency = isAlpha and ColorpickerFunctions%.Alpha or 0", "colour.BackgroundTransparency = 0")
 	macSource = macSource:gsub("colour%.BackgroundTransparency = isAlpha and alphaToPreviewTransparency%(ColorpickerFunctions%.Alpha%) or 0", "colour.BackgroundTransparency = 0")
 	macSource = macSource:gsub("colour%.BackgroundTransparency = alphaToPreviewTransparency%(ColorpickerFunctions%.Alpha%)", "colour.BackgroundTransparency = 0")
+	macSource = macSource:gsub("Color3%.fromRGB%(7, 7, 7%)", "Color3.fromRGB(12, 13, 15)")
 	macSource = macSource:gsub("ColorpickerFunctions%.Alpha = %(cX / width%)", "ColorpickerFunctions.Alpha = 1 - (cX / width)")
 	macSource = macSource:gsub("local cX = ColorpickerFunctions%.Alpha %* width", "local cX = (1 - ColorpickerFunctions.Alpha) * width")
 	macSource = macSource:gsub("local cX = math%.clamp%(alpha or 0, 0, 1%) %* width", "local cX = (1 - ColorpickerFunctions.Alpha) * width")
@@ -724,10 +725,10 @@ local function forceOpaqueMacUi(gui)
 		return
 	end
 
-	local windowFill = Color3.fromRGB(5, 7, 8)
+	local windowFill = Color3.fromRGB(12, 13, 15)
 	local panelFill = Color3.fromRGB(9, 12, 13)
 	local controlFill = Color3.fromRGB(13, 13, 13)
-	local overlayFill = Color3.fromRGB(5, 7, 8)
+	local overlayFill = Color3.fromRGB(12, 13, 15)
 	local dividerFill = Color3.fromRGB(34, 40, 42)
 	local topbarAccentFill = Color3.fromRGB(0, 221, 191)
 

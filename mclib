@@ -602,7 +602,7 @@ function MacLib:Window(Settings)
 	local base = Instance.new("Frame")
 	base.Name = "Base"
 	base.AnchorPoint = Vector2.new(0.5, 0.5)
-	base.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+	base.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 	base.BackgroundTransparency = 0
 	base.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	base.BorderSizePixel = 0
@@ -627,7 +627,7 @@ function MacLib:Window(Settings)
 
 	local sidebar = Instance.new("Frame")
 	sidebar.Name = "Sidebar"
-	sidebar.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+	sidebar.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 	sidebar.BackgroundTransparency = 0
 	sidebar.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	sidebar.BorderSizePixel = 0
@@ -808,7 +808,7 @@ function MacLib:Window(Settings)
 
 	local information = Instance.new("Frame")
 	information.Name = "Information"
-	information.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+	information.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 	information.BackgroundTransparency = 1
 	information.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	information.BorderSizePixel = 0
@@ -1016,7 +1016,7 @@ function MacLib:Window(Settings)
 
 	local sidebarGroup = Instance.new("Frame")
 	sidebarGroup.Name = "SidebarGroup"
-	sidebarGroup.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+	sidebarGroup.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 	sidebarGroup.BackgroundTransparency = 1
 	sidebarGroup.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	sidebarGroup.BorderSizePixel = 0
@@ -1240,7 +1240,7 @@ function MacLib:Window(Settings)
 
 	local tabSwitchers = Instance.new("Frame")
 	tabSwitchers.Name = "TabSwitchers"
-	tabSwitchers.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+	tabSwitchers.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 	tabSwitchers.BackgroundTransparency = 1
 	tabSwitchers.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	tabSwitchers.BorderSizePixel = 0
@@ -1301,7 +1301,7 @@ function MacLib:Window(Settings)
 	tabSwitchersScrollingFrame.ScrollBarImageTransparency = 0.8
 	tabSwitchersScrollingFrame.ScrollBarThickness = 1
 	tabSwitchersScrollingFrame.TopImage = ""
-	tabSwitchersScrollingFrame.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+	tabSwitchersScrollingFrame.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 	tabSwitchersScrollingFrame.BackgroundTransparency = 1
 	tabSwitchersScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	tabSwitchersScrollingFrame.BorderSizePixel = 0
@@ -1330,7 +1330,7 @@ function MacLib:Window(Settings)
 	local content = Instance.new("Frame")
 	content.Name = "Content"
 	content.AnchorPoint = Vector2.new(1, 0)
-	content.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+	content.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 	content.BackgroundTransparency = 0
 	content.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	content.BorderSizePixel = 0
@@ -1394,7 +1394,7 @@ function MacLib:Window(Settings)
 
 	local topbar = Instance.new("Frame")
 	topbar.Name = "Topbar"
-	topbar.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+	topbar.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 	topbar.BackgroundTransparency = 0
 	topbar.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	topbar.BorderSizePixel = 0
@@ -1429,7 +1429,7 @@ function MacLib:Window(Settings)
 
 	local elements = Instance.new("Frame")
 	elements.Name = "Elements"
-	elements.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+	elements.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 	elements.BackgroundTransparency = 1
 	elements.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	elements.BorderSizePixel = 0
@@ -1607,7 +1607,7 @@ function MacLib:Window(Settings)
 	local globalSettings = Instance.new("Frame")
 	globalSettings.Name = "GlobalSettings"
 	globalSettings.AutomaticSize = Enum.AutomaticSize.XY
-	globalSettings.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+	globalSettings.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 	globalSettings.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	globalSettings.BorderSizePixel = 0
 	globalSettings.Position = UDim2.fromScale(0.298, 0.104)
@@ -2206,7 +2206,7 @@ function MacLib:Window(Settings)
 
 			local elements1 = Instance.new("Frame")
 			elements1.Name = "Elements"
-			elements1.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+			elements1.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 			elements1.BackgroundTransparency = 0
 			elements1.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			elements1.BorderSizePixel = 0
@@ -2229,7 +2229,7 @@ function MacLib:Window(Settings)
 			elementsScrolling.ScrollBarImageTransparency = 0.5
 			elementsScrolling.ScrollBarThickness = 1
 			elementsScrolling.TopImage = ""
-			elementsScrolling.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+			elementsScrolling.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 			elementsScrolling.BackgroundTransparency = 0
 			elementsScrolling.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			elementsScrolling.BorderSizePixel = 0
@@ -2254,7 +2254,7 @@ function MacLib:Window(Settings)
 			local left = Instance.new("Frame")
 			left.Name = "Left"
 			left.AutomaticSize = Enum.AutomaticSize.Y
-			left.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+			left.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 			left.BackgroundTransparency = 0
 			left.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			left.BorderSizePixel = 0
@@ -2272,7 +2272,7 @@ function MacLib:Window(Settings)
 			local right = Instance.new("Frame")
 			right.Name = "Right"
 			right.AutomaticSize = Enum.AutomaticSize.Y
-			right.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+			right.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 			right.BackgroundTransparency = 0
 			right.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			right.BorderSizePixel = 0
@@ -4340,7 +4340,7 @@ function MacLib:Window(Settings)
 					prompt.Name = "Prompt"
 					prompt.AnchorPoint = Vector2.new(0.5, 0.5)
 					prompt.AutomaticSize = Enum.AutomaticSize.Y
-					prompt.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+					prompt.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 					prompt.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					prompt.BorderSizePixel = 0
 					prompt.Position = UDim2.fromScale(0.5, 0.5)
@@ -6233,7 +6233,7 @@ function MacLib:Window(Settings)
 		notification.Name = "Notification"
 		notification.AnchorPoint = Vector2.new(0.5, 0.5)
 		notification.AutomaticSize = Enum.AutomaticSize.Y
-		notification.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+		notification.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 		notification.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		notification.BorderSizePixel = 0
 		notification.Position = UDim2.fromScale(0.5, 0.5)
@@ -6468,7 +6468,7 @@ function MacLib:Window(Settings)
 		prompt.Name = "Prompt"
 		prompt.AnchorPoint = Vector2.new(0.5, 0.5)
 		prompt.AutomaticSize = Enum.AutomaticSize.Y
-		prompt.BackgroundColor3 = Color3.fromRGB(7, 7, 7)
+		prompt.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
 		prompt.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		prompt.BorderSizePixel = 0
 		prompt.Position = UDim2.fromScale(0.5, 0.5)
