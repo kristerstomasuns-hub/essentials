@@ -22,7 +22,16 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("colour%.BackgroundTransparency = isAlpha and ColorpickerFunctions%.Alpha or 0", "colour.BackgroundTransparency = 0")
 	macSource = macSource:gsub("colour%.BackgroundTransparency = isAlpha and alphaToPreviewTransparency%(ColorpickerFunctions%.Alpha%) or 0", "colour.BackgroundTransparency = 0")
 	macSource = macSource:gsub("colour%.BackgroundTransparency = alphaToPreviewTransparency%(ColorpickerFunctions%.Alpha%)", "colour.BackgroundTransparency = 0")
-	macSource = macSource:gsub("Color3%.fromRGB%(7, 7, 7%)", "Color3.fromRGB(12, 13, 15)")
+	macSource = macSource:gsub("Color3%.fromRGB%(7, 7, 7%)", "Color3.fromRGB(0, 0, 0)")
+	macSource = macSource:gsub("Color3%.fromRGB%(12, 13, 15%)", "Color3.fromRGB(0, 0, 0)")
+	macSource = macSource:gsub("Color3%.fromRGB%(0, 221, 191%)", "Color3.fromRGB(103, 182, 254)")
+	macSource = macSource:gsub("Color3%.fromRGB%(0, 174, 151%)", "Color3.fromRGB(103, 182, 254)")
+	macSource = macSource:gsub("Color3%.fromRGB%(82, 82, 88%)", "Color3.fromRGB(11, 13, 15)")
+	macSource = macSource:gsub("Color3%.fromRGB%(58, 58, 64%)", "Color3.fromRGB(42, 46, 52)")
+	macSource = macSource:gsub("Color3%.fromRGB%(13, 13, 13%)", "Color3.fromRGB(11, 13, 15)")
+	macSource = macSource:gsub("Color3%.fromRGB%(132, 40, 148%)", "Color3.fromRGB(103, 182, 254)")
+	macSource = macSource:gsub("Color3%.fromRGB%(79, 95, 239%)", "Color3.fromRGB(103, 182, 254)")
+	macSource = macSource:gsub("Color3%.fromRGB%(56, 67, 163%)", "Color3.fromRGB(103, 182, 254)")
 	macSource = macSource:gsub("ColorpickerFunctions%.Alpha = %(cX / width%)", "ColorpickerFunctions.Alpha = 1 - (cX / width)")
 	macSource = macSource:gsub("local cX = ColorpickerFunctions%.Alpha %* width", "local cX = (1 - ColorpickerFunctions.Alpha) * width")
 	macSource = macSource:gsub("local cX = math%.clamp%(alpha or 0, 0, 1%) %* width", "local cX = (1 - ColorpickerFunctions.Alpha) * width")
@@ -49,7 +58,7 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("ghostLua%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLua.Position = UDim2.fromOffset(54, -34)")
 	macSource = macSource:gsub("ghostLua%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLua.Size = UDim2.fromOffset(208, 208)")
 	macSource = macSource:gsub("tabSwitchers%.Size = UDim2%.new%(1, 0, 1, %-107%)", "tabSwitchers.Size = UDim2.new(1, 0, 1, -80)")
-	macSource = macSource:gsub("tabSwitcherUIStroke%.Color = Color3%.fromRGB%(255, 255, 255%)", "tabSwitcherUIStroke.Color = Color3.fromRGB(0, 221, 191)")
+	macSource = macSource:gsub("tabSwitcherUIStroke%.Color = Color3%.fromRGB%(255, 255, 255%)", "tabSwitcherUIStroke.Color = Color3.fromRGB(103, 182, 254)")
 	macSource = macSource:gsub("tabSwitcherUIStroke%.Transparency = 1", "tabSwitcherUIStroke.Thickness = 1.25\n\t\t\ttabSwitcherUIStroke.Transparency = 1")
 	macSource = macSource:gsub("Transparency = %(i == tabSwitcher and 0%.95 or 1%)", "Transparency = (i == tabSwitcher and 0 or 1)")
 	macSource = macSource:gsub("tabSwitchersScrollingFrame%.BackgroundTransparency = 0", "tabSwitchersScrollingFrame.BackgroundTransparency = 1")
@@ -60,7 +69,7 @@ local function patchMacLibSource(macSource)
 		local tabBackgroundSource = [[
 	local themeAccentLineTop = Instance.new("Frame")
 	themeAccentLineTop.Name = "ThemeAccentLineTop"
-	themeAccentLineTop.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
+	themeAccentLineTop.BackgroundColor3 = Color3.fromRGB(103, 182, 254)
 	themeAccentLineTop.BackgroundTransparency = 0.1
 	themeAccentLineTop.BorderSizePixel = 0
 	themeAccentLineTop.Position = UDim2.new(0, 0, 0, 74)
@@ -95,7 +104,7 @@ local function patchMacLibSource(macSource)
 
 	local themeAccentLineBottom = Instance.new("Frame")
 	themeAccentLineBottom.Name = "ThemeAccentLineBottom"
-	themeAccentLineBottom.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
+	themeAccentLineBottom.BackgroundColor3 = Color3.fromRGB(103, 182, 254)
 	themeAccentLineBottom.BackgroundTransparency = 1
 	themeAccentLineBottom.BorderSizePixel = 0
 	themeAccentLineBottom.Position = UDim2.new(0, 0, 1, -1)
@@ -601,7 +610,7 @@ local function tuneMacSidebarLayout(gui)
 		topbarBackground.Visible = false
 		for _, child in ipairs(topbar:GetChildren()) do
 			if child.Name == "Divider" and child:IsA("GuiObject") then
-				child.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
+				child.BackgroundColor3 = Color3.fromRGB(103, 182, 254)
 				child.BackgroundTransparency = 0.1
 				child.ZIndex = 3
 			elseif child.Name == "Elements" and child:IsA("GuiObject") then
@@ -685,7 +694,7 @@ local function tuneMacSidebarLayout(gui)
 			line = Instance.new("Frame")
 			line.Name = name
 			line.BorderSizePixel = 0
-			line.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
+			line.BackgroundColor3 = Color3.fromRGB(103, 182, 254)
 			line.BackgroundTransparency = 0.1
 			line.ZIndex = 20
 			line.Parent = parent
@@ -725,12 +734,12 @@ local function forceOpaqueMacUi(gui)
 		return
 	end
 
-	local windowFill = Color3.fromRGB(12, 13, 15)
-	local panelFill = Color3.fromRGB(9, 12, 13)
-	local controlFill = Color3.fromRGB(13, 13, 13)
-	local overlayFill = Color3.fromRGB(12, 13, 15)
+	local windowFill = Color3.fromRGB(0, 0, 0)
+	local panelFill = Color3.fromRGB(0, 0, 0)
+	local controlFill = Color3.fromRGB(11, 13, 15)
+	local overlayFill = Color3.fromRGB(0, 0, 0)
 	local dividerFill = Color3.fromRGB(34, 40, 42)
-	local topbarAccentFill = Color3.fromRGB(0, 221, 191)
+	local topbarAccentFill = Color3.fromRGB(103, 182, 254)
 
 	local fills = {
 		Base = windowFill,
@@ -1126,7 +1135,7 @@ function library.new(libraryTitle, cfgLocation)
 	menu.gui = findCreatedGui(before)
 
 	local themeAccentEnabled = false
-	local themeAccentColor = Color3.fromRGB(129, 210, 255)
+	local themeAccentColor = Color3.fromRGB(103, 182, 254)
 	local themeAccentPreviousColor = themeAccentColor
 	local themeAccentDefaults = setmetatable({}, { __mode = "k" })
 	local themeAccentWatchConnections = setmetatable({}, { __mode = "k" })
@@ -1138,8 +1147,8 @@ function library.new(libraryTitle, cfgLocation)
 			return
 		end
 
-		local outlineColor = themeAccentEnabled and themeAccentColor or Color3.fromRGB(255, 255, 255)
-		local outlineTransparency = themeAccentEnabled and 0.2 or 0.65
+		local outlineColor = Color3.fromRGB(255, 255, 255)
+		local outlineTransparency = 0.65
 		for _, object in ipairs(menu.gui:GetDescendants()) do
 			if object:IsA("UIStroke") and object.Name == "ColorPickerOutline" then
 				pcall(function()
@@ -1199,10 +1208,41 @@ function library.new(libraryTitle, cfgLocation)
 
 	local function isDisabledToggleColor(object, property, color)
 		if property == "BackgroundColor3" or property == "ImageColor3" then
-			return isToggleTrack(object) and colorsClose(color, Color3.fromRGB(82, 82, 88))
+			return isToggleTrack(object) and colorsClose(color, Color3.fromRGB(11, 13, 15))
 		end
 		if property == "Color" then
-			return object and object:IsA("UIStroke") and object.Name == "ToggleUIStroke" and colorsClose(color, Color3.fromRGB(58, 58, 64))
+			return object and object:IsA("UIStroke") and object.Name == "ToggleUIStroke" and colorsClose(color, Color3.fromRGB(42, 46, 52))
+		end
+		return false
+	end
+
+	local function isThemeAccentTarget(object, property)
+		if not object then
+			return false
+		end
+		if (property == "BackgroundColor3" or property == "ImageColor3") and isToggleTrack(object) then
+			return true
+		end
+		if property == "Color" and object:IsA("UIStroke") and object.Name == "ToggleUIStroke" then
+			return true
+		end
+		if property == "BackgroundColor3" and object.Name == "SliderFrame" then
+			return true
+		end
+		if property == "ImageColor3" and object.Name == "SliderBar" then
+			return true
+		end
+		if property == "Color" and object:IsA("UIGradient") and object.Name == "SliderGradient" then
+			return true
+		end
+		if property == "TextColor3" and object.Name == "TabSwitcherName" then
+			return true
+		end
+		if property == "ImageColor3" and object.Name == "TabImage" then
+			return true
+		end
+		if property == "Color" and object:IsA("UIStroke") and object.Name == "TabSwitcherUIStroke" then
+			return true
 		end
 		return false
 	end
@@ -1212,15 +1252,11 @@ function library.new(libraryTitle, cfgLocation)
 			return false
 		end
 
-		if property == "TextColor3" and ({
-			TabSwitcherName = true,
-			CurrentTab = true,
-			HeaderText = true,
-		})[object.Name] then
+		if property == "TextColor3" and object.Name == "TabSwitcherName" then
 			return true
 		end
 
-		if property == "BackgroundColor3" and (object.Name == "SliderFrame" or object.Name:match("^ThemeAccentLine")) then
+		if property == "BackgroundColor3" and object.Name == "SliderFrame" then
 			return true
 		end
 
@@ -1228,7 +1264,7 @@ function library.new(libraryTitle, cfgLocation)
 			return true
 		end
 
-		if property == "Color" and object:IsA("UIStroke") and (object.Name == "ColorPickerOutline" or object.Name == "TabSwitcherUIStroke") then
+		if property == "Color" and object:IsA("UIStroke") and object.Name == "TabSwitcherUIStroke" then
 			return true
 		end
 
@@ -1316,6 +1352,9 @@ function library.new(libraryTitle, cfgLocation)
 		if not ok or typeof(value) ~= "Color3" then
 			return
 		end
+		if not isThemeAccentTarget(object, property) then
+			return
+		end
 		if isDisabledToggleColor(object, property, value) then
 			return
 		end
@@ -1338,6 +1377,9 @@ function library.new(libraryTitle, cfgLocation)
 		if not ok or typeof(value) ~= "ColorSequence" then
 			return
 		end
+		if not isThemeAccentTarget(object, property) then
+			return
+		end
 
 		local defaults = themeAccentDefaults[object]
 		if not ((defaults and defaults[property] ~= nil) or (object:IsA("UIGradient") and object.Name == "SliderGradient")) then
@@ -1356,8 +1398,8 @@ function library.new(libraryTitle, cfgLocation)
 		end
 		if object:IsA("UIStroke") and object.Name == "ColorPickerOutline" then
 			pcall(function()
-				object.Color = themeAccentEnabled and themeAccentColor or Color3.fromRGB(255, 255, 255)
-				object.Transparency = themeAccentEnabled and 0.2 or 0.65
+				object.Color = Color3.fromRGB(255, 255, 255)
+				object.Transparency = 0.65
 			end)
 			return
 		end
@@ -1370,7 +1412,7 @@ function library.new(libraryTitle, cfgLocation)
 		end
 		if object:IsA("GuiObject") and object.Name:match("^ThemeAccentLine") then
 			pcall(function()
-				object.BackgroundColor3 = themeAccentColor
+				object.BackgroundColor3 = object.Name == "ThemeAccentLineRight" and Color3.fromRGB(34, 40, 42) or Color3.fromRGB(103, 182, 254)
 				object.BackgroundTransparency = object.Name == "ThemeAccentLineRight" and 0.2 or 1
 				if object.Name == "ThemeAccentLineBottom" or object.Name == "ThemeAccentLineTop" then
 					object.Visible = false

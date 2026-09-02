@@ -602,7 +602,7 @@ function MacLib:Window(Settings)
 	local base = Instance.new("Frame")
 	base.Name = "Base"
 	base.AnchorPoint = Vector2.new(0.5, 0.5)
-	base.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+	base.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	base.BackgroundTransparency = 0
 	base.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	base.BorderSizePixel = 0
@@ -627,7 +627,7 @@ function MacLib:Window(Settings)
 
 	local sidebar = Instance.new("Frame")
 	sidebar.Name = "Sidebar"
-	sidebar.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+	sidebar.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	sidebar.BackgroundTransparency = 0
 	sidebar.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	sidebar.BorderSizePixel = 0
@@ -808,7 +808,7 @@ function MacLib:Window(Settings)
 
 	local information = Instance.new("Frame")
 	information.Name = "Information"
-	information.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+	information.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	information.BackgroundTransparency = 1
 	information.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	information.BorderSizePixel = 0
@@ -1016,7 +1016,7 @@ function MacLib:Window(Settings)
 
 	local sidebarGroup = Instance.new("Frame")
 	sidebarGroup.Name = "SidebarGroup"
-	sidebarGroup.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+	sidebarGroup.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	sidebarGroup.BackgroundTransparency = 1
 	sidebarGroup.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	sidebarGroup.BorderSizePixel = 0
@@ -1240,7 +1240,7 @@ function MacLib:Window(Settings)
 
 	local tabSwitchers = Instance.new("Frame")
 	tabSwitchers.Name = "TabSwitchers"
-	tabSwitchers.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+	tabSwitchers.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	tabSwitchers.BackgroundTransparency = 1
 	tabSwitchers.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	tabSwitchers.BorderSizePixel = 0
@@ -1248,7 +1248,7 @@ function MacLib:Window(Settings)
 
 	local themeAccentLineTop = Instance.new("Frame")
 	themeAccentLineTop.Name = "ThemeAccentLineTop"
-	themeAccentLineTop.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
+	themeAccentLineTop.BackgroundColor3 = Color3.fromRGB(103, 182, 254)
 	themeAccentLineTop.BackgroundTransparency = 0.1
 	themeAccentLineTop.BorderSizePixel = 0
 	themeAccentLineTop.Position = UDim2.new(0, 0, 0, 74)
@@ -1284,7 +1284,7 @@ function MacLib:Window(Settings)
 
 	local themeAccentLineBottom = Instance.new("Frame")
 	themeAccentLineBottom.Name = "ThemeAccentLineBottom"
-	themeAccentLineBottom.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
+	themeAccentLineBottom.BackgroundColor3 = Color3.fromRGB(103, 182, 254)
 	themeAccentLineBottom.BackgroundTransparency = 1
 	themeAccentLineBottom.BorderSizePixel = 0
 	themeAccentLineBottom.Position = UDim2.new(0, 0, 1, -1)
@@ -1301,7 +1301,7 @@ function MacLib:Window(Settings)
 	tabSwitchersScrollingFrame.ScrollBarImageTransparency = 0.8
 	tabSwitchersScrollingFrame.ScrollBarThickness = 1
 	tabSwitchersScrollingFrame.TopImage = ""
-	tabSwitchersScrollingFrame.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+	tabSwitchersScrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	tabSwitchersScrollingFrame.BackgroundTransparency = 1
 	tabSwitchersScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	tabSwitchersScrollingFrame.BorderSizePixel = 0
@@ -1330,7 +1330,7 @@ function MacLib:Window(Settings)
 	local content = Instance.new("Frame")
 	content.Name = "Content"
 	content.AnchorPoint = Vector2.new(1, 0)
-	content.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+	content.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	content.BackgroundTransparency = 0
 	content.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	content.BorderSizePixel = 0
@@ -1394,7 +1394,7 @@ function MacLib:Window(Settings)
 
 	local topbar = Instance.new("Frame")
 	topbar.Name = "Topbar"
-	topbar.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+	topbar.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	topbar.BackgroundTransparency = 0
 	topbar.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	topbar.BorderSizePixel = 0
@@ -1418,7 +1418,7 @@ function MacLib:Window(Settings)
 	local divider4 = Instance.new("Frame")
 	divider4.Name = "Divider"
 	divider4.AnchorPoint = Vector2.new(0, 1)
-	divider4.BackgroundColor3 = Color3.fromRGB(0, 221, 191)
+	divider4.BackgroundColor3 = Color3.fromRGB(103, 182, 254)
 	divider4.BackgroundTransparency = 0.1
 	divider4.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	divider4.BorderSizePixel = 0
@@ -1429,7 +1429,7 @@ function MacLib:Window(Settings)
 
 	local elements = Instance.new("Frame")
 	elements.Name = "Elements"
-	elements.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+	elements.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	elements.BackgroundTransparency = 1
 	elements.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	elements.BorderSizePixel = 0
@@ -1607,7 +1607,7 @@ function MacLib:Window(Settings)
 	local globalSettings = Instance.new("Frame")
 	globalSettings.Name = "GlobalSettings"
 	globalSettings.AutomaticSize = Enum.AutomaticSize.XY
-	globalSettings.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+	globalSettings.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	globalSettings.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	globalSettings.BorderSizePixel = 0
 	globalSettings.Position = UDim2.fromScale(0.298, 0.104)
@@ -2143,7 +2143,7 @@ function MacLib:Window(Settings)
 			local tabSwitcherUIStroke = Instance.new("UIStroke")
 			tabSwitcherUIStroke.Name = "TabSwitcherUIStroke"
 			tabSwitcherUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-			tabSwitcherUIStroke.Color = Color3.fromRGB(0, 221, 191)
+			tabSwitcherUIStroke.Color = Color3.fromRGB(103, 182, 254)
 			tabSwitcherUIStroke.Thickness = 1.25
 			tabSwitcherUIStroke.Transparency = 1
 			tabSwitcherUIStroke.Parent = tabSwitcher
@@ -2162,6 +2162,7 @@ function MacLib:Window(Settings)
 				tabImage = Instance.new("ImageLabel")
 				tabImage.Name = "TabImage"
 				tabImage.Image = Settings.Image
+				tabImage.ImageColor3 = Color3.fromRGB(103, 182, 254)
 				tabImage.ImageTransparency = 0.5
 				tabImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				tabImage.BackgroundTransparency = 1
@@ -2180,7 +2181,7 @@ function MacLib:Window(Settings)
 			)
 			tabSwitcherName.Text = Settings.Name
 			tabSwitcherName.RichText = true
-			tabSwitcherName.TextColor3 = Color3.fromRGB(0, 221, 191)
+			tabSwitcherName.TextColor3 = Color3.fromRGB(103, 182, 254)
 			tabSwitcherName.TextSize = 16
 			tabSwitcherName.TextTransparency = 0.5
 			tabSwitcherName.TextTruncate = Enum.TextTruncate.SplitWord
@@ -2206,7 +2207,7 @@ function MacLib:Window(Settings)
 
 			local elements1 = Instance.new("Frame")
 			elements1.Name = "Elements"
-			elements1.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+			elements1.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 			elements1.BackgroundTransparency = 0
 			elements1.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			elements1.BorderSizePixel = 0
@@ -2229,7 +2230,7 @@ function MacLib:Window(Settings)
 			elementsScrolling.ScrollBarImageTransparency = 0.5
 			elementsScrolling.ScrollBarThickness = 1
 			elementsScrolling.TopImage = ""
-			elementsScrolling.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+			elementsScrolling.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 			elementsScrolling.BackgroundTransparency = 0
 			elementsScrolling.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			elementsScrolling.BorderSizePixel = 0
@@ -2254,7 +2255,7 @@ function MacLib:Window(Settings)
 			local left = Instance.new("Frame")
 			left.Name = "Left"
 			left.AutomaticSize = Enum.AutomaticSize.Y
-			left.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+			left.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 			left.BackgroundTransparency = 0
 			left.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			left.BorderSizePixel = 0
@@ -2272,7 +2273,7 @@ function MacLib:Window(Settings)
 			local right = Instance.new("Frame")
 			right.Name = "Right"
 			right.AutomaticSize = Enum.AutomaticSize.Y
-			right.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+			right.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 			right.BackgroundTransparency = 0
 			right.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			right.BorderSizePixel = 0
@@ -2295,7 +2296,7 @@ function MacLib:Window(Settings)
 				local section = Instance.new("Frame")
 				section.Name = "Section"
 				section.AutomaticSize = Enum.AutomaticSize.Y
-				section.BackgroundColor3 = Color3.fromRGB(9, 12, 13)
+				section.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 				section.BackgroundTransparency = 0
 				section.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				section.BorderSizePixel = 0
@@ -2463,10 +2464,10 @@ function MacLib:Window(Settings)
 					local toggle1 = Instance.new("ImageButton")
 					toggle1.Name = "Toggle"
 					toggle1.Image = ""
-					toggle1.ImageColor3 = Color3.fromRGB(82, 82, 88)
+					toggle1.ImageColor3 = Color3.fromRGB(11, 13, 15)
 					toggle1.AutoButtonColor = false
 					toggle1.AnchorPoint = Vector2.new(1, 0.5)
-					toggle1.BackgroundColor3 = Color3.fromRGB(82, 82, 88)
+					toggle1.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 					toggle1.BackgroundTransparency = 0
 					toggle1.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					toggle1.BorderSizePixel = 0
@@ -2487,7 +2488,7 @@ function MacLib:Window(Settings)
 					local toggle1UIStroke = Instance.new("UIStroke")
 					toggle1UIStroke.Name = "ToggleUIStroke"
 					toggle1UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-					toggle1UIStroke.Color = Color3.fromRGB(58, 58, 64)
+					toggle1UIStroke.Color = Color3.fromRGB(42, 46, 52)
 					toggle1UIStroke.Transparency = 0
 					toggle1UIStroke.Parent = toggle1
 
@@ -2495,10 +2496,7 @@ function MacLib:Window(Settings)
 					toggle1UIGradient.Name = "ToggleUIGradient"
 					toggle1UIGradient.Color = ColorSequence.new(Color3.fromRGB(255, 255, 255))
 					toggle1UIGradient.Rotation = 90
-					toggle1UIGradient.Transparency = NumberSequence.new({
-						NumberSequenceKeypoint.new(0, 0.7),
-						NumberSequenceKeypoint.new(1, 1)
-					})
+					toggle1UIGradient.Transparency = NumberSequence.new(1)
 					toggle1UIGradient.Parent = toggle1
 
 					local toggleUIPadding = Instance.new("UIPadding")
@@ -2545,7 +2543,7 @@ function MacLib:Window(Settings)
 						ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
 					})
 					togglerHeadUIGradient.Rotation = 90
-					togglerHeadUIGradient.Transparency = NumberSequence.new(0.31)
+					togglerHeadUIGradient.Transparency = NumberSequence.new(1)
 					togglerHeadUIGradient.Parent = togglerHead
 
 					local togglerDot = Instance.new("Frame")
@@ -2574,12 +2572,12 @@ function MacLib:Window(Settings)
 					toggle1.Parent = toggle
 
 					local toggle1Colors = {
-						Enabled = Color3.fromRGB(0, 221, 191),
-						Disabled = Color3.fromRGB(82, 82, 88)
+						Enabled = Color3.fromRGB(103, 182, 254),
+						Disabled = Color3.fromRGB(11, 13, 15)
 					}
 					local toggle1StrokeColors = {
-						Enabled = Color3.fromRGB(0, 174, 151),
-						Disabled = Color3.fromRGB(58, 58, 64)
+						Enabled = Color3.fromRGB(103, 182, 254),
+						Disabled = Color3.fromRGB(42, 46, 52)
 					}
 
 					local TweenSettings = {
@@ -2700,7 +2698,7 @@ function MacLib:Window(Settings)
 						sliderButton.Name = "SliderButton"
 						sliderButton.AutoButtonColor = false
 						sliderButton.Text = ""
-						sliderButton.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+						sliderButton.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 						sliderButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 						sliderButton.BorderSizePixel = 0
 						sliderButton.Position = UDim2.new(0, 9, 0, 22)
@@ -2714,7 +2712,7 @@ function MacLib:Window(Settings)
 
 						local sliderFrame = Instance.new("Frame")
 						sliderFrame.Name = "SliderFrame"
-						sliderFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+						sliderFrame.BackgroundColor3 = Color3.fromRGB(103, 182, 254)
 						sliderFrame.BorderSizePixel = 0
 						sliderFrame.Size = UDim2.new(0, 0, 1, 0)
 						sliderFrame.Parent = sliderButton
@@ -2727,8 +2725,8 @@ function MacLib:Window(Settings)
 						local sliderGradient = Instance.new("UIGradient")
 						sliderGradient.Name = "SliderGradient"
 						sliderGradient.Color = ColorSequence.new({
-							ColorSequenceKeypoint.new(0, Color3.fromRGB(79, 95, 239)),
-							ColorSequenceKeypoint.new(1, Color3.fromRGB(56, 67, 163))
+							ColorSequenceKeypoint.new(0, Color3.fromRGB(103, 182, 254)),
+							ColorSequenceKeypoint.new(1, Color3.fromRGB(103, 182, 254))
 						})
 						sliderGradient.Rotation = 90
 						sliderGradient.Parent = sliderFrame
@@ -2950,7 +2948,7 @@ function MacLib:Window(Settings)
 					sliderValue.TextSize = 12
 					sliderValue.TextTransparency = 0.1
 					--sliderValue.TextTruncate = Enum.TextTruncate.AtEnd
-					sliderValue.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+					sliderValue.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 					sliderValue.BackgroundTransparency = 0
 					sliderValue.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					sliderValue.BorderSizePixel = 0
@@ -2991,7 +2989,7 @@ function MacLib:Window(Settings)
 					local sliderBar = Instance.new("ImageLabel")
 					sliderBar.Name = "SliderBar"
 					sliderBar.Image = assets.sliderbar
-					sliderBar.ImageColor3 = Color3.fromRGB(132, 40, 148)
+					sliderBar.ImageColor3 = Color3.fromRGB(103, 182, 254)
 					sliderBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 					sliderBar.BackgroundTransparency = 1
 					sliderBar.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -3207,7 +3205,7 @@ function MacLib:Window(Settings)
 					inputBox.TextTransparency = 0.1
 					inputBox.AnchorPoint = Vector2.new(1, 0.5)
 					inputBox.AutomaticSize = Enum.AutomaticSize.X
-					inputBox.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+					inputBox.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 					inputBox.BackgroundTransparency = 0
 					inputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					inputBox.BorderSizePixel = 0
@@ -3399,7 +3397,7 @@ function MacLib:Window(Settings)
 					binderBox.TextXAlignment = Enum.TextXAlignment.Center
 					binderBox.AnchorPoint = Vector2.new(1, 0.5)
 					binderBox.AutomaticSize = Enum.AutomaticSize.None
-					binderBox.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+					binderBox.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 					binderBox.BackgroundTransparency = 0
 					binderBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					binderBox.BorderSizePixel = 0
@@ -3707,7 +3705,7 @@ function MacLib:Window(Settings)
 
 					local search = Instance.new("Frame")
 					search.Name = "Search"
-					search.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+					search.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 					search.BackgroundTransparency = 0
 					search.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					search.BorderSizePixel = 0
@@ -4340,7 +4338,7 @@ function MacLib:Window(Settings)
 					prompt.Name = "Prompt"
 					prompt.AnchorPoint = Vector2.new(0.5, 0.5)
 					prompt.AutomaticSize = Enum.AutomaticSize.Y
-					prompt.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+					prompt.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 					prompt.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					prompt.BorderSizePixel = 0
 					prompt.Position = UDim2.fromScale(0.5, 0.5)
@@ -4700,7 +4698,7 @@ function MacLib:Window(Settings)
 					inputBox.TextTransparency = 0.1
 					inputBox.TextXAlignment = Enum.TextXAlignment.Left
 					inputBox.AnchorPoint = Vector2.new(1, 0.5)
-					inputBox.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+					inputBox.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 					inputBox.BackgroundTransparency = 0
 					inputBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					inputBox.BorderSizePixel = 0
@@ -4783,7 +4781,7 @@ function MacLib:Window(Settings)
 					inputBox1.TextTransparency = 0.1
 					inputBox1.TextXAlignment = Enum.TextXAlignment.Left
 					inputBox1.AnchorPoint = Vector2.new(1, 0.5)
-					inputBox1.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+					inputBox1.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 					inputBox1.BackgroundTransparency = 0
 					inputBox1.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					inputBox1.BorderSizePixel = 0
@@ -4866,7 +4864,7 @@ function MacLib:Window(Settings)
 					inputBox2.TextTransparency = 0.1
 					inputBox2.TextXAlignment = Enum.TextXAlignment.Left
 					inputBox2.AnchorPoint = Vector2.new(1, 0.5)
-					inputBox2.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+					inputBox2.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 					inputBox2.BackgroundTransparency = 0
 					inputBox2.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					inputBox2.BorderSizePixel = 0
@@ -4950,7 +4948,7 @@ function MacLib:Window(Settings)
 					inputBox3.TextTransparency = 0.1
 					inputBox3.TextXAlignment = Enum.TextXAlignment.Left
 					inputBox3.AnchorPoint = Vector2.new(1, 0.5)
-					inputBox3.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+					inputBox3.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 					inputBox3.BackgroundTransparency = 0
 					inputBox3.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					inputBox3.BorderSizePixel = 0
@@ -5033,7 +5031,7 @@ function MacLib:Window(Settings)
 					inputBox4.TextTransparency = 0.1
 					inputBox4.TextXAlignment = Enum.TextXAlignment.Left
 					inputBox4.AnchorPoint = Vector2.new(1, 0.5)
-					inputBox4.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+					inputBox4.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 					inputBox4.BackgroundTransparency = 0
 					inputBox4.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					inputBox4.BorderSizePixel = 0
@@ -5205,7 +5203,7 @@ function MacLib:Window(Settings)
 					confirm.TextTruncate = Enum.TextTruncate.AtEnd
 					confirm.AutoButtonColor = false
 					confirm.AutomaticSize = Enum.AutomaticSize.Y
-					confirm.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+					confirm.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 					confirm.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					confirm.BorderSizePixel = 0
 					confirm.Size = UDim2.fromScale(1, 0)
@@ -5239,7 +5237,7 @@ function MacLib:Window(Settings)
 					cancel.TextTruncate = Enum.TextTruncate.AtEnd
 					cancel.AutoButtonColor = false
 					cancel.AutomaticSize = Enum.AutomaticSize.Y
-					cancel.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+					cancel.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 					cancel.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					cancel.BorderSizePixel = 0
 					cancel.Size = UDim2.fromScale(1, 0)
@@ -5782,7 +5780,7 @@ function MacLib:Window(Settings)
 					)
 					headerText.RichText = true
 					headerText.Text = HeaderFunctions.Settings.Text or HeaderFunctions.Settings.Name
-					headerText.TextColor3 = Color3.fromRGB(0, 221, 191)
+					headerText.TextColor3 = Color3.fromRGB(103, 182, 254)
 					headerText.TextSize = 16
 					headerText.TextTransparency = 0
 					headerText.TextWrapped = true
@@ -6233,7 +6231,7 @@ function MacLib:Window(Settings)
 		notification.Name = "Notification"
 		notification.AnchorPoint = Vector2.new(0.5, 0.5)
 		notification.AutomaticSize = Enum.AutomaticSize.Y
-		notification.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+		notification.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		notification.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		notification.BorderSizePixel = 0
 		notification.Position = UDim2.fromScale(0.5, 0.5)
@@ -6468,7 +6466,7 @@ function MacLib:Window(Settings)
 		prompt.Name = "Prompt"
 		prompt.AnchorPoint = Vector2.new(0.5, 0.5)
 		prompt.AutomaticSize = Enum.AutomaticSize.Y
-		prompt.BackgroundColor3 = Color3.fromRGB(12, 13, 15)
+		prompt.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		prompt.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		prompt.BorderSizePixel = 0
 		prompt.Position = UDim2.fromScale(0.5, 0.5)
@@ -6620,7 +6618,7 @@ function MacLib:Window(Settings)
 			button.TextTruncate = Enum.TextTruncate.AtEnd
 			button.AutoButtonColor = false
 			button.AutomaticSize = Enum.AutomaticSize.Y
-			button.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+			button.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 			button.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			button.BorderSizePixel = 0
 			button.Size = UDim2.fromScale(1, 0)
