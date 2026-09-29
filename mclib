@@ -5447,7 +5447,8 @@ function MacLib:Window(Settings)
 						local width = math.max(alphaSlider.AbsoluteSize.X - alphaSlide.AbsoluteSize.X, 1)
 						local rX = iX - alphaSlider.AbsolutePosition.X
 						local cX = math.clamp(rX, 0, width)
-						ColorpickerFunctions.Alpha = 1 - (cX / width)
+						-- Left end = 0 (solid), right end = 1 (see-through), matching the gradient.
+						ColorpickerFunctions.Alpha = math.clamp(cX / width, 0, 1)
 						alphaSlide.Position = udim2(0, cX, 0.5, 0)
 						modifierInputs.Alpha.Text = string.format("%.2f", ColorpickerFunctions.Alpha)
 						update()
@@ -5463,7 +5464,7 @@ function MacLib:Window(Settings)
 
 						ColorpickerFunctions.Alpha = math.clamp(tonumber(alpha) or 0, 0, 1)
 						local width = math.max(alphaSlider.AbsoluteSize.X - alphaSlide.AbsoluteSize.X, 1)
-						local cX = (1 - ColorpickerFunctions.Alpha) * width
+						local cX = width * ColorpickerFunctions.Alpha
 						alphaSlide.Position = UDim2.new(0, cX, 0.5, 0)
 						modifierInputs.Alpha.Text = string.format("%.2f", ColorpickerFunctions.Alpha)
 						colorC.BackgroundTransparency = 0
