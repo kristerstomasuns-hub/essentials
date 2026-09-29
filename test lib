@@ -172,7 +172,7 @@ local function patchMacLibSource(macSource)
 end
 
 local macOk, MacLib = pcall(function()
-	local macSource = game:HttpGet(MACLIB_URL)
+	local macSource = game:HttpGet(MACLIB_URL, true)
 	macSource = patchMacLibSource(macSource)
 	return loadstring(macSource)()
 end)
