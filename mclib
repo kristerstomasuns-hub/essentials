@@ -615,7 +615,7 @@ function MacLib:Window(Settings)
 
 	local baseUICorner = Instance.new("UICorner")
 	baseUICorner.Name = "BaseUICorner"
-	baseUICorner.CornerRadius = UDim.new(0, 4)
+	baseUICorner.CornerRadius = UDim.new(0.2, 0)
 	baseUICorner.Parent = base
 
 	local baseUIStroke = Instance.new("UIStroke")
