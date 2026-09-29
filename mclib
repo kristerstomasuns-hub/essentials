@@ -2497,7 +2497,10 @@ function MacLib:Window(Settings)
 					toggle1UIGradient.Name = "ToggleUIGradient"
 					toggle1UIGradient.Color = ColorSequence.new(Color3.fromRGB(255, 255, 255))
 					toggle1UIGradient.Rotation = 90
-					toggle1UIGradient.Transparency = NumberSequence.new(1)
+					toggle1UIGradient.Transparency = NumberSequence.new(0)
+					-- Disabled: a Transparency=1 gradient made the whole track fill invisible,
+					-- so "on" toggles showed only the border and the dark knob vanished.
+					toggle1UIGradient.Enabled = false
 					toggle1UIGradient.Parent = toggle1
 
 					local toggleUIPadding = Instance.new("UIPadding")
