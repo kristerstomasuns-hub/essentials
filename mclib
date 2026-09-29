@@ -2525,7 +2525,7 @@ function MacLib:Window(Settings)
 
 					local togglerHeadUICorner = Instance.new("UICorner")
 					togglerHeadUICorner.Name = "TogglerHeadUICorner"
-					togglerHeadUICorner.CornerRadius = UDim.new(0, 3)
+					togglerHeadUICorner.CornerRadius = UDim.new(0.2, 0)
 					togglerHeadUICorner.Parent = togglerHead
 
 					local togglerHeadUIStroke = Instance.new("UIStroke")
