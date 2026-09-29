@@ -1023,6 +1023,9 @@ function library.new(libraryTitle, cfgLocation)
 		if property == "Color" and object:IsA("UIStroke") and object.Name == "TabSwitcherUIStroke" then
 			return true
 		end
+		if property == "TextColor3" and object.Name == "HeaderText" then
+			return true
+		end
 		return false
 	end
 
@@ -1032,6 +1035,11 @@ function library.new(libraryTitle, cfgLocation)
 		end
 
 		if property == "TextColor3" and object.Name == "TabSwitcherName" then
+			return true
+		end
+
+		-- Section header titles ("Client", "Config", ...) follow the theme accent.
+		if property == "TextColor3" and object.Name == "HeaderText" then
 			return true
 		end
 
@@ -1191,6 +1199,9 @@ function library.new(libraryTitle, cfgLocation)
 		end
 		if object:IsA("ImageLabel") and object.Name == "TabImage" then
 			saveThemeDefault(object, "ImageColor3", object.ImageColor3)
+			-- Watch the icon: switching tabs makes mclib tween it back to the
+			-- default blue, so it must be re-themed on every change.
+			watchThemeAccentObject(object)
 			pcall(function()
 				object.ImageColor3 = isActiveTabObject(object) and themeAccentColor or Color3.fromRGB(255, 255, 255)
 			end)
@@ -1268,6 +1279,17 @@ function library.new(libraryTitle, cfgLocation)
 			end
 		end
 		themeAccentWatchConnections = setmetatable({}, { __mode = "k" })
+		-- Saved tab-icon defaults can be stale (the active tab may have changed
+		-- since they were captured), so put icons back to mclib's own colors.
+		if menu.gui then
+			for _, object in ipairs(menu.gui:GetDescendants()) do
+				if object:IsA("ImageLabel") and object.Name == "TabImage" then
+					pcall(function()
+						object.ImageColor3 = isActiveTabObject(object) and Color3.fromRGB(103, 182, 254) or Color3.fromRGB(255, 255, 255)
+					end)
+				end
+			end
+		end
 	end
 
 	if menu.gui then
