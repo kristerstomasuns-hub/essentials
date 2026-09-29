@@ -7,7 +7,7 @@ local UserInputService = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 
-local MACLIB_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/essentials/3be01d4afbf195f5bcd27e026c6c727f653aa30e/mclib"
+local MACLIB_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/essentials/598d5a94f5c9a9a7c1cf66c09a5b874df3c13344/mclib"
 
 local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("RunService%.RenderStepped:Connect%(UpdateOrientation%)", "if acrylicBlur then RunService.RenderStepped:Connect(UpdateOrientation) end")
@@ -22,8 +22,8 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("colour%.BackgroundTransparency = isAlpha and ColorpickerFunctions%.Alpha or 0", "colour.BackgroundTransparency = 0")
 	macSource = macSource:gsub("colour%.BackgroundTransparency = isAlpha and alphaToPreviewTransparency%(ColorpickerFunctions%.Alpha%) or 0", "colour.BackgroundTransparency = 0")
 	macSource = macSource:gsub("colour%.BackgroundTransparency = alphaToPreviewTransparency%(ColorpickerFunctions%.Alpha%)", "colour.BackgroundTransparency = 0")
-	macSource = macSource:gsub("Color3%.fromRGB%(7, 7, 7%)", "Color3.fromRGB(0, 0, 0)")
-	macSource = macSource:gsub("Color3%.fromRGB%(12, 13, 15%)", "Color3.fromRGB(0, 0, 0)")
+	macSource = macSource:gsub("Color3%.fromRGB%(7, 7, 7%)", "Color3.fromRGB(11, 13, 14)")
+	macSource = macSource:gsub("Color3%.fromRGB%(12, 13, 15%)", "Color3.fromRGB(11, 13, 14)")
 	macSource = macSource:gsub("Color3%.fromRGB%(0, 221, 191%)", "Color3.fromRGB(103, 182, 254)")
 	macSource = macSource:gsub("Color3%.fromRGB%(0, 174, 151%)", "Color3.fromRGB(103, 182, 254)")
 	macSource = macSource:gsub("Color3%.fromRGB%(82, 82, 88%)", "Color3.fromRGB(11, 13, 15)")
