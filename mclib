@@ -2532,7 +2532,7 @@ function MacLib:Window(Settings)
 					togglerHeadUIStroke.Name = "TogglerHeadUIStroke"
 					togglerHeadUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 					togglerHeadUIStroke.Color = Color3.fromRGB(180, 180, 180)
-					togglerHeadUIStroke.Transparency = 0
+					togglerHeadUIStroke.Transparency = 1
 					togglerHeadUIStroke.Thickness = 1
 					togglerHeadUIStroke.Parent = togglerHead
 
