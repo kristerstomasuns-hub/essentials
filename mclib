@@ -2543,7 +2543,8 @@ function MacLib:Window(Settings)
 						ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
 					})
 					togglerHeadUIGradient.Rotation = 90
-					togglerHeadUIGradient.Transparency = NumberSequence.new(1)
+					togglerHeadUIGradient.Transparency = NumberSequence.new(0)
+					togglerHeadUIGradient.Enabled = false
 					togglerHeadUIGradient.Parent = togglerHead
 
 					local togglerDot = Instance.new("Frame")
