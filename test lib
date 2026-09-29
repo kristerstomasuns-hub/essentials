@@ -7,7 +7,7 @@ local UserInputService = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 
-local MACLIB_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/essentials/73dddf25fdefdaa441abb48784fa8bca4b832598/mclib"
+local MACLIB_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/essentials/9e287853026a3d14d70e6d8ff6c36bb94e31bc1d/mclib"
 
 local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("RunService%.RenderStepped:Connect%(UpdateOrientation%)", "if acrylicBlur then RunService.RenderStepped:Connect(UpdateOrientation) end")
@@ -36,9 +36,7 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("togglerDot%.Size = UDim2%.fromOffset%(3, 3%)", "togglerDot.Size = UDim2.fromOffset(0, 0)")
 	macSource = macSource:gsub("togglerDot%.Parent = togglerHead", "togglerDot.Visible = false\n\t\t\t\t\ttogglerDot.Parent = togglerHead")
 	macSource = macSource:gsub("togglerDotUIStroke%.Transparency = 0", "togglerDotUIStroke.Transparency = 1")
-	macSource = macSource:gsub("ColorpickerFunctions%.Alpha = %(cX / width%)", "ColorpickerFunctions.Alpha = 1 - (cX / width)")
-	macSource = macSource:gsub("local cX = ColorpickerFunctions%.Alpha %* width", "local cX = (1 - ColorpickerFunctions.Alpha) * width")
-	macSource = macSource:gsub("local cX = math%.clamp%(alpha or 0, 0, 1%) %* width", "local cX = (1 - ColorpickerFunctions.Alpha) * width")
+	-- (Removed the alpha-slider direction patches: mclib now maps left = 0, right = 1 itself.)
 	macSource = macSource:gsub("modifierInputs%.Alpha%.Text = isAlpha and %(1 %- ColorpickerFunctions%.Alpha%) or 0", "modifierInputs.Alpha.Text = isAlpha and ColorpickerFunctions.Alpha or 0")
 	macSource = macSource:gsub("information%.Size = UDim2%.new%(1, 0, 0, 63%)", "information.Size = UDim2.new(1, 0, 0, 74)")
 	macSource = macSource:gsub("divider2%.Parent = information", "divider2.Visible = false\n\tdivider2.Parent = information")
