@@ -2297,7 +2297,7 @@ function MacLib:Window(Settings)
 				local section = Instance.new("Frame")
 				section.Name = "Section"
 				section.AutomaticSize = Enum.AutomaticSize.Y
-				section.BackgroundColor3 = Color3.fromRGB(17, 19, 20)
+				section.BackgroundColor3 = Color3.fromRGB(17, 18, 21) -- #111215
 				section.BackgroundTransparency = 0
 				section.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				section.BorderSizePixel = 0
@@ -2474,8 +2474,8 @@ function MacLib:Window(Settings)
 					toggle1.BorderSizePixel = 0
 					toggle1.Position = UDim2.fromScale(1, 0.5)
 					local toggleTrackWidth = 34
-					local toggleTrackHeight = 17
-					local toggleHeadSize = 11
+					local toggleTrackHeight = 18
+					local toggleHeadSize = 12
 					local toggleHeadInset = math.floor((toggleTrackHeight - toggleHeadSize) / 2)
 					toggle1.Size = UDim2.fromOffset(toggleTrackWidth, toggleTrackHeight)
 					toggle1.ClipsDescendants = true
@@ -2483,7 +2483,7 @@ function MacLib:Window(Settings)
 
 					local toggle1UICorner = Instance.new("UICorner")
 					toggle1UICorner.Name = "ToggleUICorner"
-					toggle1UICorner.CornerRadius = UDim.new(0, 5)
+					toggle1UICorner.CornerRadius = UDim.new(0, 6)
 					toggle1UICorner.Parent = toggle1
 
 					local toggle1UIStroke = Instance.new("UIStroke")
@@ -2526,7 +2526,7 @@ function MacLib:Window(Settings)
 
 					local togglerHeadUICorner = Instance.new("UICorner")
 					togglerHeadUICorner.Name = "TogglerHeadUICorner"
-					togglerHeadUICorner.CornerRadius = UDim.new(0.2, 0)
+					togglerHeadUICorner.CornerRadius = UDim.new(0, 3)
 					togglerHeadUICorner.Parent = togglerHead
 
 					local togglerHeadUIStroke = Instance.new("UIStroke")
@@ -2584,6 +2584,13 @@ function MacLib:Window(Settings)
 						Disabled = Color3.fromRGB(42, 46, 52)
 					}
 
+					-- Knob: dark square when on (sits on the accent track), light grey when off.
+					-- TogglerHead is ThemeIgnore, so the theme changer never recolors it.
+					local togglerHeadColors = {
+						Enabled = Color3.fromRGB(17, 18, 21),
+						Disabled = Color3.fromRGB(200, 204, 214)
+					}
+
 					local TweenSettings = {
 						Info = TweenInfo.new(0.2, Enum.EasingStyle.Quad),
 
@@ -2597,21 +2604,16 @@ function MacLib:Window(Settings)
 						local position = State and TweenSettings.EnabledPosition or TweenSettings.DisabledPosition
 						local color = State and toggle1Colors.Enabled or toggle1Colors.Disabled
 						local strokeColor = State and toggle1StrokeColors.Enabled or toggle1StrokeColors.Disabled
+						-- Track colors are set instantly (no tween): the theme watcher reacts to every
+						-- intermediate tween color and would repaint "off" toggles with the accent.
 						toggle1.BackgroundColor3 = color
 						toggle1.ImageColor3 = color
 						toggle1.ImageTransparency = 1
-
-						Tween(toggle1, TweenSettings.Info, {
-							ImageColor3 = color,
-							BackgroundColor3 = color
-						}):Play()
-
-						Tween(toggle1UIStroke, TweenSettings.Info, {
-							Color = strokeColor
-						}):Play()
+						toggle1UIStroke.Color = strokeColor
 
 						Tween(togglerHead, TweenSettings.Info, {
-							Position = position
+							Position = position,
+							BackgroundColor3 = State and togglerHeadColors.Enabled or togglerHeadColors.Disabled
 						}):Play()
 
 						ToggleFunctions.State = State
