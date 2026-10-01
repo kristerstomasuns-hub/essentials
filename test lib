@@ -1742,7 +1742,7 @@ function library.new(libraryTitle, cfgLocation)
 						local toggleName = targetFrame:FindFirstChild("ToggleName")
 						local toggleButton = targetFrame:FindFirstChild("Toggle")
 						local function syncModeLabel()
-							modeLabel.Text = string.upper(tostring(keyValue.Type or "Hold"))
+							modeLabel.Text = tostring(keyValue.Type or "Hold")
 						end
 						local function setOpen(open)
 							if isOpen == open then
@@ -1796,7 +1796,7 @@ function library.new(libraryTitle, cfgLocation)
 							-- Same construction as the stock dropdown: plain button + inset Inter label
 							local optionName = Instance.new("TextLabel")
 							optionName.BackgroundTransparency = 1
-							optionName.Text = string.upper(mode)
+							optionName.Text = mode
 							optionName.TextColor3 = Color3.fromRGB(255, 255, 255)
 							optionName.TextTransparency = 0.5
 							optionName.TextXAlignment = Enum.TextXAlignment.Left
