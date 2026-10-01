@@ -1713,9 +1713,9 @@ function library.new(libraryTitle, cfgLocation)
 						local options = Instance.new("Frame")
 						options.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 						options.BackgroundTransparency = 0
-						-- flush under the trigger, same width as it, so the two read as one control
+						-- sits just under the trigger, nudged up so the two meet cleanly
 						options.AnchorPoint = Vector2.new(0, 0)
-						options.Position = UDim2.fromOffset(0, 18)
+						options.Position = UDim2.fromOffset(0, 16)
 						options.Size = UDim2.fromOffset(62, 0)
 						options.ZIndex = 300
 						options.Visible = false
@@ -1744,70 +1744,11 @@ function library.new(libraryTitle, cfgLocation)
 						local toggleName = targetFrame:FindFirstChild("ToggleName")
 						local toggleButton = targetFrame:FindFirstChild("Toggle")
 
-						-- Only offer the modes that aren't already selected, so the list
-						-- never repeats the mode shown on the trigger.
-						local function unselectedModes()
-							local list = {}
-							local current = tostring(keyValue.Type or "Hold")
-							for _, mode in ipairs(modeOptions) do
-								if mode ~= current then
-									table.insert(list, mode)
-								end
-							end
-							return list
-						end
-
-						local function rebuildOptions()
-							for _, child in ipairs(options:GetChildren()) do
-								if child:IsA("TextButton") then
-									child:Destroy()
-								end
-							end
-
-							local list = unselectedModes()
-							optionsHeight = math.max(optionRowHeight, #list * optionRowHeight)
-
-							for _, mode in ipairs(list) do
-								local option = Instance.new("TextButton")
-								option.BackgroundTransparency = 1
-								option.BorderSizePixel = 0
-								option.Text = ""
-								option.Size = UDim2.new(1, 0, 0, optionRowHeight)
-								option.ZIndex = 104
-								option.Parent = options
-
-								-- Same construction as the stock dropdown: plain button + inset Inter label
-								local optionName = Instance.new("TextLabel")
-								optionName.BackgroundTransparency = 1
-								optionName.Text = mode
-								optionName.TextColor3 = Color3.fromRGB(255, 255, 255)
-								optionName.TextTransparency = 0.5
-								optionName.TextXAlignment = Enum.TextXAlignment.Left
-								optionName.TextTruncate = Enum.TextTruncate.AtEnd
-								optionName.Size = UDim2.new(1, -20, 1, 0)
-								optionName.ZIndex = 104
-								optionName.Parent = option
-								applyMenuFont(optionName)
-
-								option.MouseEnter:Connect(function()
-									TweenService:Create(optionName, TweenInfo.new(0.12, Enum.EasingStyle.Sine), { TextTransparency = 0.15 }):Play()
-								end)
-								option.MouseLeave:Connect(function()
-									TweenService:Create(optionName, TweenInfo.new(0.12, Enum.EasingStyle.Sine), { TextTransparency = 0.5 }):Play()
-								end)
-								option.MouseButton1Click:Connect(function()
-									keyValue.Type = mode
-									keyValue.Active = mode == "Always"
-									syncModeLabel()
-									setOpen(false)
-									onSelect(keyValue)
-								end)
-							end
-						end
-
+						-- Declared before the option buttons so their click handlers can reach it.
 						local function syncModeLabel()
 							modeLabel.Text = tostring(keyValue.Type or "Hold")
 						end
+						local rebuildOptions   -- forward declaration: setOpen refreshes the list on open
 						local function setOpen(open)
 							if isOpen == open then
 								return
@@ -1855,6 +1796,68 @@ function library.new(libraryTitle, cfgLocation)
 								end)
 							end
 						end
+
+						-- Only offer the modes that aren't already selected, so the list
+						-- never repeats the mode shown on the trigger.
+						local function unselectedModes()
+							local list = {}
+							local current = tostring(keyValue.Type or "Hold")
+							for _, mode in ipairs(modeOptions) do
+								if mode ~= current then
+									table.insert(list, mode)
+								end
+							end
+							return list
+						end
+
+						rebuildOptions = function()
+							for _, child in ipairs(options:GetChildren()) do
+								if child:IsA("TextButton") then
+									child:Destroy()
+								end
+							end
+
+							local list = unselectedModes()
+							optionsHeight = math.max(optionRowHeight, #list * optionRowHeight)
+
+							for _, mode in ipairs(list) do
+								local option = Instance.new("TextButton")
+								option.BackgroundTransparency = 1
+								option.BorderSizePixel = 0
+								option.Text = ""
+								option.Size = UDim2.new(1, 0, 0, optionRowHeight)
+								option.ZIndex = 104
+								option.Parent = options
+
+								-- Same construction as the stock dropdown: plain button + inset Inter label
+								local optionName = Instance.new("TextLabel")
+								optionName.BackgroundTransparency = 1
+								optionName.Text = mode
+								optionName.TextColor3 = Color3.fromRGB(255, 255, 255)
+								optionName.TextTransparency = 0.5
+								optionName.TextXAlignment = Enum.TextXAlignment.Left
+								optionName.TextTruncate = Enum.TextTruncate.AtEnd
+								optionName.Size = UDim2.new(1, -20, 1, 0)
+								optionName.ZIndex = 104
+								optionName.Parent = option
+								applyMenuFont(optionName)
+
+								option.MouseEnter:Connect(function()
+									TweenService:Create(optionName, TweenInfo.new(0.12, Enum.EasingStyle.Sine), { TextTransparency = 0.15 }):Play()
+								end)
+								option.MouseLeave:Connect(function()
+									TweenService:Create(optionName, TweenInfo.new(0.12, Enum.EasingStyle.Sine), { TextTransparency = 0.5 }):Play()
+								end)
+								option.MouseButton1Click:Connect(function()
+									keyValue.Type = mode
+									keyValue.Active = mode == "Always"
+									syncModeLabel()
+									setOpen(false)
+									onSelect(keyValue)
+								end)
+							end
+						end
+
 						rebuildOptions()
 						trigger.MouseButton1Click:Connect(function()
 							setOpen(not isOpen)
