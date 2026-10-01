@@ -1740,8 +1740,15 @@ function library.new(libraryTitle, cfgLocation)
 						local isOpen = false
 						local optionsHeight = 60
 						-- full row width, matching how the stock dropdowns size themselves
-						local function optionsWidth()
-							return UDim.new(1, -8)
+						-- The panel lives inside the 62px trigger, so its open width has to be
+						-- an offset measured from the row. A scale-based width would resolve
+						-- against the trigger and stay tiny.
+						local function expandedWidth()
+							local rowWidth = targetFrame.AbsoluteSize.X
+							if rowWidth <= 0 then
+								rowWidth = modeFrame.AbsoluteSize.X
+							end
+							return math.max(62, math.floor(rowWidth - 8))
 						end
 						local toggleName = targetFrame:FindFirstChild("ToggleName")
 						local toggleButton = targetFrame:FindFirstChild("Toggle")
@@ -1771,9 +1778,9 @@ function library.new(libraryTitle, cfgLocation)
 							if open then
 								options.Visible = true
 							end
-							-- expand out from the compact trigger to the full row width, opening downward
+							-- expand from the compact trigger out to the full row width, opening downward
 							TweenService:Create(options, expandInfo, {
-								Size = UDim2.new(open and optionsWidth().Scale or 0, open and optionsWidth().Offset or 62, 0, open and optionsHeight or 0),
+								Size = UDim2.fromOffset(open and expandedWidth() or 62, open and optionsHeight or 0),
 							}):Play()
 
 							local arrowTween = TweenService:Create(arrow, expandInfo, {
