@@ -553,6 +553,15 @@ local function tuneMacSidebarLayout(gui)
 		tabSwitchers.BackgroundTransparency = 1
 	end
 
+	-- The lower-left corner artwork runs up the sidebar's left edge, so the
+	-- status and title text are inset past it to stay readable. One knob.
+	local STATUS_TEXT_INSET = 46
+	local function applyStatusInset(object, widthInset, yOffset)
+		if not (object and object:IsA("GuiObject")) then return end
+		object.Position = UDim2.new(object.Position.X.Scale, STATUS_TEXT_INSET, object.Position.Y.Scale, yOffset)
+		object.Size = UDim2.new(object.Size.X.Scale, -STATUS_TEXT_INSET - widthInset, object.Size.Y.Scale, object.Size.Y.Offset)
+	end
+
 	local titleFrame = informationHolder and informationHolder:FindFirstChild("TitleFrame")
 	local statusFrame = base and base:FindFirstChild("StatusFrame", true)
 	if userInfo then
@@ -567,8 +576,7 @@ local function tuneMacSidebarLayout(gui)
 	if statusFrame and userInfo then
 		statusFrame.Parent = userInfo
 		statusFrame.AnchorPoint = Vector2.new(0, 0)
-		statusFrame.Position = UDim2.new(0, 18, 0, 9)
-		statusFrame.Size = UDim2.new(1, -36, 0, 20)
+		applyStatusInset(statusFrame, 36, 9)
 		statusFrame.ZIndex = 50
 		local dot = statusFrame:FindFirstChild("Dot")
 		if dot and dot:IsA("GuiObject") then
@@ -590,8 +598,7 @@ local function tuneMacSidebarLayout(gui)
 	end
 	if titleFrame and userInfo then
 		titleFrame.Parent = userInfo
-		titleFrame.Position = UDim2.new(0, 18, 0, 36)
-		titleFrame.Size = UDim2.new(1, -36, 0, 46)
+		applyStatusInset(titleFrame, 36, 36)
 		for _, textObject in ipairs(titleFrame:GetDescendants()) do
 			if textObject:IsA("TextLabel") then
 				textObject.TextSize = textObject.Name == "Title" and 14 or 10
@@ -1258,10 +1265,12 @@ end
 -- track the window position; that lets them sit on the corners rather than
 -- being cut off inside. The artwork carries transparent padding, so each piece
 -- is bled outward past the frame edge to seat the visible art on the corner.
--- Per-corner bleed. Independent so each artwork's own padding can be tuned
--- without affecting the other. Higher = further out of the frame.
-local CORNER_BLEED_TOP_RIGHT = 8
-local CORNER_BLEED_BOTTOM_LEFT = 8
+-- Per-corner, per-axis bleed. Each artwork carries its own transparent padding,
+-- so horizontal and vertical are tuned separately. Higher = further out of the frame.
+local BLEED_TOP_RIGHT_X = 8
+local BLEED_TOP_RIGHT_Y = 8
+local BLEED_BOTTOM_LEFT_X = 8
+local BLEED_BOTTOM_LEFT_Y = 28
 
 local function attachCornerPiece(menu, name, assetId, corner)
 	local gui = menu.gui
@@ -1293,13 +1302,14 @@ local function attachCornerPiece(menu, name, assetId, corner)
 	local function syncPosition()
 		local guiPos = gui.AbsolutePosition
 		local basePos = base.AbsolutePosition
-		local bleed = isTop and CORNER_BLEED_TOP_RIGHT or CORNER_BLEED_BOTTOM_LEFT
+		local bleedX = isTop and BLEED_TOP_RIGHT_X or BLEED_BOTTOM_LEFT_X
+		local bleedY = isTop and BLEED_TOP_RIGHT_Y or BLEED_BOTTOM_LEFT_Y
 		local x = isLeft
-			and (basePos.X - guiPos.X - bleed)
-			or (basePos.X - guiPos.X + base.AbsoluteSize.X + bleed)
+			and (basePos.X - guiPos.X - bleedX)
+			or (basePos.X - guiPos.X + base.AbsoluteSize.X + bleedX)
 		local y = isTop
-			and (basePos.Y - guiPos.Y - bleed)
-			or (basePos.Y - guiPos.Y + base.AbsoluteSize.Y + bleed)
+			and (basePos.Y - guiPos.Y - bleedY)
+			or (basePos.Y - guiPos.Y + base.AbsoluteSize.Y + bleedY)
 		piece.Position = UDim2.fromOffset(x, y)
 	end
 	syncPosition()
