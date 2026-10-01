@@ -1281,10 +1281,19 @@ local function attachCornerPiece(menu)
 	pcall(function() piece:SetAttribute("ThemeIgnore", true) end)
 	piece.Parent = gui
 
+	-- The artwork carries transparent padding of its own, which reads as a gap
+	-- between the ghost and the window corner. The piece lives outside the
+	-- clipping frame, so shifting it out by this much seats the visible art on
+	-- the corner instead of the padding.
+	local CORNER_BLEED = 46
+
 	local function syncPosition()
 		local guiPos = gui.AbsolutePosition
 		local basePos = base.AbsolutePosition
-		piece.Position = UDim2.fromOffset(basePos.X - guiPos.X + base.AbsoluteSize.X, basePos.Y - guiPos.Y)
+		piece.Position = UDim2.fromOffset(
+			basePos.X - guiPos.X + base.AbsoluteSize.X + CORNER_BLEED,
+			basePos.Y - guiPos.Y - CORNER_BLEED
+		)
 	end
 	syncPosition()
 
