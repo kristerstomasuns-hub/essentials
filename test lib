@@ -899,7 +899,8 @@ local function attachHeaderSearch(menu)
 	bar.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 	bar.BackgroundTransparency = 0
 	bar.BorderSizePixel = 0
-	bar.ZIndex = 30
+	-- sits above the window corner piece so it stays visible and clickable
+	bar.ZIndex = 70
 	bar.Parent = elements
 
 	local barCorner = Instance.new("UICorner")
@@ -921,7 +922,7 @@ local function attachHeaderSearch(menu)
 	icon.AnchorPoint = Vector2.new(0, 0.5)
 	icon.Position = UDim2.new(0, 9, 0.5, 0)
 	icon.Size = UDim2.fromOffset(13, 13)
-	icon.ZIndex = 31
+	icon.ZIndex = 71
 	icon.Parent = bar
 
 	local box = Instance.new("TextBox")
@@ -939,7 +940,7 @@ local function attachHeaderSearch(menu)
 	box.FontFace = Font.new(interFont, Enum.FontWeight.Regular, Enum.FontStyle.Normal)
 	box.Position = UDim2.fromOffset(27, 0)
 	box.Size = UDim2.new(1, -58, 1, 0)
-	box.ZIndex = 31
+	box.ZIndex = 71
 	box.Parent = bar
 
 	-- match count shown at the right edge of the field
@@ -954,7 +955,7 @@ local function attachHeaderSearch(menu)
 	counter.TextSize = 11
 	counter.TextXAlignment = Enum.TextXAlignment.Right
 	counter.FontFace = Font.new(interFont, Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-	counter.ZIndex = 31
+	counter.ZIndex = 71
 	counter.Parent = bar
 
 	-- Results surface: shows matching features from every tab without leaving
@@ -975,7 +976,7 @@ local function attachHeaderSearch(menu)
 		results.ScrollBarImageTransparency = 0.6
 		results.TopImage = ""
 		results.BottomImage = ""
-		results.ZIndex = 40
+		results.ZIndex = 80
 		results.Visible = false
 		results.Parent = resultsHolder
 
@@ -1001,7 +1002,7 @@ local function attachHeaderSearch(menu)
 		emptyLabel.TextSize = 12
 		emptyLabel.TextXAlignment = Enum.TextXAlignment.Left
 		emptyLabel.FontFace = Font.new(interFont, Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-		emptyLabel.ZIndex = 41
+		emptyLabel.ZIndex = 81
 		emptyLabel.Parent = results
 	end
 
@@ -1110,7 +1111,7 @@ local function attachHeaderSearch(menu)
 		row.LayoutOrder = order
 		row.Size = UDim2.new(1, 0, 0, 22)
 		row.Text = ""
-		row.ZIndex = 41
+		row.ZIndex = 81
 		row.Parent = results
 
 		local rowCorner = Instance.new("UICorner")
@@ -1128,7 +1129,7 @@ local function attachHeaderSearch(menu)
 		nameLabel.TextXAlignment = Enum.TextXAlignment.Left
 		nameLabel.TextTruncate = Enum.TextTruncate.AtEnd
 		nameLabel.FontFace = Font.new(interFont, Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-		nameLabel.ZIndex = 42
+		nameLabel.ZIndex = 82
 		nameLabel.Parent = row
 
 		local tabLabel = Instance.new("TextLabel")
@@ -1143,7 +1144,7 @@ local function attachHeaderSearch(menu)
 		tabLabel.TextXAlignment = Enum.TextXAlignment.Right
 		tabLabel.TextTruncate = Enum.TextTruncate.AtEnd
 		tabLabel.FontFace = Font.new(interFont, Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-		tabLabel.ZIndex = 42
+		tabLabel.ZIndex = 82
 		tabLabel.Parent = row
 
 		row.MouseEnter:Connect(function()
@@ -1271,7 +1272,7 @@ local function attachCornerPiece(menu)
 	piece.ScaleType = Enum.ScaleType.Fit
 	piece.AnchorPoint = Vector2.new(1, 0)
 	piece.Position = UDim2.new(1, 0, 0, 0)
-	piece.Size = UDim2.fromOffset(64, 64)
+	piece.Size = UDim2.fromOffset(320, 320)
 	piece.ZIndex = 60
 	piece.Active = false
 	pcall(function() piece.Interactable = false end)
