@@ -1666,7 +1666,7 @@ function library.new(libraryTitle, cfgLocation)
 						trigger.BorderSizePixel = 0
 						trigger.Text = ""
 						trigger.Size = UDim2.fromScale(1, 1)
-						trigger.ZIndex = 26
+						trigger.ZIndex = 102
 						trigger.Parent = modeFrame
 
 						local modeLabel = Instance.new("TextLabel")
@@ -1678,7 +1678,7 @@ function library.new(libraryTitle, cfgLocation)
 						modeLabel.TextColor3 = Color3.fromRGB(235, 235, 235)
 						modeLabel.TextSize = 11
 						modeLabel.TextXAlignment = Enum.TextXAlignment.Left
-						modeLabel.ZIndex = 26
+						modeLabel.ZIndex = 102
 						modeLabel.Parent = modeFrame
 
 						local arrow = Instance.new("ImageLabel")
@@ -1689,16 +1689,17 @@ function library.new(libraryTitle, cfgLocation)
 						arrow.ImageTransparency = 0.5
 						arrow.Position = UDim2.new(1, -6, 0.5, 0)
 						arrow.Size = UDim2.fromOffset(11, 11)
-						arrow.ZIndex = 26
+						arrow.ZIndex = 102
 						arrow.Parent = modeFrame
 
 						local options = Instance.new("Frame")
 						options.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 						options.BackgroundTransparency = 0
 						options.Position = UDim2.fromOffset(0, 22)
-						options.Size = UDim2.fromOffset(62, 66)
-						options.ZIndex = 26
+						options.Size = UDim2.fromOffset(62, 0)
+						options.ZIndex = 103
 						options.Visible = false
+						options.ClipsDescendants = true
 						options.Parent = modeFrame
 
 						local optionsCorner = Instance.new("UICorner")
@@ -1707,36 +1708,59 @@ function library.new(libraryTitle, cfgLocation)
 
 						local optionsStroke = Instance.new("UIStroke")
 						optionsStroke.Color = Color3.fromRGB(42, 46, 52)
-						optionsStroke.Transparency = 0.2
+						optionsStroke.Transparency = 0.88
 						optionsStroke.Parent = options
 
 						local layout = Instance.new("UIListLayout")
-						layout.Padding = UDim.new(0, 3)
+						layout.Padding = UDim.new(0, 0)
 						layout.Parent = options
 
 						local isOpen = false
+						local optionsHeight = 60
 						local function syncModeLabel()
 							modeLabel.Text = tostring(keyValue.Type or "Hold")
 						end
 						local function setOpen(open)
+							if isOpen == open then
+								return
+							end
 							isOpen = open
-							options.Visible = open
-							arrow.Rotation = open and -90 or 0
+							if open then
+								options.Visible = true
+							end
+							TweenService:Create(options, TweenInfo.new(0.16, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+								Size = UDim2.fromOffset(62, open and optionsHeight or 0),
+							}):Play()
+							local arrowTween = TweenService:Create(arrow, TweenInfo.new(0.16, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+								Rotation = open and -90 or 0,
+							})
+							arrowTween:Play()
+							if not open then
+								arrowTween.Completed:Connect(function()
+									if not isOpen then
+										options.Visible = false
+									end
+								end)
+							end
 						end
 						for _, mode in ipairs({ "Hold", "Toggle", "Always" }) do
 							local option = Instance.new("TextButton")
-							option.BackgroundColor3 = Color3.fromRGB(17, 19, 20)
+							option.BackgroundTransparency = 1
 							option.BorderSizePixel = 0
 							option.Font = Enum.Font.GothamMedium
 							option.Size = UDim2.new(1, 0, 0, 20)
 							option.Text = mode
-							option.TextColor3 = Color3.fromRGB(230, 230, 230)
+							option.TextColor3 = Color3.fromRGB(255, 255, 255)
 							option.TextSize = 11
-							option.ZIndex = 27
+							option.TextTransparency = 0.5
+							option.ZIndex = 104
 							option.Parent = options
-							local optionCorner = Instance.new("UICorner")
-							optionCorner.CornerRadius = UDim.new(0, 3)
-							optionCorner.Parent = option
+							option.MouseEnter:Connect(function()
+								TweenService:Create(option, TweenInfo.new(0.12, Enum.EasingStyle.Sine), { TextTransparency = 0.15 }):Play()
+							end)
+							option.MouseLeave:Connect(function()
+								TweenService:Create(option, TweenInfo.new(0.12, Enum.EasingStyle.Sine), { TextTransparency = 0.5 }):Play()
+							end)
 							option.MouseButton1Click:Connect(function()
 								keyValue.Type = mode
 								keyValue.Active = mode == "Always"
@@ -1981,8 +2005,13 @@ function library.new(libraryTitle, cfgLocation)
 								keyControls.Position = UDim2.new(1, -40, 0.5, 0)
 								keyControls.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 								keyControls.Size = UDim2.fromOffset(150, 18)
-								keyControls.ZIndex = 25
+								keyControls.ZIndex = 100
 								keyControls.Parent = macObject.Instance
+								macObject.Instance.ZIndex = 100
+								local sectionFrame = macObject.Instance.Parent
+								if sectionFrame then
+									sectionFrame.ClipsDescendants = false
+								end
 
 								local controlsCorner = Instance.new("UICorner")
 								controlsCorner.CornerRadius = UDim.new(0, 4)
@@ -1999,7 +2028,7 @@ function library.new(libraryTitle, cfgLocation)
 								controlsDivider.BorderSizePixel = 0
 								controlsDivider.Position = UDim2.fromOffset(88, 2)
 								controlsDivider.Size = UDim2.fromOffset(1, 14)
-								controlsDivider.ZIndex = 26
+								controlsDivider.ZIndex = 101
 								controlsDivider.Parent = keyControls
 
 								inlineBinder.Parent = keyControls
@@ -2007,6 +2036,7 @@ function library.new(libraryTitle, cfgLocation)
 								inlineBinder.Position = UDim2.new(0, 0, 0.5, 0)
 								inlineBinder.Size = UDim2.fromOffset(88, 18)
 								inlineBinder.BackgroundTransparency = 1
+								inlineBinder.ZIndex = 101
 								local binderCorner = inlineBinder:FindFirstChild("BinderBoxUICorner")
 								if binderCorner then
 									binderCorner.CornerRadius = UDim.new(0, 0)
@@ -2019,6 +2049,7 @@ function library.new(libraryTitle, cfgLocation)
 								inlineMode.Frame.Parent = keyControls
 								inlineMode.Frame.AnchorPoint = Vector2.new(0, 0.5)
 								inlineMode.Frame.Position = UDim2.new(0, 88, 0.5, 0)
+								inlineMode.Frame.ZIndex = 101
 								local targetLabel = macObject.Instance:FindFirstChild("ToggleName")
 								if targetLabel and targetLabel:IsA("TextLabel") then
 									targetLabel.Size = UDim2.new(1, -194, targetLabel.Size.Y.Scale, targetLabel.Size.Y.Offset)
