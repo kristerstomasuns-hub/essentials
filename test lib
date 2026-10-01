@@ -1252,6 +1252,35 @@ local function attachHeaderSearch(menu)
 	return { Frame = bar, Box = box, Refresh = function() runSearch(box.Text) end }
 end
 
+-- Decorative corner piece pinned to the top-right of the window.
+local function attachCornerPiece(menu)
+	local gui = menu.gui
+	if not gui then return nil end
+
+	local base = gui:FindFirstChild("Base", true)
+	if not base then return nil end
+	if base:FindFirstChild("CornerPiece") then return nil end
+
+	local piece = Instance.new("ImageLabel")
+	piece.Name = "CornerPiece"
+	piece.BackgroundTransparency = 1
+	piece.BorderSizePixel = 0
+	piece.Image = "rbxassetid://110789932449581"
+	piece.ImageColor3 = Color3.fromRGB(255, 255, 255)
+	piece.ImageTransparency = 0
+	piece.ScaleType = Enum.ScaleType.Fit
+	piece.AnchorPoint = Vector2.new(1, 0)
+	piece.Position = UDim2.new(1, 0, 0, 0)
+	piece.Size = UDim2.fromOffset(64, 64)
+	piece.ZIndex = 60
+	piece.Active = false
+	pcall(function() piece.Interactable = false end)
+	pcall(function() piece:SetAttribute("ThemeIgnore", true) end)
+	piece.Parent = base
+
+	return piece
+end
+
 function library.new(libraryTitle, cfgLocation)
 	local menu = {}
 	menu.values = {}
@@ -1685,6 +1714,7 @@ function library.new(libraryTitle, cfgLocation)
 		ensureLegacyMain(menu.gui)
 		hideMacWindowControls(menu.gui)
 		tuneMacSidebarLayout(menu.gui)
+		attachCornerPiece(menu)
 		attachHeaderSearch(menu)
 		makeTopbarDraggable(menu.gui)
 		menu._themeAccentConnection = menu.gui.DescendantAdded:Connect(function(object)
