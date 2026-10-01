@@ -1642,33 +1642,112 @@ function library.new(libraryTitle, cfgLocation)
 						return binderBox
 					end
 
-					local function attachInlineKeybindMode(modeDropdown, keyValue)
+					local function attachInlineKeybindMode(keyValue, onSelect)
 						local targetFrame = macObject and macObject.Instance
-						local modeFrame = modeDropdown and modeDropdown.Instance
-						if not (targetFrame and modeFrame) then
+						if not targetFrame then
 							return nil
 						end
 
-						modeFrame.Parent = targetFrame
 						targetFrame.ClipsDescendants = false
+						local modeFrame = Instance.new("Frame")
+						modeFrame.Name = "KeyModeDropdown"
+						modeFrame.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
+						modeFrame.BorderSizePixel = 0
+						modeFrame.Parent = targetFrame
 						modeFrame.AnchorPoint = Vector2.new(1, 0.5)
 						modeFrame.Position = UDim2.new(1, -44, 0.5, 0)
-						modeFrame.Size = UDim2.fromOffset(86, 20)
+						modeFrame.Size = UDim2.fromOffset(82, 18)
 						modeFrame.ClipsDescendants = false
 						modeFrame.ZIndex = 25
-						for _, child in ipairs(modeFrame:GetDescendants()) do
-							pcall(function()
-								child.ZIndex = 25
-								child:SetAttribute("ThemeIgnore", true)
+
+						local corner = Instance.new("UICorner")
+						corner.CornerRadius = UDim.new(0, 4)
+						corner.Parent = modeFrame
+
+						local stroke = Instance.new("UIStroke")
+						stroke.Color = Color3.fromRGB(42, 46, 52)
+						stroke.Transparency = 0.2
+						stroke.Parent = modeFrame
+
+						local trigger = Instance.new("TextButton")
+						trigger.BackgroundTransparency = 1
+						trigger.BorderSizePixel = 0
+						trigger.Text = ""
+						trigger.Size = UDim2.fromScale(1, 1)
+						trigger.ZIndex = 26
+						trigger.Parent = modeFrame
+
+						local modeLabel = Instance.new("TextLabel")
+						modeLabel.Name = "ModeLabel"
+						modeLabel.BackgroundTransparency = 1
+						modeLabel.Font = Enum.Font.GothamMedium
+						modeLabel.Position = UDim2.fromOffset(8, 0)
+						modeLabel.Size = UDim2.new(1, -26, 1, 0)
+						modeLabel.TextColor3 = Color3.fromRGB(235, 235, 235)
+						modeLabel.TextSize = 11
+						modeLabel.TextXAlignment = Enum.TextXAlignment.Left
+						modeLabel.ZIndex = 26
+						modeLabel.Parent = modeFrame
+
+						local arrow = Instance.new("TextLabel")
+						arrow.BackgroundTransparency = 1
+						arrow.Font = Enum.Font.GothamBold
+						arrow.Position = UDim2.new(1, -18, 0, 0)
+						arrow.Size = UDim2.fromOffset(18, 18)
+						arrow.Text = "v"
+						arrow.TextColor3 = Color3.fromRGB(165, 170, 175)
+						arrow.TextSize = 12
+						arrow.ZIndex = 26
+						arrow.Parent = modeFrame
+
+						local options = Instance.new("Frame")
+						options.BackgroundTransparency = 1
+						options.Position = UDim2.fromOffset(6, 24)
+						options.Size = UDim2.new(1, -12, 0, 66)
+						options.ZIndex = 26
+						options.Visible = false
+						options.Parent = modeFrame
+
+						local layout = Instance.new("UIListLayout")
+						layout.Padding = UDim.new(0, 3)
+						layout.Parent = options
+
+						local isOpen = false
+						local function syncModeLabel()
+							modeLabel.Text = tostring(keyValue.Type or "Hold")
+						end
+						local function setOpen(open)
+							isOpen = open
+							options.Visible = open
+							modeFrame.Size = UDim2.fromOffset(open and 190 or 82, open and 96 or 18)
+							arrow.Text = open and "^" or "v"
+							stroke.Color = open and Color3.fromRGB(103, 182, 254) or Color3.fromRGB(42, 46, 52)
+						end
+						for _, mode in ipairs({ "Hold", "Toggle", "Always" }) do
+							local option = Instance.new("TextButton")
+							option.BackgroundColor3 = Color3.fromRGB(17, 19, 20)
+							option.BorderSizePixel = 0
+							option.Font = Enum.Font.GothamMedium
+							option.Size = UDim2.new(1, 0, 0, 20)
+							option.Text = mode
+							option.TextColor3 = Color3.fromRGB(230, 230, 230)
+							option.TextSize = 11
+							option.ZIndex = 27
+							option.Parent = options
+							local optionCorner = Instance.new("UICorner")
+							optionCorner.CornerRadius = UDim.new(0, 3)
+							optionCorner.Parent = option
+							option.MouseButton1Click:Connect(function()
+								keyValue.Type = mode
+								keyValue.Active = mode == "Always"
+								syncModeLabel()
+								setOpen(false)
+								onSelect(keyValue)
 							end)
 						end
-
-						local modeLabel = modeFrame:FindFirstChild("DropdownName")
-						local function syncModeLabel()
-							if modeLabel then
-								modeLabel.Text = tostring(keyValue.Type or "Hold")
-							end
-						end
+						trigger.MouseButton1Click:Connect(function()
+							setOpen(not isOpen)
+						end)
 						syncModeLabel()
 
 						return {
@@ -1888,28 +1967,10 @@ function library.new(libraryTitle, cfgLocation)
 							}, makeMacFlag(tab.tab_num, section.name, sector.name, extraFlag))
 							local inlineBinder = macObject and macObject.Class == "Toggle" and attachInlineKeybind(keybind) or nil
 
-							local inlineMode
-							local modeDropdown = macSection:Dropdown({
-								Name = text .. " Key Mode",
-								Multi = false,
-								Required = true,
-								Options = {
-									"Hold",
-									"Toggle",
-									"Always",
-								},
-								Default = keybindModeIndexes[defaultType] or 1,
-								Callback = function(mode)
-									keyValue.Type = mode or "Hold"
-									keyValue.Active = keyValue.Type == "Always"
-									storeKey(keyValue)
-									if inlineMode then
-										task.defer(inlineMode.Sync)
-									end
-									keyCallback(keyValue)
-								end,
-							}, makeMacFlag(tab.tab_num, section.name, sector.name, extraFlag .. "/mode"))
-							inlineMode = inlineBinder and attachInlineKeybindMode(modeDropdown, keyValue) or nil
+							local inlineMode = inlineBinder and attachInlineKeybindMode(keyValue, function(updatedValue)
+								storeKey(updatedValue)
+								keyCallback(updatedValue)
+							end) or nil
 							if inlineMode then
 								inlineBinder.Position = UDim2.new(1, -136, 0.5, 0)
 								local targetLabel = macObject.Instance:FindFirstChild("ToggleName")
@@ -1928,8 +1989,8 @@ function library.new(libraryTitle, cfgLocation)
 								elseif keybind and keybind.SetVisibility then
 									keybind:SetVisibility(state and true or false)
 								end
-								if modeDropdown and modeDropdown.SetVisibility then
-									modeDropdown:SetVisibility(state and true or false)
+								if inlineMode then
+									inlineMode.Frame.Visible = state and true or false
 								end
 							end
 
@@ -1972,11 +2033,8 @@ function library.new(libraryTitle, cfgLocation)
 									end
 								end
 
-								if modeDropdown and modeDropdown.UpdateSelection then
-									modeDropdown:UpdateSelection(keyValue.Type)
-									if inlineMode then
-										task.defer(inlineMode.Sync)
-									end
+								if inlineMode then
+									inlineMode.Sync()
 								elseif not cb then
 									keyCallback(keyValue)
 								end
