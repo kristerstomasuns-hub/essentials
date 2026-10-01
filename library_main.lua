@@ -1906,6 +1906,41 @@ function library.new(libraryTitle, cfgLocation)
 						return binderBox
 					end
 
+					local function attachInlineKeybindMode(modeDropdown, keyValue)
+						local targetFrame = macObject and macObject.Instance
+						local modeFrame = modeDropdown and modeDropdown.Instance
+						if not (targetFrame and modeFrame) then
+							return nil
+						end
+
+						modeFrame.Parent = targetFrame
+						targetFrame.ClipsDescendants = false
+						modeFrame.AnchorPoint = Vector2.new(1, 0.5)
+						modeFrame.Position = UDim2.new(1, -44, 0.5, 0)
+						modeFrame.Size = UDim2.fromOffset(86, 20)
+						modeFrame.ClipsDescendants = false
+						modeFrame.ZIndex = 25
+						for _, child in ipairs(modeFrame:GetDescendants()) do
+							pcall(function()
+								child.ZIndex = 25
+								child:SetAttribute("ThemeIgnore", true)
+							end)
+						end
+
+						local modeLabel = modeFrame:FindFirstChild("DropdownName")
+						local function syncModeLabel()
+							if modeLabel then
+								modeLabel.Text = normalizeKeybindMode(keyValue.Type)
+							end
+						end
+						syncModeLabel()
+
+						return {
+							Frame = modeFrame,
+							Sync = syncModeLabel,
+						}
+					end
+
 					if elementType == "Toggle" then
 						store({
 							Toggle = defaults.Toggle or false,
@@ -2121,6 +2156,7 @@ function library.new(libraryTitle, cfgLocation)
 							local inlineBinder = macObject and macObject.Class == "Toggle" and attachInlineKeybind(keybind) or nil
 
 							local suppressModeCallback = false
+							local inlineMode
 							local modeDropdown = macSection:Dropdown({
 								Name = text .. " Key Mode",
 								Multi = false,
@@ -2138,9 +2174,20 @@ function library.new(libraryTitle, cfgLocation)
 									keyValue.Type = normalizeKeybindMode(mode)
 									keyValue.Active = keyValue.Type == "Always"
 									storeKey(keyValue)
+									if inlineMode then
+										task.defer(inlineMode.Sync)
+									end
 									keyCallback(keyValue)
 								end,
 							}, makeMacFlag(tab.tab_num, section.name, sector.name, extraFlag .. "/mode"))
+							inlineMode = inlineBinder and attachInlineKeybindMode(modeDropdown, keyValue) or nil
+							if inlineMode then
+								inlineBinder.Position = UDim2.new(1, -136, 0.5, 0)
+								local targetLabel = macObject.Instance:FindFirstChild("ToggleName")
+								if targetLabel and targetLabel:IsA("TextLabel") then
+									targetLabel.Size = UDim2.new(1, -245, targetLabel.Size.Y.Scale, targetLabel.Size.Y.Offset)
+								end
+							end
 							scheduleOpaquePass()
 
 							function keybindObject:get_value()
@@ -2228,6 +2275,9 @@ function library.new(libraryTitle, cfgLocation)
 									suppressModeCallback = true
 									modeDropdown:UpdateSelection(keyValue.Type)
 									suppressModeCallback = false
+								end
+								if inlineMode then
+									task.defer(inlineMode.Sync)
 								end
 
 								if shouldCallback then

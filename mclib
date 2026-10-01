@@ -4212,6 +4212,8 @@ function MacLib:Window(Settings)
 						MacLib.Options[Flag] = DropdownFunctions
 					end
 
+					DropdownFunctions.Instance = dropdown
+
 					return DropdownFunctions
 				end
 
