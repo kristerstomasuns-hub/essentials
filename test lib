@@ -1712,10 +1712,11 @@ function library.new(libraryTitle, cfgLocation)
 						local options = Instance.new("Frame")
 						options.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 						options.BackgroundTransparency = 0
-						-- flush against the trigger (trigger height is 18) so the two read as one dropdown
+						-- hangs off the TOP-LEFT of the trigger so it can open out to full row width
+						options.AnchorPoint = Vector2.new(0, 0)
 						options.Position = UDim2.fromOffset(0, 18)
-						options.Size = UDim2.fromOffset(62, 0)
-						options.ZIndex = 103
+						options.Size = UDim2.new(0, 62, 0, 0)
+						options.ZIndex = 300
 						options.Visible = false
 						options.ClipsDescendants = true
 						options.Parent = modeFrame
@@ -1731,17 +1732,16 @@ function library.new(libraryTitle, cfgLocation)
 						optionsStroke.Transparency = 0.97
 						optionsStroke.Parent = options
 
-						local optionsPadding = Instance.new("UIPadding")
-						optionsPadding.PaddingLeft = UDim.new(0, 10)
-						optionsPadding.PaddingRight = UDim.new(0, 10)
-						optionsPadding.Parent = options
-
 						local layout = Instance.new("UIListLayout")
 						layout.Padding = UDim.new(0, 0)
 						layout.Parent = options
 
 						local isOpen = false
 						local optionsHeight = 60
+						-- full row width, matching how the stock dropdowns size themselves
+						local function optionsWidth()
+							return UDim.new(1, -8)
+						end
 						local toggleName = targetFrame:FindFirstChild("ToggleName")
 						local toggleButton = targetFrame:FindFirstChild("Toggle")
 						local function syncModeLabel()
@@ -1770,8 +1770,9 @@ function library.new(libraryTitle, cfgLocation)
 							if open then
 								options.Visible = true
 							end
+							-- expand out from the compact trigger to the full row width, opening downward
 							TweenService:Create(options, expandInfo, {
-								Size = UDim2.fromOffset(62, open and optionsHeight or 0),
+								Size = UDim2.new(open and optionsWidth().Scale or 0, open and optionsWidth().Offset or 62, 0, open and optionsHeight or 0),
 							}):Play()
 
 							local arrowTween = TweenService:Create(arrow, expandInfo, {
