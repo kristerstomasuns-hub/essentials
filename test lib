@@ -1258,7 +1258,10 @@ end
 -- track the window position; that lets them sit on the corners rather than
 -- being cut off inside. The artwork carries transparent padding, so each piece
 -- is bled outward past the frame edge to seat the visible art on the corner.
-local CORNER_BLEED = 18
+-- Per-corner bleed. Independent so each artwork's own padding can be tuned
+-- without affecting the other. Higher = further out of the frame.
+local CORNER_BLEED_TOP_RIGHT = 8
+local CORNER_BLEED_BOTTOM_LEFT = 8
 
 local function attachCornerPiece(menu, name, assetId, corner)
 	local gui = menu.gui
@@ -1290,12 +1293,13 @@ local function attachCornerPiece(menu, name, assetId, corner)
 	local function syncPosition()
 		local guiPos = gui.AbsolutePosition
 		local basePos = base.AbsolutePosition
+		local bleed = isTop and CORNER_BLEED_TOP_RIGHT or CORNER_BLEED_BOTTOM_LEFT
 		local x = isLeft
-			and (basePos.X - guiPos.X - CORNER_BLEED)
-			or (basePos.X - guiPos.X + base.AbsoluteSize.X + CORNER_BLEED)
+			and (basePos.X - guiPos.X - bleed)
+			or (basePos.X - guiPos.X + base.AbsoluteSize.X + bleed)
 		local y = isTop
-			and (basePos.Y - guiPos.Y - CORNER_BLEED)
-			or (basePos.Y - guiPos.Y + base.AbsoluteSize.Y + CORNER_BLEED)
+			and (basePos.Y - guiPos.Y - bleed)
+			or (basePos.Y - guiPos.Y + base.AbsoluteSize.Y + bleed)
 		piece.Position = UDim2.fromOffset(x, y)
 	end
 	syncPosition()
