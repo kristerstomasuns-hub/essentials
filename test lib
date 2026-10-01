@@ -867,6 +867,145 @@ local function asArrayFromSelection(selection, optionOrder)
 	return selected
 end
 
+-- Search bar for the tab header: filters the current tab's elements by name,
+-- hiding any sector that ends up with nothing matching.
+local function attachHeaderSearch(menu)
+	local gui = menu.gui
+	if not gui then return nil end
+
+	local elements = gui:FindFirstChild("Elements", true)
+	if not elements or not elements:IsA("GuiObject") then return nil end
+	if elements:FindFirstChild("HeaderSearch") then return nil end
+
+	local searchIconId = "rbxassetid://86737463322606"
+	local interFont = "rbxassetid://12187365364"
+
+	local bar = Instance.new("Frame")
+	bar.Name = "HeaderSearch"
+	bar.AnchorPoint = Vector2.new(1, 0.5)
+	bar.Position = UDim2.new(1, -10, 0.5, 0)
+	bar.Size = UDim2.fromOffset(210, 26)
+	bar.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
+	bar.BackgroundTransparency = 0
+	bar.BorderSizePixel = 0
+	bar.ZIndex = 30
+	bar.Parent = elements
+
+	local barCorner = Instance.new("UICorner")
+	barCorner.CornerRadius = UDim.new(0, 5)
+	barCorner.Parent = bar
+
+	local barStroke = Instance.new("UIStroke")
+	barStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	barStroke.Color = Color3.fromRGB(255, 255, 255)
+	barStroke.Transparency = 0.94
+	barStroke.Parent = bar
+
+	local icon = Instance.new("ImageLabel")
+	icon.Name = "SearchIcon"
+	icon.Image = searchIconId
+	icon.ImageColor3 = Color3.fromRGB(180, 180, 180)
+	icon.ImageTransparency = 0.25
+	icon.BackgroundTransparency = 1
+	icon.AnchorPoint = Vector2.new(0, 0.5)
+	icon.Position = UDim2.new(0, 9, 0.5, 0)
+	icon.Size = UDim2.fromOffset(13, 13)
+	icon.ZIndex = 31
+	icon.Parent = bar
+
+	local box = Instance.new("TextBox")
+	box.Name = "SearchBox"
+	box.BackgroundTransparency = 1
+	box.BorderSizePixel = 0
+	box.ClearTextOnFocus = false
+	box.PlaceholderText = "Search..."
+	box.PlaceholderColor3 = Color3.fromRGB(140, 140, 140)
+	box.Text = ""
+	box.TextColor3 = Color3.fromRGB(225, 225, 225)
+	box.TextSize = 12
+	box.TextXAlignment = Enum.TextXAlignment.Left
+	box.TextTruncate = Enum.TextTruncate.AtEnd
+	box.FontFace = Font.new(interFont, Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+	box.Position = UDim2.fromOffset(27, 0)
+	box.Size = UDim2.new(1, -35, 1, 0)
+	box.ZIndex = 31
+	box.Parent = bar
+
+	-- cache the sector container for each element so we can hide whole groups
+	local sectorCache = setmetatable({}, { __mode = "k" })
+
+	local function sectorOf(element)
+		local cached = sectorCache[element]
+		if cached ~= nil then return cached end
+		local instance = element and element._raw
+		if not (instance and typeof(instance) == "Instance") then
+			sectorCache[element] = false
+			return false
+		end
+		local group = instance.Parent
+		local sector = group and group.Parent
+		sectorCache[element] = sector or false
+		return sector or false
+	end
+
+	local function applyFilter(query)
+		query = tostring(query or ""):lower():gsub("^%s+", ""):gsub("%s+$", "")
+		local filtering = query ~= ""
+		local tabNum = menu._currentTab
+		local sectors = menu._elements[tabNum]
+
+		if type(sectors) ~= "table" then return end
+
+		local touchedSectors = {}
+
+		for sectionName, sectorMap in pairs(sectors) do
+			for sectorName, elementsMap in pairs(sectorMap) do
+				local matchedAny = false
+				for flag, element in pairs(elementsMap) do
+					local label = tostring(element._text or flag or ""):lower()
+					local match = (not filtering) or label:find(query, 1, true) ~= nil
+					if match then matchedAny = true end
+					if element.set_visible then
+						pcall(element.set_visible, element, match)
+					end
+				end
+				local sector = nil
+				for _, element in pairs(elementsMap) do
+					sector = sectorOf(element)
+					if sector then break end
+				end
+				if sector and sector:IsA("GuiObject") then
+					touchedSectors[sector] = (not filtering) or matchedAny
+				end
+			end
+		end
+
+		for sector, visible in pairs(touchedSectors) do
+			pcall(function() sector.Visible = visible end)
+		end
+	end
+
+	box:GetPropertyChangedSignal("Text"):Connect(function()
+		applyFilter(box.Text)
+	end)
+
+	-- mclib only reports the active tab through the header label, so follow it
+	local headerLabel
+	pcall(function() headerLabel = gui:FindFirstChild("CurrentTab", true) end)
+	if headerLabel and headerLabel:IsA("TextLabel") then
+		headerLabel:GetPropertyChangedSignal("Text"):Connect(function()
+			local title = tostring(headerLabel.Text or "")
+			local num = menu._tabTitles and menu._tabTitles[title]
+			if num and num ~= menu._currentTab then
+				menu._currentTab = num
+				applyFilter(box.Text)
+			end
+		end)
+	end
+
+	return { Frame = bar, Box = box, Refresh = function() applyFilter(box.Text) end }
+end
+
 function library.new(libraryTitle, cfgLocation)
 	local menu = {}
 	menu.values = {}
@@ -1300,6 +1439,7 @@ function library.new(libraryTitle, cfgLocation)
 		ensureLegacyMain(menu.gui)
 		hideMacWindowControls(menu.gui)
 		tuneMacSidebarLayout(menu.gui)
+		attachHeaderSearch(menu)
 		makeTopbarDraggable(menu.gui)
 		menu._themeAccentConnection = menu.gui.DescendantAdded:Connect(function(object)
 			scheduleThemeAccentObject(object)
@@ -1494,6 +1634,13 @@ function library.new(libraryTitle, cfgLocation)
 			Image = tabImage,
 		})
 
+		-- remember the title so the header search can map the shown title back to this tab
+		menu._tabTitles = menu._tabTitles or {}
+		menu._tabTitles[tab.name] = tab.tab_num
+		if menu._currentTab == nil then
+			menu._currentTab = tab.tab_num
+		end
+
 		if not selectedFirstTab then
 			selectedFirstTab = true
 			pcall(function()
@@ -1548,6 +1695,7 @@ function library.new(libraryTitle, cfgLocation)
 					local value = {}
 					local element = {}
 					local macObject
+					element._text = tostring(text or "")
 
 					local function store(newValue)
 						value = newValue
