@@ -58,6 +58,9 @@ local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("ghostLuaL%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLuaL.Size = UDim2.fromOffset(208, 208)")
 	macSource = macSource:gsub("ghostLua%.Position = UDim2%.new%(0, 68, 1, %-146%)", "ghostLua.Position = UDim2.fromOffset(54, -34)")
 	macSource = macSource:gsub("ghostLua%.Size = UDim2%.fromOffset%(225, 225%)", "ghostLua.Size = UDim2.fromOffset(208, 208)")
+	-- sidebar backdrop behind the tab buttons
+	macSource = macSource:gsub('tabSwitchersBackground%.Image = "rbxassetid://139913314515436"', 'tabSwitchersBackground.Image = "rbxassetid://104673673037299"')
+	macSource = macSource:gsub('tabSwitchersBackground%.Image = "rbxassetid://83675218406550"', 'tabSwitchersBackground.Image = "rbxassetid://104673673037299"')
 	macSource = macSource:gsub("tabSwitchers%.Size = UDim2%.new%(1, 0, 1, %-107%)", "tabSwitchers.Size = UDim2.new(1, 0, 1, -80)")
 	macSource = macSource:gsub("tabSwitcherUIStroke%.Color = Color3%.fromRGB%(255, 255, 255%)", "tabSwitcherUIStroke.Color = Color3.fromRGB(103, 182, 254)")
 	macSource = macSource:gsub("tabImage%.ImageColor3 = Color3%.fromRGB%(103, 182, 254%)", "tabImage.ImageColor3 = Color3.fromRGB(255, 255, 255)")
@@ -95,7 +98,7 @@ local function patchMacLibSource(macSource)
 
 	local tabSwitchersBackground = Instance.new("ImageLabel")
 	tabSwitchersBackground.Name = "TabSwitchersBackground"
-	tabSwitchersBackground.Image = "rbxassetid://139913314515436"
+	tabSwitchersBackground.Image = "rbxassetid://104673673037299"
 	tabSwitchersBackground.ImageTransparency = 0.35
 	tabSwitchersBackground.ImageColor3 = Color3.fromRGB(220, 220, 220)
 	tabSwitchersBackground.ScaleType = Enum.ScaleType.Crop
