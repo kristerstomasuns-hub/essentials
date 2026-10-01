@@ -1434,7 +1434,8 @@ function library.new(libraryTitle, cfgLocation)
 			value.Key = typeof(loaded) == "EnumItem" and loaded.Name or loaded
 			value.KeyType = typeof(loaded) == "EnumItem" and keyEnumTypeName(loaded) or nil
 		end
-		value.Type = "Hold"
+		-- Never start a bind active. The mode itself is left alone: forcibly rewriting
+		-- every bind to "Hold" used to leave keys like the menu toggle stuck on Hold.
 		value.Active = false
 		return value
 	end
