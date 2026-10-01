@@ -1253,27 +1253,33 @@ local function attachHeaderSearch(menu)
 	return { Frame = bar, Box = box, Refresh = function() runSearch(box.Text) end }
 end
 
--- Decorative corner piece pinned to the top-right of the window.
--- Base clips its descendants, so the piece lives as a sibling on the ScreenGui
--- and tracks the window position; that lets it sit on the corner rather than
--- being cut off inside it.
-local function attachCornerPiece(menu)
+-- Decorative corner pieces for the window.
+-- Base clips its descendants, so these live as siblings on the ScreenGui and
+-- track the window position; that lets them sit on the corners rather than
+-- being cut off inside. The artwork carries transparent padding, so each piece
+-- is bled outward past the frame edge to seat the visible art on the corner.
+local CORNER_BLEED = 46
+
+local function attachCornerPiece(menu, name, assetId, corner)
 	local gui = menu.gui
 	if not gui then return nil end
 
 	local base = gui:FindFirstChild("Base", true)
 	if not base then return nil end
-	if gui:FindFirstChild("CornerPiece") or base:FindFirstChild("CornerPiece") then return nil end
+	if gui:FindFirstChild(name) or base:FindFirstChild(name) then return nil end
+
+	local isTop = corner ~= "BottomLeft"
+	local isLeft = corner == "BottomLeft"
 
 	local piece = Instance.new("ImageLabel")
-	piece.Name = "CornerPiece"
+	piece.Name = name
 	piece.BackgroundTransparency = 1
 	piece.BorderSizePixel = 0
-	piece.Image = "rbxassetid://110789932449581"
+	piece.Image = "rbxassetid://" .. tostring(assetId)
 	piece.ImageColor3 = Color3.fromRGB(255, 255, 255)
 	piece.ImageTransparency = 0
 	piece.ScaleType = Enum.ScaleType.Fit
-	piece.AnchorPoint = Vector2.new(1, 0)
+	piece.AnchorPoint = Vector2.new(isLeft and 0 or 1, isTop and 0 or 1)
 	piece.Size = UDim2.fromOffset(320, 320)
 	piece.ZIndex = 60
 	piece.Active = false
@@ -1281,19 +1287,16 @@ local function attachCornerPiece(menu)
 	pcall(function() piece:SetAttribute("ThemeIgnore", true) end)
 	piece.Parent = gui
 
-	-- The artwork carries transparent padding of its own, which reads as a gap
-	-- between the ghost and the window corner. The piece lives outside the
-	-- clipping frame, so shifting it out by this much seats the visible art on
-	-- the corner instead of the padding.
-	local CORNER_BLEED = 46
-
 	local function syncPosition()
 		local guiPos = gui.AbsolutePosition
 		local basePos = base.AbsolutePosition
-		piece.Position = UDim2.fromOffset(
-			basePos.X - guiPos.X + base.AbsoluteSize.X + CORNER_BLEED,
-			basePos.Y - guiPos.Y - CORNER_BLEED
-		)
+		local x = isLeft
+			and (basePos.X - guiPos.X - CORNER_BLEED)
+			or (basePos.X - guiPos.X + base.AbsoluteSize.X + CORNER_BLEED)
+		local y = isTop
+			and (basePos.Y - guiPos.Y - CORNER_BLEED)
+			or (basePos.Y - guiPos.Y + base.AbsoluteSize.Y + CORNER_BLEED)
+		piece.Position = UDim2.fromOffset(x, y)
 	end
 	syncPosition()
 
@@ -1736,7 +1739,8 @@ function library.new(libraryTitle, cfgLocation)
 		ensureLegacyMain(menu.gui)
 		hideMacWindowControls(menu.gui)
 		tuneMacSidebarLayout(menu.gui)
-		attachCornerPiece(menu)
+		attachCornerPiece(menu, "CornerPieceTopRight", "110789932449581", "TopRight")
+		attachCornerPiece(menu, "CornerPieceBottomLeft", "103194504356891", "BottomLeft")
 		attachHeaderSearch(menu)
 		makeTopbarDraggable(menu.gui)
 		menu._themeAccentConnection = menu.gui.DescendantAdded:Connect(function(object)
