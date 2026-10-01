@@ -1258,7 +1258,7 @@ end
 -- track the window position; that lets them sit on the corners rather than
 -- being cut off inside. The artwork carries transparent padding, so each piece
 -- is bled outward past the frame edge to seat the visible art on the corner.
-local CORNER_BLEED = 46
+local CORNER_BLEED = 18
 
 local function attachCornerPiece(menu, name, assetId, corner)
 	local gui = menu.gui
