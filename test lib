@@ -555,7 +555,7 @@ local function tuneMacSidebarLayout(gui)
 
 	-- The lower-left corner artwork runs up the sidebar's left edge, so the
 	-- status and title text are inset past it to stay readable. One knob.
-	local STATUS_TEXT_INSET = 32
+	local STATUS_TEXT_INSET = 24
 	local function applyStatusInset(object, widthInset, yOffset)
 		if not (object and object:IsA("GuiObject")) then return end
 		object.Position = UDim2.new(object.Position.X.Scale, STATUS_TEXT_INSET, object.Position.Y.Scale, yOffset)
