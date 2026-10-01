@@ -927,9 +927,64 @@ local function attachHeaderSearch(menu)
 	box.TextTruncate = Enum.TextTruncate.AtEnd
 	box.FontFace = Font.new(interFont, Enum.FontWeight.Regular, Enum.FontStyle.Normal)
 	box.Position = UDim2.fromOffset(27, 0)
-	box.Size = UDim2.new(1, -35, 1, 0)
+	box.Size = UDim2.new(1, -72, 1, 0)
 	box.ZIndex = 31
 	box.Parent = bar
+
+	-- "1/3" match counter, then a small chevron to walk the matching tabs
+	local counter = Instance.new("TextLabel")
+	counter.Name = "MatchCount"
+	counter.BackgroundTransparency = 1
+	counter.Position = UDim2.new(1, -40, 0, 0)
+	counter.Size = UDim2.fromOffset(24, 26)
+	counter.Text = ""
+	counter.TextColor3 = Color3.fromRGB(150, 150, 150)
+	counter.TextSize = 11
+	counter.TextXAlignment = Enum.TextXAlignment.Right
+	counter.FontFace = Font.new(interFont, Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+	counter.ZIndex = 31
+	counter.Parent = bar
+
+	local nextButton = Instance.new("TextButton")
+	nextButton.Name = "NextMatch"
+	nextButton.BackgroundTransparency = 1
+	nextButton.BorderSizePixel = 0
+	nextButton.AutoButtonColor = false
+	nextButton.Text = ""
+	nextButton.Position = UDim2.new(1, -16, 0, 0)
+	nextButton.Size = UDim2.fromOffset(16, 26)
+	nextButton.ZIndex = 32
+	nextButton.Parent = bar
+
+	local nextArrow = Instance.new("ImageLabel")
+	nextArrow.Name = "NextArrow"
+	nextArrow.BackgroundTransparency = 1
+	nextArrow.Image = "rbxassetid://100121816630722"
+	nextArrow.ImageColor3 = Color3.fromRGB(200, 200, 200)
+	nextArrow.ImageTransparency = 0.45
+	nextArrow.AnchorPoint = Vector2.new(0.5, 0.5)
+	nextArrow.Position = UDim2.fromScale(0.5, 0.5)
+	nextArrow.Size = UDim2.fromOffset(10, 10)
+	nextArrow.Rotation = -90
+	nextArrow.ZIndex = 33
+	nextArrow.Parent = nextButton
+
+	-- map tab number -> the switcher button mclib keeps for it
+	local tabSwitchers = {}
+	local function rebuildTabSwitchers()
+		tabSwitchers = {}
+		local byTitle = menu._tabTitles or {}
+		for _, object in ipairs(gui:GetDescendants()) do
+			if object.Name == "TabSwitcher" and object:IsA("GuiObject") then
+				local label = object:FindFirstChild("TabSwitcherName")
+				local title = label and tostring(label.Text or "") or ""
+				local num = byTitle[title]
+				if num then
+					tabSwitchers[num] = object
+				end
+			end
+		end
+	end
 
 	-- cache the sector container for each element so we can hide whole groups
 	local sectorCache = setmetatable({}, { __mode = "k" })
@@ -948,34 +1003,60 @@ local function attachHeaderSearch(menu)
 		return sector or false
 	end
 
+	-- Which tabs contain a match for the current query, in tab order.
+	local function tabsMatching(query)
+		local found = {}
+		for num = 1, (menu._tabCount or 0) do
+			local sectors = menu._elements[num]
+			if type(sectors) == "table" then
+				local hit = false
+				for _, sectorMap in pairs(sectors) do
+					for _, elementsMap in pairs(sectorMap) do
+						for flag, element in pairs(elementsMap) do
+							local label = tostring(element._text or flag or ""):lower()
+							if label:find(query, 1, true) then
+								hit = true
+								break
+							end
+						end
+						if hit then break end
+					end
+					if hit then break end
+				end
+				if hit then found[#found + 1] = num end
+			end
+		end
+		return found
+	end
+
 	local function applyFilter(query)
 		query = tostring(query or ""):lower():gsub("^%s+", ""):gsub("%s+$", "")
 		local filtering = query ~= ""
-		local tabNum = menu._currentTab
-		local sectors = menu._elements[tabNum]
 
-		if type(sectors) ~= "table" then return end
-
+		-- Every element on the tab currently on screen.
 		local touchedSectors = {}
+		local sectors = menu._elements[menu._currentTab]
 
-		for sectionName, sectorMap in pairs(sectors) do
-			for sectorName, elementsMap in pairs(sectorMap) do
-				local matchedAny = false
-				for flag, element in pairs(elementsMap) do
-					local label = tostring(element._text or flag or ""):lower()
-					local match = (not filtering) or label:find(query, 1, true) ~= nil
-					if match then matchedAny = true end
-					if element.set_visible then
-						pcall(element.set_visible, element, match)
+		if type(sectors) == "table" then
+			for _, sectorMap in pairs(sectors) do
+				for _, elementsMap in pairs(sectorMap) do
+					local matchedAny = false
+					for flag, element in pairs(elementsMap) do
+						local label = tostring(element._text or flag or ""):lower()
+						local match = (not filtering) or label:find(query, 1, true) ~= nil
+						if match then matchedAny = true end
+						if element.set_visible then
+							pcall(element.set_visible, element, match)
+						end
 					end
-				end
-				local sector = nil
-				for _, element in pairs(elementsMap) do
-					sector = sectorOf(element)
-					if sector then break end
-				end
-				if sector and sector:IsA("GuiObject") then
-					touchedSectors[sector] = (not filtering) or matchedAny
+					local sector = nil
+					for _, element in pairs(elementsMap) do
+						sector = sectorOf(element)
+						if sector then break end
+					end
+					if sector and sector:IsA("GuiObject") then
+						touchedSectors[sector] = (not filtering) or matchedAny
+					end
 				end
 			end
 		end
@@ -985,7 +1066,69 @@ local function attachHeaderSearch(menu)
 		end
 	end
 
+	-- Search across every tab; jump to the first tab that has a hit.
+	local matchTabs = {}
+	local matchIndex = 0
+
+	local function refreshCounter()
+		if #matchTabs == 0 then
+			counter.Text = ""
+			return
+		end
+		counter.Text = tostring(matchIndex) .. "/" .. tostring(#matchTabs)
+	end
+
+	local function goToTab(num)
+		local button = tabSwitchers[num]
+		if not button then return false end
+		local ok = pcall(function() button.MouseButton1Click:Fire() end)
+		return ok
+	end
+
+	local function runSearch(query)
+		query = tostring(query or ""):lower():gsub("^%s+", ""):gsub("%s+$", "")
+
+		if query == "" then
+			matchTabs = {}
+			matchIndex = 0
+			refreshCounter()
+			applyFilter("")
+			return
+		end
+
+		rebuildTabSwitchers()
+		matchTabs = tabsMatching(query)
+		matchIndex = 1
+
+		if #matchTabs > 0 and matchTabs[1] ~= menu._currentTab then
+			goToTab(matchTabs[1])
+			menu._currentTab = matchTabs[1]
+		end
+		refreshCounter()
+		applyFilter(query)
+	end
+
 	box:GetPropertyChangedSignal("Text"):Connect(function()
+		runSearch(box.Text)
+	end)
+
+	box.Focused:Connect(function()
+		local tween = TweenService:Create(barStroke, TweenInfo.new(0.15, Enum.EasingStyle.Sine), { Transparency = 0.6 })
+		tween:Play()
+	end)
+	box.FocusLost:Connect(function()
+		TweenService:Create(barStroke, TweenInfo.new(0.15, Enum.EasingStyle.Sine), { Transparency = 0.94 }):Play()
+	end)
+
+	nextButton.Activated:Connect(function()
+		if #matchTabs == 0 then return end
+		matchIndex = matchIndex % #matchTabs + 1
+		local num = matchTabs[matchIndex]
+		if num ~= menu._currentTab then
+			goToTab(num)
+			menu._currentTab = num
+		end
+		refreshCounter()
 		applyFilter(box.Text)
 	end)
 
@@ -1003,7 +1146,7 @@ local function attachHeaderSearch(menu)
 		end)
 	end
 
-	return { Frame = bar, Box = box, Refresh = function() applyFilter(box.Text) end }
+	return { Frame = bar, Box = box, Refresh = function() runSearch(box.Text) end }
 end
 
 function library.new(libraryTitle, cfgLocation)
@@ -1626,6 +1769,7 @@ function library.new(libraryTitle, cfgLocation)
 			tab_num = tabCount,
 			name = tabTitle or ("Tab " .. tostring(tabCount)),
 		}
+		menu._tabCount = tabCount
 
 		menu.values[tab.tab_num] = menu.values[tab.tab_num] or {}
 
