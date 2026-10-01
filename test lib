@@ -1713,10 +1713,10 @@ function library.new(libraryTitle, cfgLocation)
 						local options = Instance.new("Frame")
 						options.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 						options.BackgroundTransparency = 0
-						-- hangs off the TOP-LEFT of the trigger so it can open out to full row width
+						-- flush under the trigger, same width as it, so the two read as one control
 						options.AnchorPoint = Vector2.new(0, 0)
 						options.Position = UDim2.fromOffset(0, 18)
-						options.Size = UDim2.new(0, 62, 0, 0)
+						options.Size = UDim2.fromOffset(62, 0)
 						options.ZIndex = 300
 						options.Visible = false
 						options.ClipsDescendants = true
@@ -1739,21 +1739,10 @@ function library.new(libraryTitle, cfgLocation)
 
 						local isOpen = false
 						local optionsHeight = 60
-						-- full row width, matching how the stock dropdowns size themselves
-						-- The panel lives inside the 62px trigger, so its open width has to be
-						-- an offset measured from the row. A scale-based width would resolve
-						-- against the trigger and stay tiny.
-						local function expandedWidth()
-							local rowWidth = targetFrame.AbsoluteSize.X
-							if rowWidth <= 0 then
-								rowWidth = modeFrame.AbsoluteSize.X
-							end
-							return math.max(62, math.floor(rowWidth - 8))
-						end
 						local toggleName = targetFrame:FindFirstChild("ToggleName")
 						local toggleButton = targetFrame:FindFirstChild("Toggle")
 						local function syncModeLabel()
-							modeLabel.Text = tostring(keyValue.Type or "Hold")
+							modeLabel.Text = string.upper(tostring(keyValue.Type or "Hold"))
 						end
 						local function setOpen(open)
 							if isOpen == open then
@@ -1778,9 +1767,9 @@ function library.new(libraryTitle, cfgLocation)
 							if open then
 								options.Visible = true
 							end
-							-- expand from the compact trigger out to the full row width, opening downward
+							-- same width as the trigger, opening straight down from it
 							TweenService:Create(options, expandInfo, {
-								Size = UDim2.fromOffset(open and expandedWidth() or 62, open and optionsHeight or 0),
+								Size = UDim2.fromOffset(62, open and optionsHeight or 0),
 							}):Play()
 
 							local arrowTween = TweenService:Create(arrow, expandInfo, {
@@ -1807,7 +1796,7 @@ function library.new(libraryTitle, cfgLocation)
 							-- Same construction as the stock dropdown: plain button + inset Inter label
 							local optionName = Instance.new("TextLabel")
 							optionName.BackgroundTransparency = 1
-							optionName.Text = mode
+							optionName.Text = string.upper(mode)
 							optionName.TextColor3 = Color3.fromRGB(255, 255, 255)
 							optionName.TextTransparency = 0.5
 							optionName.TextXAlignment = Enum.TextXAlignment.Left
