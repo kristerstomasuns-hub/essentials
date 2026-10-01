@@ -1652,22 +1652,14 @@ function library.new(libraryTitle, cfgLocation)
 						local modeFrame = Instance.new("Frame")
 						modeFrame.Name = "KeyModeDropdown"
 						modeFrame.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
+						modeFrame.BackgroundTransparency = 1
 						modeFrame.BorderSizePixel = 0
 						modeFrame.Parent = targetFrame
 						modeFrame.AnchorPoint = Vector2.new(1, 0.5)
 						modeFrame.Position = UDim2.new(1, -44, 0.5, 0)
-						modeFrame.Size = UDim2.fromOffset(64, 18)
+						modeFrame.Size = UDim2.fromOffset(62, 18)
 						modeFrame.ClipsDescendants = false
 						modeFrame.ZIndex = 25
-
-						local corner = Instance.new("UICorner")
-						corner.CornerRadius = UDim.new(0, 4)
-						corner.Parent = modeFrame
-
-						local stroke = Instance.new("UIStroke")
-						stroke.Color = Color3.fromRGB(42, 46, 52)
-						stroke.Transparency = 0.2
-						stroke.Parent = modeFrame
 
 						local trigger = Instance.new("TextButton")
 						trigger.BackgroundTransparency = 1
@@ -1681,22 +1673,22 @@ function library.new(libraryTitle, cfgLocation)
 						modeLabel.Name = "ModeLabel"
 						modeLabel.BackgroundTransparency = 1
 						modeLabel.Font = Enum.Font.GothamMedium
-						modeLabel.Position = UDim2.fromOffset(8, 0)
-						modeLabel.Size = UDim2.new(1, -26, 1, 0)
+						modeLabel.Position = UDim2.fromOffset(7, 0)
+						modeLabel.Size = UDim2.new(1, -24, 1, 0)
 						modeLabel.TextColor3 = Color3.fromRGB(235, 235, 235)
 						modeLabel.TextSize = 11
 						modeLabel.TextXAlignment = Enum.TextXAlignment.Left
 						modeLabel.ZIndex = 26
 						modeLabel.Parent = modeFrame
 
-						local arrow = Instance.new("TextLabel")
+						local arrow = Instance.new("ImageLabel")
 						arrow.BackgroundTransparency = 1
-						arrow.Font = Enum.Font.GothamBold
-						arrow.Position = UDim2.new(1, -18, 0, 0)
-						arrow.Size = UDim2.fromOffset(18, 18)
-						arrow.Text = "v"
-						arrow.TextColor3 = Color3.fromRGB(165, 170, 175)
-						arrow.TextSize = 12
+						arrow.AnchorPoint = Vector2.new(1, 0.5)
+						arrow.Image = "rbxassetid://100121816630722"
+						arrow.ImageColor3 = Color3.fromRGB(242, 243, 243)
+						arrow.ImageTransparency = 0.5
+						arrow.Position = UDim2.new(1, -6, 0.5, 0)
+						arrow.Size = UDim2.fromOffset(11, 11)
 						arrow.ZIndex = 26
 						arrow.Parent = modeFrame
 
@@ -1704,7 +1696,7 @@ function library.new(libraryTitle, cfgLocation)
 						options.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 						options.BackgroundTransparency = 0
 						options.Position = UDim2.fromOffset(0, 22)
-						options.Size = UDim2.fromOffset(64, 66)
+						options.Size = UDim2.fromOffset(62, 66)
 						options.ZIndex = 26
 						options.Visible = false
 						options.Parent = modeFrame
@@ -1729,9 +1721,7 @@ function library.new(libraryTitle, cfgLocation)
 						local function setOpen(open)
 							isOpen = open
 							options.Visible = open
-							modeFrame.Size = UDim2.fromOffset(64, 18)
-							arrow.Text = open and "^" or "v"
-							stroke.Color = open and Color3.fromRGB(103, 182, 254) or Color3.fromRGB(42, 46, 52)
+							arrow.Rotation = open and -90 or 0
 						end
 						for _, mode in ipairs({ "Hold", "Toggle", "Always" }) do
 							local option = Instance.new("TextButton")
@@ -1985,25 +1975,53 @@ function library.new(libraryTitle, cfgLocation)
 								local keyControls = Instance.new("Frame")
 								keyControls.Name = "InlineKeyControls"
 								keyControls.AnchorPoint = Vector2.new(1, 0.5)
-								keyControls.BackgroundTransparency = 1
+								keyControls.BackgroundTransparency = 0
 								keyControls.BorderSizePixel = 0
 								keyControls.ClipsDescendants = false
 								keyControls.Position = UDim2.new(1, -40, 0.5, 0)
-								keyControls.Size = UDim2.fromOffset(158, 18)
+								keyControls.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
+								keyControls.Size = UDim2.fromOffset(150, 18)
 								keyControls.ZIndex = 25
 								keyControls.Parent = macObject.Instance
+
+								local controlsCorner = Instance.new("UICorner")
+								controlsCorner.CornerRadius = UDim.new(0, 4)
+								controlsCorner.Parent = keyControls
+
+								local controlsStroke = Instance.new("UIStroke")
+								controlsStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+								controlsStroke.Color = Color3.fromRGB(255, 255, 255)
+								controlsStroke.Transparency = 0.9
+								controlsStroke.Parent = keyControls
+
+								local controlsDivider = Instance.new("Frame")
+								controlsDivider.BackgroundColor3 = Color3.fromRGB(42, 46, 52)
+								controlsDivider.BorderSizePixel = 0
+								controlsDivider.Position = UDim2.fromOffset(88, 2)
+								controlsDivider.Size = UDim2.fromOffset(1, 14)
+								controlsDivider.ZIndex = 26
+								controlsDivider.Parent = keyControls
 
 								inlineBinder.Parent = keyControls
 								inlineBinder.AnchorPoint = Vector2.new(0, 0.5)
 								inlineBinder.Position = UDim2.new(0, 0, 0.5, 0)
-								inlineBinder.Size = UDim2.fromOffset(94, 18)
+								inlineBinder.Size = UDim2.fromOffset(88, 18)
+								inlineBinder.BackgroundTransparency = 1
+								local binderCorner = inlineBinder:FindFirstChild("BinderBoxUICorner")
+								if binderCorner then
+									binderCorner.CornerRadius = UDim.new(0, 0)
+								end
+								local binderStroke = inlineBinder:FindFirstChild("BinderBoxUIStroke")
+								if binderStroke then
+									binderStroke.Transparency = 1
+								end
 
 								inlineMode.Frame.Parent = keyControls
 								inlineMode.Frame.AnchorPoint = Vector2.new(0, 0.5)
-								inlineMode.Frame.Position = UDim2.new(0, 94, 0.5, 0)
+								inlineMode.Frame.Position = UDim2.new(0, 88, 0.5, 0)
 								local targetLabel = macObject.Instance:FindFirstChild("ToggleName")
 								if targetLabel and targetLabel:IsA("TextLabel") then
-									targetLabel.Size = UDim2.new(1, -202, targetLabel.Size.Y.Scale, targetLabel.Size.Y.Offset)
+									targetLabel.Size = UDim2.new(1, -194, targetLabel.Size.Y.Scale, targetLabel.Size.Y.Offset)
 								end
 							end
 
