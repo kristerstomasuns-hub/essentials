@@ -3603,8 +3603,8 @@ function MacLib:Window(Settings)
 					UserInputService.InputEnded:Connect(function(inp)
 						if not focused and not isBinding then
 							if inputMatchesBind(inp, binded) then
-								if Settings.onBindHeld then
-									Settings.onBindHeld(false, binded)
+								if KeybindFunctions.Settings.onBindHeld then
+									KeybindFunctions.Settings.onBindHeld(false, binded)
 								end
 							end
 						end

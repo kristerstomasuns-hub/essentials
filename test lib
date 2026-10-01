@@ -7,7 +7,7 @@ local UserInputService = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 
-local MACLIB_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/essentials/main/mclib?v=keypickerlayout-20261001"
+local MACLIB_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/essentials/main/mclib?v=keybindholdfix-20261001"
 
 local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("RunService%.RenderStepped:Connect%(UpdateOrientation%)", "if acrylicBlur then RunService.RenderStepped:Connect(UpdateOrientation) end")
@@ -1672,7 +1672,7 @@ function library.new(libraryTitle, cfgLocation)
 						local modeLabel = Instance.new("TextLabel")
 						modeLabel.Name = "ModeLabel"
 						modeLabel.BackgroundTransparency = 1
-						modeLabel.FontFace = Font.new(assets.interFont)
+						modeLabel.Font = Enum.Font.GothamMedium
 						modeLabel.Position = UDim2.fromOffset(7, 0)
 						modeLabel.Size = UDim2.new(1, -24, 1, 0)
 						modeLabel.TextColor3 = Color3.fromRGB(235, 235, 235)
@@ -2102,7 +2102,8 @@ function library.new(libraryTitle, cfgLocation)
 										Key = newValue.Key or newValue.key or newValue.Bind or newValue.bind or newValue[1] or "NONE",
 										KeyType = newValue.KeyType or newValue.keyType or newValue.BindType or newValue.bindType or newValue.TypeName or newValue.typeName,
 										Type = restoredType,
-										Active = restoredActive ~= nil and restoredActive == true or restoredType == "Always",
+										Active = restoredType == "Always"
+											or (restoredType == "Toggle" and restoredActive == true),
 									}
 								end
 
