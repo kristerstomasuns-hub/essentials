@@ -1254,13 +1254,16 @@ local function attachHeaderSearch(menu)
 end
 
 -- Decorative corner piece pinned to the top-right of the window.
+-- Base clips its descendants, so the piece lives as a sibling on the ScreenGui
+-- and tracks the window position; that lets it sit on the corner rather than
+-- being cut off inside it.
 local function attachCornerPiece(menu)
 	local gui = menu.gui
 	if not gui then return nil end
 
 	local base = gui:FindFirstChild("Base", true)
 	if not base then return nil end
-	if base:FindFirstChild("CornerPiece") then return nil end
+	if gui:FindFirstChild("CornerPiece") or base:FindFirstChild("CornerPiece") then return nil end
 
 	local piece = Instance.new("ImageLabel")
 	piece.Name = "CornerPiece"
@@ -1271,13 +1274,22 @@ local function attachCornerPiece(menu)
 	piece.ImageTransparency = 0
 	piece.ScaleType = Enum.ScaleType.Fit
 	piece.AnchorPoint = Vector2.new(1, 0)
-	piece.Position = UDim2.new(1, 0, 0, 0)
 	piece.Size = UDim2.fromOffset(320, 320)
 	piece.ZIndex = 60
 	piece.Active = false
 	pcall(function() piece.Interactable = false end)
 	pcall(function() piece:SetAttribute("ThemeIgnore", true) end)
-	piece.Parent = base
+	piece.Parent = gui
+
+	local function syncPosition()
+		local guiPos = gui.AbsolutePosition
+		local basePos = base.AbsolutePosition
+		piece.Position = UDim2.fromOffset(basePos.X - guiPos.X + base.AbsoluteSize.X, basePos.Y - guiPos.Y)
+	end
+	syncPosition()
+
+	base:GetPropertyChangedSignal("Position"):Connect(syncPosition)
+	base:GetPropertyChangedSignal("AbsoluteSize"):Connect(syncPosition)
 
 	return piece
 end
