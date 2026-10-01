@@ -511,10 +511,63 @@ local function keyEnumTypeName(key)
 	return enumPath:match("^Enum%.([^%.]+)%.")
 end
 
+local keyDisplayNames = {
+	MouseButton1 = "MB1",
+	MouseButton2 = "MB2",
+	MouseButton3 = "MB3",
+	MouseButton4 = "MB4",
+	MouseButton5 = "MB5",
+	Escape = "Esc",
+	Return = "Enter",
+	Backspace = "BS",
+	Delete = "Del",
+	Insert = "Ins",
+	PageUp = "PgUp",
+	PageDown = "PgDn",
+	LeftControl = "LCtrl",
+	RightControl = "RCtrl",
+	LeftAlt = "LAlt",
+	RightAlt = "RAlt",
+	LeftShift = "LShift",
+	RightShift = "RShift",
+	LeftSuper = "LWin",
+	RightSuper = "RWin",
+	KeypadZero = "Numpad0",
+	KeypadOne = "Numpad1",
+	KeypadTwo = "Numpad2",
+	KeypadThree = "Numpad3",
+	KeypadFour = "Numpad4",
+	KeypadFive = "Numpad5",
+	KeypadSix = "Numpad6",
+	KeypadSeven = "Numpad7",
+	KeypadEight = "Numpad8",
+	KeypadNine = "Numpad9",
+	KeypadPeriod = "NumpadDot",
+	KeypadDivide = "NumpadDiv",
+	KeypadMultiply = "NumpadMult",
+	KeypadMinus = "NumpadSub",
+	KeypadPlus = "NumpadAdd",
+	KeypadEnter = "NumpadEnter",
+	KeypadEquals = "NumpadEqual",
+	Backquote = "`",
+	Minus = "-",
+	Equals = "=",
+	LeftBracket = "[",
+	RightBracket = "]",
+	BackSlash = "\\",
+	Semicolon = ";",
+	Quote = "'",
+	Comma = ",",
+	Period = ".",
+	Slash = "/",
+	Print = "PrintScreen",
+}
+
 local function enumItemName(key)
 	if typeof(key) == "EnumItem" then
 		local enumPath = tostring(key)
-		return enumPath:match("%.([^%.]+)$") or tostring(key)
+		local name = enumPath:match("%.([^%.]+)$") or tostring(key)
+		return keyDisplayNames[name] or name
 	end
 
 	return tostring(key or "NONE")

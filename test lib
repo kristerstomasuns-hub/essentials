@@ -2004,7 +2004,7 @@ function library.new(libraryTitle, cfgLocation)
 								keyControls.ClipsDescendants = false
 								keyControls.Position = UDim2.new(1, -40, 0.5, 0)
 								keyControls.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
-								keyControls.Size = UDim2.fromOffset(150, 18)
+								keyControls.Size = UDim2.fromOffset(144, 18)
 								keyControls.ZIndex = 100
 								keyControls.Parent = macObject.Instance
 								macObject.Instance.ZIndex = 100
@@ -2026,7 +2026,7 @@ function library.new(libraryTitle, cfgLocation)
 								local controlsDivider = Instance.new("Frame")
 								controlsDivider.BackgroundColor3 = Color3.fromRGB(42, 46, 52)
 								controlsDivider.BorderSizePixel = 0
-								controlsDivider.Position = UDim2.fromOffset(88, 2)
+								controlsDivider.Position = UDim2.fromOffset(82, 2)
 								controlsDivider.Size = UDim2.fromOffset(1, 14)
 								controlsDivider.ZIndex = 101
 								controlsDivider.Parent = keyControls
@@ -2034,7 +2034,7 @@ function library.new(libraryTitle, cfgLocation)
 								inlineBinder.Parent = keyControls
 								inlineBinder.AnchorPoint = Vector2.new(0, 0.5)
 								inlineBinder.Position = UDim2.new(0, 0, 0.5, 0)
-								inlineBinder.Size = UDim2.fromOffset(88, 18)
+								inlineBinder.Size = UDim2.fromOffset(82, 18)
 								inlineBinder.BackgroundTransparency = 1
 								inlineBinder.ZIndex = 101
 								local binderCorner = inlineBinder:FindFirstChild("BinderBoxUICorner")
@@ -2048,11 +2048,11 @@ function library.new(libraryTitle, cfgLocation)
 
 								inlineMode.Frame.Parent = keyControls
 								inlineMode.Frame.AnchorPoint = Vector2.new(0, 0.5)
-								inlineMode.Frame.Position = UDim2.new(0, 88, 0.5, 0)
+								inlineMode.Frame.Position = UDim2.new(0, 82, 0.5, 0)
 								inlineMode.Frame.ZIndex = 101
 								local targetLabel = macObject.Instance:FindFirstChild("ToggleName")
 								if targetLabel and targetLabel:IsA("TextLabel") then
-									targetLabel.Size = UDim2.new(1, -194, targetLabel.Size.Y.Scale, targetLabel.Size.Y.Offset)
+									targetLabel.Size = UDim2.new(1, -188, targetLabel.Size.Y.Scale, targetLabel.Size.Y.Offset)
 								end
 							end
 
