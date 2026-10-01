@@ -1656,7 +1656,7 @@ function library.new(libraryTitle, cfgLocation)
 						modeFrame.Parent = targetFrame
 						modeFrame.AnchorPoint = Vector2.new(1, 0.5)
 						modeFrame.Position = UDim2.new(1, -44, 0.5, 0)
-						modeFrame.Size = UDim2.fromOffset(82, 18)
+						modeFrame.Size = UDim2.fromOffset(64, 18)
 						modeFrame.ClipsDescendants = false
 						modeFrame.ZIndex = 25
 
@@ -1701,12 +1701,22 @@ function library.new(libraryTitle, cfgLocation)
 						arrow.Parent = modeFrame
 
 						local options = Instance.new("Frame")
-						options.BackgroundTransparency = 1
-						options.Position = UDim2.fromOffset(6, 24)
-						options.Size = UDim2.new(1, -12, 0, 66)
+						options.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
+						options.BackgroundTransparency = 0
+						options.Position = UDim2.fromOffset(0, 22)
+						options.Size = UDim2.fromOffset(64, 66)
 						options.ZIndex = 26
 						options.Visible = false
 						options.Parent = modeFrame
+
+						local optionsCorner = Instance.new("UICorner")
+						optionsCorner.CornerRadius = UDim.new(0, 4)
+						optionsCorner.Parent = options
+
+						local optionsStroke = Instance.new("UIStroke")
+						optionsStroke.Color = Color3.fromRGB(42, 46, 52)
+						optionsStroke.Transparency = 0.2
+						optionsStroke.Parent = options
 
 						local layout = Instance.new("UIListLayout")
 						layout.Padding = UDim.new(0, 3)
@@ -1719,7 +1729,7 @@ function library.new(libraryTitle, cfgLocation)
 						local function setOpen(open)
 							isOpen = open
 							options.Visible = open
-							modeFrame.Size = UDim2.fromOffset(open and 190 or 82, open and 96 or 18)
+							modeFrame.Size = UDim2.fromOffset(64, 18)
 							arrow.Text = open and "^" or "v"
 							stroke.Color = open and Color3.fromRGB(103, 182, 254) or Color3.fromRGB(42, 46, 52)
 						end
@@ -1972,10 +1982,28 @@ function library.new(libraryTitle, cfgLocation)
 								keyCallback(updatedValue)
 							end) or nil
 							if inlineMode then
-								inlineBinder.Position = UDim2.new(1, -136, 0.5, 0)
+								local keyControls = Instance.new("Frame")
+								keyControls.Name = "InlineKeyControls"
+								keyControls.AnchorPoint = Vector2.new(1, 0.5)
+								keyControls.BackgroundTransparency = 1
+								keyControls.BorderSizePixel = 0
+								keyControls.ClipsDescendants = false
+								keyControls.Position = UDim2.new(1, -40, 0.5, 0)
+								keyControls.Size = UDim2.fromOffset(158, 18)
+								keyControls.ZIndex = 25
+								keyControls.Parent = macObject.Instance
+
+								inlineBinder.Parent = keyControls
+								inlineBinder.AnchorPoint = Vector2.new(0, 0.5)
+								inlineBinder.Position = UDim2.new(0, 0, 0.5, 0)
+								inlineBinder.Size = UDim2.fromOffset(94, 18)
+
+								inlineMode.Frame.Parent = keyControls
+								inlineMode.Frame.AnchorPoint = Vector2.new(0, 0.5)
+								inlineMode.Frame.Position = UDim2.new(0, 94, 0.5, 0)
 								local targetLabel = macObject.Instance:FindFirstChild("ToggleName")
 								if targetLabel and targetLabel:IsA("TextLabel") then
-									targetLabel.Size = UDim2.new(1, -245, targetLabel.Size.Y.Scale, targetLabel.Size.Y.Offset)
+									targetLabel.Size = UDim2.new(1, -202, targetLabel.Size.Y.Scale, targetLabel.Size.Y.Offset)
 								end
 							end
 
