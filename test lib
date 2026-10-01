@@ -7,7 +7,7 @@ local UserInputService = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 
-local MACLIB_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/essentials/main/mclib?v=keymodecompact-20261001"
+local MACLIB_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/essentials/main/mclib?v=keypickerlayout-20261001"
 
 local function patchMacLibSource(macSource)
 	macSource = macSource:gsub("RunService%.RenderStepped:Connect%(UpdateOrientation%)", "if acrylicBlur then RunService.RenderStepped:Connect(UpdateOrientation) end")
@@ -1623,7 +1623,7 @@ function library.new(libraryTitle, cfgLocation)
 						binderBox.Parent = targetFrame
 						binderBox.AnchorPoint = Vector2.new(1, 0.5)
 						binderBox.Position = UDim2.new(1, -44, 0.5, 0)
-						binderBox.Size = UDim2.fromOffset(104, 18)
+						binderBox.Size = UDim2.fromOffset(84, 18)
 						binderBox.ZIndex = 25
 						pcall(function()
 							binderBox:SetAttribute("ThemeIgnore", true)
@@ -1672,11 +1672,12 @@ function library.new(libraryTitle, cfgLocation)
 						local modeLabel = Instance.new("TextLabel")
 						modeLabel.Name = "ModeLabel"
 						modeLabel.BackgroundTransparency = 1
-						modeLabel.Font = Enum.Font.GothamMedium
+						modeLabel.FontFace = Font.new(assets.interFont)
 						modeLabel.Position = UDim2.fromOffset(7, 0)
 						modeLabel.Size = UDim2.new(1, -24, 1, 0)
 						modeLabel.TextColor3 = Color3.fromRGB(235, 235, 235)
 						modeLabel.TextSize = 11
+						modeLabel.TextTransparency = 0.1
 						modeLabel.TextXAlignment = Enum.TextXAlignment.Left
 						modeLabel.ZIndex = 102
 						modeLabel.Parent = modeFrame
@@ -1717,6 +1718,8 @@ function library.new(libraryTitle, cfgLocation)
 
 						local isOpen = false
 						local optionsHeight = 60
+						local toggleName = targetFrame:FindFirstChild("ToggleName")
+						local toggleButton = targetFrame:FindFirstChild("Toggle")
 						local function syncModeLabel()
 							modeLabel.Text = tostring(keyValue.Type or "Hold")
 						end
@@ -1725,6 +1728,16 @@ function library.new(libraryTitle, cfgLocation)
 								return
 							end
 							isOpen = open
+							targetFrame.AutomaticSize = Enum.AutomaticSize.None
+							TweenService:Create(targetFrame, TweenInfo.new(0.16, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+								Size = UDim2.new(1, 0, 0, open and 92 or 28),
+							}):Play()
+							if toggleName then
+								toggleName.Position = UDim2.fromOffset(0, 14)
+							end
+							if toggleButton then
+								toggleButton.Position = UDim2.new(1, 0, 0, 14)
+							end
 							if open then
 								options.Visible = true
 							end
@@ -2002,9 +2015,9 @@ function library.new(libraryTitle, cfgLocation)
 								keyControls.BackgroundTransparency = 0
 								keyControls.BorderSizePixel = 0
 								keyControls.ClipsDescendants = false
-								keyControls.Position = UDim2.new(1, -40, 0.5, 0)
+								keyControls.Position = UDim2.new(1, -40, 0, 14)
 								keyControls.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
-								keyControls.Size = UDim2.fromOffset(144, 18)
+								keyControls.Size = UDim2.fromOffset(128, 18)
 								keyControls.ZIndex = 100
 								keyControls.Parent = macObject.Instance
 								macObject.Instance.ZIndex = 100
@@ -2026,7 +2039,7 @@ function library.new(libraryTitle, cfgLocation)
 								local controlsDivider = Instance.new("Frame")
 								controlsDivider.BackgroundColor3 = Color3.fromRGB(42, 46, 52)
 								controlsDivider.BorderSizePixel = 0
-								controlsDivider.Position = UDim2.fromOffset(82, 2)
+								controlsDivider.Position = UDim2.fromOffset(66, 2)
 								controlsDivider.Size = UDim2.fromOffset(1, 14)
 								controlsDivider.ZIndex = 101
 								controlsDivider.Parent = keyControls
@@ -2034,7 +2047,7 @@ function library.new(libraryTitle, cfgLocation)
 								inlineBinder.Parent = keyControls
 								inlineBinder.AnchorPoint = Vector2.new(0, 0.5)
 								inlineBinder.Position = UDim2.new(0, 0, 0.5, 0)
-								inlineBinder.Size = UDim2.fromOffset(82, 18)
+								inlineBinder.Size = UDim2.fromOffset(66, 18)
 								inlineBinder.BackgroundTransparency = 1
 								inlineBinder.ZIndex = 101
 								local binderCorner = inlineBinder:FindFirstChild("BinderBoxUICorner")
@@ -2048,11 +2061,11 @@ function library.new(libraryTitle, cfgLocation)
 
 								inlineMode.Frame.Parent = keyControls
 								inlineMode.Frame.AnchorPoint = Vector2.new(0, 0.5)
-								inlineMode.Frame.Position = UDim2.new(0, 82, 0.5, 0)
+								inlineMode.Frame.Position = UDim2.new(0, 66, 0.5, 0)
 								inlineMode.Frame.ZIndex = 101
 								local targetLabel = macObject.Instance:FindFirstChild("ToggleName")
 								if targetLabel and targetLabel:IsA("TextLabel") then
-									targetLabel.Size = UDim2.new(1, -188, targetLabel.Size.Y.Scale, targetLabel.Size.Y.Offset)
+									targetLabel.Size = UDim2.new(1, -172, targetLabel.Size.Y.Scale, targetLabel.Size.Y.Offset)
 								end
 							end
 

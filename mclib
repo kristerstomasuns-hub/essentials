@@ -3466,7 +3466,7 @@ function MacLib:Window(Settings)
 					binderBox.ClipsDescendants = true
 					binderBox.LayoutOrder = 1
 					binderBox.Position = UDim2.fromScale(1, 0.5)
-					binderBox.Size = UDim2.fromOffset(104, 18)
+					binderBox.Size = UDim2.fromOffset(84, 18)
 
 					local binderBoxUICorner = Instance.new("UICorner")
 					binderBoxUICorner.Name = "BinderBoxUICorner"
@@ -3488,8 +3488,8 @@ function MacLib:Window(Settings)
 
 					local binderBoxUISizeConstraint = Instance.new("UISizeConstraint")
 					binderBoxUISizeConstraint.Name = "BinderBoxUISizeConstraint"
-					binderBoxUISizeConstraint.MinSize = Vector2.new(62, 18)
-					binderBoxUISizeConstraint.MaxSize = Vector2.new(104, 18)
+					binderBoxUISizeConstraint.MinSize = Vector2.new(52, 18)
+					binderBoxUISizeConstraint.MaxSize = Vector2.new(84, 18)
 					binderBoxUISizeConstraint.Parent = binderBox
 
 					binderBox.Parent = keybind
