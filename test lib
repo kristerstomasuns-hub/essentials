@@ -1081,29 +1081,32 @@ local function attachHeaderSearch(menu)
 		query = tostring(query or ""):lower():gsub("^%s+", ""):gsub("%s+$", "")
 		local filtering = query ~= ""
 
-		-- Every element on the tab currently on screen.
+		-- Filter every tab, not just the visible one, so switching tabs during
+		-- a search still shows only the matching features.
 		local touchedSectors = {}
-		local sectors = menu._elements[menu._currentTab]
 
-		if type(sectors) == "table" then
-			for _, sectorMap in pairs(sectors) do
-				for _, elementsMap in pairs(sectorMap) do
-					local matchedAny = false
-					for flag, element in pairs(elementsMap) do
-						local label = tostring(element._text or flag or ""):lower()
-						local match = (not filtering) or label:find(query, 1, true) ~= nil
-						if match then matchedAny = true end
-						if element.set_visible then
-							pcall(element.set_visible, element, match)
+		for num = 1, (menu._tabCount or 0) do
+			local sectors = menu._elements[num]
+			if type(sectors) == "table" then
+				for _, sectorMap in pairs(sectors) do
+					for _, elementsMap in pairs(sectorMap) do
+						local matchedAny = false
+						for flag, element in pairs(elementsMap) do
+							local label = tostring(element._text or flag or ""):lower()
+							local match = (not filtering) or label:find(query, 1, true) ~= nil
+							if match then matchedAny = true end
+							if element.set_visible then
+								pcall(element.set_visible, element, match)
+							end
 						end
-					end
-					local sector = nil
-					for _, element in pairs(elementsMap) do
-						sector = sectorOf(element)
-						if sector then break end
-					end
-					if sector and sector:IsA("GuiObject") then
-						touchedSectors[sector] = (not filtering) or matchedAny
+						local sector = nil
+						for _, element in pairs(elementsMap) do
+							sector = sectorOf(element)
+							if sector then break end
+						end
+						if sector and sector:IsA("GuiObject") then
+							touchedSectors[sector] = (not filtering) or matchedAny
+						end
 					end
 				end
 			end
@@ -1211,7 +1214,12 @@ local function attachHeaderSearch(menu)
 				for _, sectorMap in pairs(sectors) do
 					for _, elementsMap in pairs(sectorMap) do
 						for flag, element in pairs(elementsMap) do
-							local label = tostring(element._text or flag or "")
+							-- show the feature name only; flags can carry a "$" and
+							-- a disambiguating suffix that the user never sees in the UI
+							local label = tostring(element._text or "")
+							if label == "" then
+								label = tostring(flag or ""):gsub("^%$", ""):gsub("%s+[%w_]+$", "")
+							end
 							if label:lower():find(query, 1, true) then
 								total = total + 1
 								local captured = num
@@ -1243,6 +1251,26 @@ local function attachHeaderSearch(menu)
 		return pcall(function() button.MouseButton1Click:Fire() end)
 	end
 
+	-- Find the first tab holding a match, so a search from one tab can surface
+	-- features that live on another.
+	local function firstMatchingTab(query)
+		for num = 1, (menu._tabCount or 0) do
+			local sectors = menu._elements[num]
+			if type(sectors) == "table" then
+				for _, sectorMap in pairs(sectors) do
+					for _, elementsMap in pairs(sectorMap) do
+						for flag, element in pairs(elementsMap) do
+							local label = tostring(element._text or flag or ""):lower()
+							if label:find(query, 1, true) then
+								return num
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
 	local function runSearch(query)
 		query = tostring(query or ""):lower():gsub("^%s+", ""):gsub("%s+$", "")
 
@@ -1255,11 +1283,23 @@ local function attachHeaderSearch(menu)
 		end
 
 		rebuildTabSwitchers()
+
+		-- jump to the first tab that actually has a match, then filter that tab
+		-- in place so the real controls (toggles, sliders) are what you see
+		local target = firstMatchingTab(query)
+		if target and target ~= menu._currentTab then
+			goToTab(target)
+			menu._currentTab = target
+		end
+
 		local total = buildResults(query)
 		counter.Text = tostring(total)
+		applyFilter(query)
 
+		-- The panel is only needed when nothing matched; otherwise the filtered
+		-- tab is shown instead, so you get the real toggles in place.
 		if results then
-			results.Visible = true
+			results.Visible = (total == 0)
 			results.CanvasPosition = Vector2.new(0, 0)
 		end
 	end
