@@ -988,8 +988,13 @@ local function attachHeaderSearch(menu)
 	counter.Parent = bar
 
 	-- Results surface: shows matching features from every tab without leaving
-	-- the tab you are on. parented to the whole content area, hidden until search.
+	-- the tab you are on. It must sit in the content area: the topbar that
+	-- holds the search field is only ~63px tall and clips, which squashed this
+	-- panel to ~29px and hid every row below the first.
 	local resultsHolder = elements.Parent
+	if resultsHolder and resultsHolder.Name == "Topbar" and resultsHolder.Parent then
+		resultsHolder = resultsHolder.Parent
+	end
 	local results
 	if resultsHolder then
 		results = Instance.new("ScrollingFrame")
@@ -997,8 +1002,9 @@ local function attachHeaderSearch(menu)
 		results.BackgroundColor3 = Color3.fromRGB(11, 13, 15)
 		results.BackgroundTransparency = 0
 		results.BorderSizePixel = 0
-		results.Position = UDim2.fromOffset(0, 34)
-		results.Size = UDim2.new(1, 0, 1, -34)
+		-- 63 = topbar height, so the panel starts directly beneath it
+		results.Position = UDim2.fromOffset(0, 63)
+		results.Size = UDim2.new(1, 0, 1, -63)
 		results.AutomaticCanvasSize = Enum.AutomaticSize.Y
 		results.CanvasSize = UDim2.new()
 		results.ScrollBarThickness = 2
