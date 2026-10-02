@@ -565,7 +565,9 @@ local function tuneMacSidebarLayout(gui)
 		object.Size = UDim2.new(object.Size.X.Scale, width, object.Size.Y.Scale, object.Size.Y.Offset)
 	end
 
-	local titleFrame = informationHolder and informationHolder:FindFirstChild("TitleFrame")
+	-- TitleFrame lives under the sidebar's UserInfo, not under informationHolder,
+	-- so look it up from the base like StatusFrame.
+	local titleFrame = base and base:FindFirstChild("TitleFrame", true)
 	local statusFrame = base and base:FindFirstChild("StatusFrame", true)
 	if userInfo then
 		userInfo.Visible = true
