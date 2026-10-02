@@ -555,11 +555,14 @@ local function tuneMacSidebarLayout(gui)
 
 	-- The lower-left corner artwork runs up the sidebar's left edge, so the
 	-- status and title text are inset past it to stay readable. One knob.
-	local STATUS_TEXT_INSET = 44
+	local STATUS_TEXT_INSET = 58
 	local function applyStatusInset(object, widthInset, yOffset)
 		if not (object and object:IsA("GuiObject")) then return end
 		object.Position = UDim2.new(object.Position.X.Scale, STATUS_TEXT_INSET, object.Position.Y.Scale, yOffset)
-		object.Size = UDim2.new(object.Size.X.Scale, -STATUS_TEXT_INSET - widthInset, object.Size.Y.Scale, object.Size.Y.Offset)
+		local width = -STATUS_TEXT_INSET - widthInset
+		-- never let the width collapse; the sidebar is only ~280px
+		if width > -60 then width = -60 end
+		object.Size = UDim2.new(object.Size.X.Scale, width, object.Size.Y.Scale, object.Size.Y.Offset)
 	end
 
 	local titleFrame = informationHolder and informationHolder:FindFirstChild("TitleFrame")
@@ -602,10 +605,13 @@ local function tuneMacSidebarLayout(gui)
 		for _, textObject in ipairs(titleFrame:GetDescendants()) do
 			if textObject:IsA("TextLabel") then
 				textObject.TextSize = textObject.Name == "Title" and 14 or 10
+				textObject.TextTruncate = Enum.TextTruncate.AtEnd
 				if textObject.Name == "Subtitle" then
 					textObject.Text = "Credits - KT.RK.JD"
 					textObject.TextColor3 = Color3.fromRGB(0, 210, 190)
 					textObject.TextTransparency = 0
+					-- longest line; keep it from clipping at the right edge
+					textObject.TextSize = 9
 				end
 			end
 		end
