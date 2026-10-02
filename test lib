@@ -595,14 +595,22 @@ local function tuneMacSidebarLayout(gui)
 		if activeText and activeText:IsA("TextLabel") then
 			activeText.TextSize = 13
 			activeText.Position = UDim2.new(0, STATUS_ROW_INSET, 0, 0)
-			activeText.Size = UDim2.fromOffset(72, 20)
+			-- mclib hardcodes 44px, which clips "Active Lifetime" to "Active";
+			-- and it re-applies that on every status change, so set it here
+			-- and to a width that fits the real label
+			activeText.Size = UDim2.fromOffset(84, 20)
 			activeText.TextTruncate = Enum.TextTruncate.AtEnd
+			activeText:GetPropertyChangedSignal("Text"):Connect(function()
+				if activeText.AbsoluteSize.X < 80 then
+					activeText.Size = UDim2.fromOffset(84, 20)
+				end
+			end)
 		end
 		local timerText = statusFrame:FindFirstChild("TimerText")
 		if timerText and timerText:IsA("TextLabel") then
 			timerText.TextSize = 13
-			timerText.Position = UDim2.new(0, STATUS_ROW_INSET + 74, 0, 0)
-			timerText.Size = UDim2.new(1, -(STATUS_ROW_INSET + 74), 1, 0)
+			timerText.Position = UDim2.new(0, STATUS_ROW_INSET + 96, 0, 0)
+			timerText.Size = UDim2.new(1, -(STATUS_ROW_INSET + 96), 1, 0)
 			timerText.TextTruncate = Enum.TextTruncate.AtEnd
 		end
 	end
