@@ -1032,6 +1032,8 @@ local function attachHeaderSearch(menu)
 		emptyLabel.TextXAlignment = Enum.TextXAlignment.Left
 		emptyLabel.FontFace = Font.new(interFont, Enum.FontWeight.Regular, Enum.FontStyle.Normal)
 		emptyLabel.ZIndex = 81
+		-- only shown when a search genuinely finds nothing
+		emptyLabel.Visible = false
 		emptyLabel.Parent = results
 	end
 
@@ -1192,6 +1194,9 @@ local function attachHeaderSearch(menu)
 	local function buildResults(query)
 		if not results then return 0 end
 		clearRows()
+		-- keep it out of the way until we know the count; a stale visible
+		-- label otherwise renders above the results
+		if emptyLabel then emptyLabel.Visible = false end
 
 		local total = 0
 		for num = 1, (menu._tabCount or 0) do
