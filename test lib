@@ -1246,6 +1246,13 @@ local function attachHeaderSearch(menu)
 	end
 
 	local function goToTab(num)
+		-- mclib exposes tab selection on the tab object; the switcher's
+		-- MouseButton1Click is a plain RBXScriptSignal and cannot be fired.
+		local tab = menu._tabs and menu._tabs[num]
+		if tab and tab.macTab and type(tab.macTab.Select) == "function" then
+			local ok = pcall(function() tab.macTab:Select() end)
+			if ok then return true end
+		end
 		local button = tabSwitchers[num]
 		if not button then return false end
 		return pcall(function() button.MouseButton1Click:Fire() end)
@@ -1253,20 +1260,29 @@ local function attachHeaderSearch(menu)
 
 	-- Find the first tab holding a match, so a search from one tab can surface
 	-- features that live on another.
-	local function firstMatchingTab(query)
-		for num = 1, (menu._tabCount or 0) do
+	-- Prefer a match on the tab you are already on; otherwise take the first tab
+	-- that has one, so searching from Combat can surface a Visuals feature.
+	local function findMatchingTab(query)
+		local function tabHasMatch(num)
 			local sectors = menu._elements[num]
-			if type(sectors) == "table" then
-				for _, sectorMap in pairs(sectors) do
-					for _, elementsMap in pairs(sectorMap) do
-						for flag, element in pairs(elementsMap) do
-							local label = tostring(element._text or flag or ""):lower()
-							if label:find(query, 1, true) then
-								return num
-							end
-						end
+			if type(sectors) ~= "table" then return false end
+			for _, sectorMap in pairs(sectors) do
+				for _, elementsMap in pairs(sectorMap) do
+					for flag, element in pairs(elementsMap) do
+						local label = tostring(element._text or flag or ""):lower()
+						if label:find(query, 1, true) then return true end
 					end
 				end
+			end
+			return false
+		end
+
+		if tabHasMatch(menu._currentTab) then
+			return menu._currentTab
+		end
+		for num = 1, (menu._tabCount or 0) do
+			if num ~= menu._currentTab and tabHasMatch(num) then
+				return num
 			end
 		end
 	end
@@ -1286,7 +1302,7 @@ local function attachHeaderSearch(menu)
 
 		-- jump to the first tab that actually has a match, then filter that tab
 		-- in place so the real controls (toggles, sliders) are what you see
-		local target = firstMatchingTab(query)
+		local target = findMatchingTab(query)
 		if target and target ~= menu._currentTab then
 			goToTab(target)
 			menu._currentTab = target
@@ -2024,9 +2040,12 @@ function library.new(libraryTitle, cfgLocation)
 			Image = tabImage,
 		})
 
-		-- remember the title so the header search can map the shown title back to this tab
+		-- remember the title so the header search can map the shown title back to this tab,
+		-- and keep the tab handle so search can actually switch tabs
 		menu._tabTitles = menu._tabTitles or {}
 		menu._tabTitles[tab.name] = tab.tab_num
+		menu._tabs = menu._tabs or {}
+		menu._tabs[tab.tab_num] = tab
 		if menu._currentTab == nil then
 			menu._currentTab = tab.tab_num
 		end
