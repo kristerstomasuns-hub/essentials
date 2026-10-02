@@ -1270,7 +1270,7 @@ end
 local BLEED_TOP_RIGHT_X = 8
 local BLEED_TOP_RIGHT_Y = 8
 local BLEED_BOTTOM_LEFT_X = 8
-local BLEED_BOTTOM_LEFT_Y = 28
+local BLEED_BOTTOM_LEFT_Y = 16
 
 local function attachCornerPiece(menu, name, assetId, corner)
 	local gui = menu.gui
