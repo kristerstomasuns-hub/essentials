@@ -603,10 +603,11 @@ local function tuneMacSidebarLayout(gui)
 	end
 	if titleFrame and userInfo then
 		titleFrame.Parent = userInfo
-		applyStatusInset(titleFrame, 36, 36)
+		-- keep only a thin right margin: the title needs the full string to fit
+		applyStatusInset(titleFrame, 8, 36)
 		for _, textObject in ipairs(titleFrame:GetDescendants()) do
 			if textObject:IsA("TextLabel") then
-				textObject.TextSize = textObject.Name == "Title" and 14 or 10
+				textObject.TextSize = textObject.Name == "Title" and 13 or 10
 				textObject.TextTruncate = Enum.TextTruncate.AtEnd
 				if textObject.Name == "Subtitle" then
 					textObject.Text = "Credits - KT.RK.JD"
