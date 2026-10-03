@@ -2719,26 +2719,25 @@ function library.new(libraryTitle, cfgLocation)
 							end
 
 							function keybindObject:set_value(newValue, cb)
-								if typeof(newValue) == "EnumItem" or type(newValue) == "string" then
-									keyValue = {
-										Key = typeof(newValue) == "EnumItem" and newValue.Name or newValue or "NONE",
-										KeyType = typeof(newValue) == "EnumItem" and keyEnumTypeName(newValue) or inferKeyTypeName(newValue, keyValue.KeyType),
-										Type = keyValue.Type or "Hold",
-										Active = keyValue.Type == "Always",
-									}
-								elseif type(newValue) == "table" then
-									local restoredType = newValue.Type or newValue.type or "Hold"
-									-- A bind may only come up active if its mode is "Always".
-									-- Hold/Toggle always start released, so no feature is enabled on load.
-									keyValue = {
-										Key = newValue.Key or newValue.key or newValue.Bind or newValue.bind or newValue[1] or "NONE",
-										KeyType = newValue.KeyType or newValue.keyType or newValue.BindType or newValue.bindType or newValue.TypeName or newValue.typeName,
-										Type = restoredType,
-										Active = restoredType == "Always",
-									}
-								end
-
-								local enumBind = keyNameToEnum(keyValue.Key, keyValue.KeyType)
+	-- Mutate keyValue IN PLACE. attachInlineKeybindMode captured this exact
+	-- table, so reassigning keyValue to a fresh table here made the mode
+	-- dropdown keep reading the stale default (Toggle) after a config load:
+	-- the key restored, the mode did not.
+	if typeof(newValue) == "EnumItem" or type(newValue) == "string" then
+		keyValue.Key = typeof(newValue) == "EnumItem" and newValue.Name or newValue or "NONE"
+		keyValue.KeyType = typeof(newValue) == "EnumItem" and keyEnumTypeName(newValue) or inferKeyTypeName(newValue, keyValue.KeyType)
+		keyValue.Type = keyValue.Type or "Hold"
+		keyValue.Active = keyValue.Type == "Always"
+	elseif type(newValue) == "table" then
+		local restoredType = newValue.Type or newValue.type or "Hold"
+		-- A bind may only come up active if its mode is "Always".
+		-- Hold/Toggle always start released, so no feature is enabled on load.
+		keyValue.Key = newValue.Key or newValue.key or newValue.Bind or newValue.bind or newValue[1] or "NONE"
+		keyValue.KeyType = newValue.KeyType or newValue.keyType or newValue.BindType or newValue.bindType or newValue.TypeName or newValue.typeName
+		keyValue.Type = restoredType
+		keyValue.Active = restoredType == "Always"
+	end
+local enumBind = keyNameToEnum(keyValue.Key, keyValue.KeyType)
 								if enumBind then
 									keyValue.Key = enumBind.Name
 									keyValue.KeyType = keyEnumTypeName(enumBind)

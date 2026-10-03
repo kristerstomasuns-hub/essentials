@@ -1348,7 +1348,7 @@
 
 
     local function loadGhostHookUiStack()
-        local GHOST_LIBRARY_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/essentials/main/test%20lib?v=featureinfo-20261002"
+        local GHOST_LIBRARY_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/essentials/main/test%20lib?v=keymode-20261003"
         local Toggles = {}
         local Options = {}
 
@@ -2967,13 +2967,12 @@
 
         key = tostring(key or "None")
         if key == "" or key == "None" or key == "NONE" then
-            -- A bind with no key assigned cannot be pressed. For features that
-            -- require their bind, that means the feature stays off instead of
-            -- running purely off its master toggle.
-            if require_assigned == true and mode ~= "Always" then
-                return false
-            end
-            return true
+            -- No bind assigned: the feature stays OFF. A missing bind must never let
+            -- the feature auto-activate -- with no key there is nothing to hold or
+            -- toggle, so the feature is inert until a key is actually assigned.
+            -- ("Always" mode stays on by design.)
+            if mode == "Always" then return true end
+            return false
         end
 
         if mode == "Always" then return true end
