@@ -793,6 +793,14 @@ local function keyNameToEnum(name, preferredType)
 		return enumItemByName(Enum.KeyCode, name) or enumItemByName(Enum.UserInputType, name)
 	end
 
+	-- Mouse buttons live in UserInputType (input signals), not KeyCode. Resolve them
+	-- through UserInputType first so they stay mouse buttons; the KeyCode metatable is
+	-- patched by the loader script to absorb mouse names for the game's own lookups,
+	-- and must not swallow them into a fake keyboard key here.
+	if name == "MouseButton1" or name == "MouseButton2" or name == "MouseButton3" or name == "MouseButton4" or name == "MouseButton5" then
+		return enumItemByName(Enum.UserInputType, name) or enumItemByName(Enum.KeyCode, name)
+	end
+
 	return enumItemByName(Enum.KeyCode, name) or enumItemByName(Enum.UserInputType, name)
 end
 

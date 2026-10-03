@@ -67,6 +67,40 @@
     local _Vector3zeromin = Vector3.zero.Min
     local _Vector2zeromin = Vector2.zero.Min
     local _Vector3zeromax = Vector3.zero.Max
+
+    -- Neutralise a game-side keybind crash. Mouse buttons do not live in Enum.KeyCode --
+    -- they are input SIGNALS (Enum.UserInputType). Several of the game's own scripts
+    -- (FunctionLibraryExtension:156 GetEstimatedCameraPosition, CharacterController:1005,
+    -- CameraSensitivity:10, HealthLocal:57, GyroAimController:176, FirstPersonBody:265,
+    -- VknCharacterSounds:425, ...) resolve the stored aim/ads key name against
+    -- Enum.KeyCode, so when the stored bind is a mouse button the raw enum index THROWS:
+    --   "MouseButton2 is not a valid member of Enum.KeyCode"
+    -- That error fired every frame from ~15 scripts, jamming the game's input handlers
+    -- (inventory would not open, camera froze, character visibility glitched).
+    -- We route mouse-button names to a valid, never-physically-produced KeyCode, so the
+    -- lookups return a value instead of throwing and the storm stops at the source.
+    do
+        local ok_mt, keycode_mt = pcall(function() return getrawmetatable(Enum.KeyCode) end)
+        if ok_mt and type(keycode_mt) == "table" then
+            local orig_index = rawget(keycode_mt, "__index")
+            local mouse_names = {
+                MouseButton1 = true, MouseButton2 = true, MouseButton3 = true,
+                MouseButton4 = true, MouseButton5 = true, MouseWheel = true,
+            }
+            keycode_mt.__index = function(enum_t, key)
+                if type(key) == "string" and mouse_names[key] then
+                    -- A valid KeyCode that no keyboard/mouse input ever reports,
+                    -- so IsKeyDown(...) simply reads "not held" and input.KeyCode
+                    -- comparisons never falsely match.
+                    return Enum.KeyCode.ButtonA
+                end
+                if orig_index then
+                    return orig_index(enum_t, key)
+                end
+                return nil
+            end
+        end
+    end
     local _Vector2zeromax = Vector2.zero.Max
     local _IsA = game.IsA
     local tablecreate = table.create
@@ -1348,7 +1382,7 @@
 
 
     local function loadGhostHookUiStack()
-        local GHOST_LIBRARY_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/essentials/main/test%20lib?v=keymode-20261003"
+        local GHOST_LIBRARY_URL = "https://raw.githubusercontent.com/kristerstomasuns-hub/essentials/main/test%20lib?v=mousefix-20261003"
         local Toggles = {}
         local Options = {}
 
